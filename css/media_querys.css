@@ -1,0 +1,23 @@
+@media (max-width: 1024px){
+    body{
+        background-color: aquamarine;
+    }
+    section#products{
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+/*Mobile*/
+@media (max-width: 600px){
+    body{
+        background-color: chocolate;
+    }
+    #menu{
+        display: none;
+    }
+    #btn_menu{
+        display: block;
+    }
+    section#products{
+        grid-template-columns:1fr;
+    }
+}
