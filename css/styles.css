@@ -1,0 +1,110 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+body{
+    padding: 50px;
+}
+.info{
+    padding: 10px;
+    height: 50px;
+    width: 100%;
+    border: 1px solid;
+    margin-bottom: 20px;
+    background-color: aliceblue;
+}
+.inel{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 6px;
+    gap: 6px;
+}
+.squ{
+    width: 10px;
+    height: 10px;
+    border-radius: 1px;
+    margin-left: 10px;
+}
+.fila{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    margin-right: 40px;
+    margin-left: 28px;
+}
+.fila2{
+    display: flex;
+    justify-content: end;
+    margin-top: 5px;
+    margin-right: 40px;
+}
+.separador{
+    display: flex;
+    gap: 5px;
+}
+.sepp{
+    height: 70px;
+    width: 100%;
+}
+.elemento{
+    width: 70px;
+    height: 70px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    gap: 4px;
+    transition: transform 0.5s ease;
+}
+.elemento:hover{
+    transform: scale(1.2);
+    z-index: 10;
+}
+.no_metales{
+    background-color: #2e76e8;
+}
+.gases_nobles{
+    background-color: #6c22ff;
+}
+.metales_alcalinos{
+    background-color: #e6a900;
+}
+.alcalinoterreos{
+    background-color: #c29311;
+}
+.metaloides{
+    background-color: #2cc211;
+}
+.halogenos{
+    background-color: #11cad4;
+}
+.metales_de_transición{
+    background-color: #7917cf;
+}
+.otros_metales{
+    background-color: #706870;
+}
+.lantanidos{
+    background-color: #f53325;
+}
+.actinidos{
+    background-color: #bd291e;
+}
+.text{
+    color: rgb(255, 253, 253);
+    font-size: 12px;
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    width: 80%;
+}
+.data{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
