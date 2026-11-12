@@ -1,12 +1,222 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shoefit</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/media_query.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Shoefit — calzado para cada ocasión.">
+  <title>Shoefit | Inicio</title>
+  <link rel="icon" href="img/optimized/logo-marca.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Pacifico&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/media_query.css">
+  <script src="js/main.js" defer></script>
 </head>
 <body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <header class="site-header">
+    <a class="brand" href="#inicio" aria-label="Shoefit, inicio">
+      <img src="img/optimized/logo-marca.svg" alt="" width="42" height="24">
+      <span>Shoefit</span>
+    </a>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Abrir menú">
+      <span class="menu-lines" aria-hidden="true"></span>
+    </button>
+    <nav class="primary-nav" id="primary-nav" aria-label="Navegación principal">
+      <a href="#flash-products">Men <span aria-hidden="true">⌄</span></a>
+      <a href="#flash-products">Women <span aria-hidden="true">⌄</span></a>
+      <a href="#coleccion">Collection <span aria-hidden="true">⌄</span></a>
+    </nav>
+    <div class="header-actions" aria-label="Acciones">
+      <button type="button" aria-label="Buscar" class="action-icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.4"/><path d="m16 16 4.2 4.2"/></svg>
+      </button>
+      <button type="button" aria-label="Carrito" class="action-icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 5h2l2 11.2h10.8l2-8.1H6.2"/><circle cx="9.2" cy="19.2" r="1.1"/><circle cx="17.2" cy="19.2" r="1.1"/></svg>
+      </button>
+      <a class="action-icon" href="login.html" aria-label="Cuenta">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.1"/><path d="M5.5 19c.6-3.1 2.8-4.7 6.5-4.7s5.9 1.6 6.5 4.7"/></svg>
+      </a>
+    </div>
+  </header>
+
+  <main id="contenido">
+    <section class="hero" id="inicio" aria-labelledby="hero-title">
+      <img class="hero-image" src="img/optimized/hero-zapato-cuero-1024.webp"
+           srcset="img/optimized/hero-zapato-cuero-640.webp 640w, img/optimized/hero-zapato-cuero-1024.webp 1024w"
+           sizes="100vw" width="1024" height="565"
+           alt="Zapato Oxford de cuero color café sobre una superficie oscura">
+      <div class="hero-copy">
+        <p>Check our Newest</p>
+        <h1 id="hero-title">Martin Dingman Collection</h1>
+        <a class="hero-link" href="coleccion.html">See more <span aria-hidden="true">»</span></a>
+      </div>
+    </section>
+    <section class="flash-sale" id="coleccion" lang="en" aria-labelledby="flash-title">
+      <div class="flash-inner">
+        <div class="flash-heading">
+          <span class="sale-ribbon">FLASH SALE</span>
+          <h2 id="flash-title">See our hottest Items</h2>
+        </div>
+        <div class="flash-carousel-wrap">
+        <button class="carousel-arrow carousel-prev" type="button" aria-label="Ver productos anteriores" data-scroll="-1">
+          <svg viewBox="0 0 12 24" aria-hidden="true" focusable="false"><path d="M10 2 2 12l8 10"/></svg>
+        </button>
+        <div class="flash-products" id="flash-products" role="group" tabindex="0" aria-label="Productos destacados">
+          <article class="flash-card">
+            <img src="img/optimized/producto-tenis-naranja-360.webp"
+                 srcset="img/optimized/producto-tenis-naranja-180.webp 180w, img/optimized/producto-tenis-naranja-360.webp 360w"
+                 sizes="(min-width:1025px) 10vw, 120px" width="360" height="360" loading="lazy"
+                 alt="Tenis deportivos blancos con detalles naranjas">
+            <h3>Sport Shoes special brand orange and white</h3>
+            <p class="price-old"><span class="visually-hidden">Precio anterior: </span><del>4,000 MX</del></p>
+            <p class="price-new"><span class="visually-hidden">Precio de oferta: </span>3,450 MX</p>
+          </article>
+          <article class="flash-card">
+            <img src="img/optimized/producto-tenis-naranja-360.webp"
+                 srcset="img/optimized/producto-tenis-naranja-180.webp 180w, img/optimized/producto-tenis-naranja-360.webp 360w"
+                 sizes="(min-width:1025px) 10vw, 120px" width="360" height="360" loading="lazy"
+                 alt="Tenis deportivos blancos con detalles naranjas">
+            <h3>Sport Shoes special brand orange and white</h3>
+            <p class="price-old"><span class="visually-hidden">Precio anterior: </span><del>4,000 MX</del></p>
+            <p class="price-new"><span class="visually-hidden">Precio de oferta: </span>3,450 MX</p>
+          </article>
+          <article class="flash-card">
+            <img src="img/optimized/producto-tenis-naranja-360.webp"
+                 srcset="img/optimized/producto-tenis-naranja-180.webp 180w, img/optimized/producto-tenis-naranja-360.webp 360w"
+                 sizes="(min-width:1025px) 10vw, 120px" width="360" height="360" loading="lazy"
+                 alt="Tenis deportivos blancos con detalles naranjas">
+            <h3>Sport Shoes special brand orange and white</h3>
+            <p class="price-old"><span class="visually-hidden">Precio anterior: </span><del>4,000 MX</del></p>
+            <p class="price-new"><span class="visually-hidden">Precio de oferta: </span>3,450 MX</p>
+          </article>
+          <article class="flash-card">
+            <img src="img/optimized/producto-tenis-naranja-360.webp"
+                 srcset="img/optimized/producto-tenis-naranja-180.webp 180w, img/optimized/producto-tenis-naranja-360.webp 360w"
+                 sizes="(min-width:1025px) 10vw, 120px" width="360" height="360" loading="lazy"
+                 alt="Tenis deportivos blancos con detalles naranjas">
+            <h3>Sport Shoes special brand orange and white</h3>
+            <p class="price-old"><span class="visually-hidden">Precio anterior: </span><del>4,000 MX</del></p>
+            <p class="price-new"><span class="visually-hidden">Precio de oferta: </span>3,450 MX</p>
+          </article>
+        </div>
+        <button class="carousel-arrow carousel-next" type="button" aria-label="Ver productos siguientes" data-scroll="1">
+          <svg viewBox="0 0 12 24" aria-hidden="true" focusable="false"><path d="M2 2l8 10-8 10"/></svg>
+        </button>
+        </div>
+      </div>
+    </section>
+    <section class="best-rated" id="best-rated" lang="en" aria-labelledby="best-title">
+      <div class="best-inner">
+        <div class="best-heading">
+          <h2 id="best-title">Search between our Best Rated Products</h2>
+          <span class="best-stars" role="img" aria-label="Rated 5 out of 5 stars"><img src="img/optimized/estrella-calificacion-67.webp" srcset="img/optimized/estrella-calificacion-67.webp 67w, img/optimized/estrella-calificacion-134.webp 134w" sizes="(min-width:1025px) 4vw, 28px" width="67" height="67" alt="" loading="lazy"><img src="img/optimized/estrella-calificacion-67.webp" srcset="img/optimized/estrella-calificacion-67.webp 67w, img/optimized/estrella-calificacion-134.webp 134w" sizes="(min-width:1025px) 4vw, 28px" width="67" height="67" alt="" loading="lazy"><img src="img/optimized/estrella-calificacion-67.webp" srcset="img/optimized/estrella-calificacion-67.webp 67w, img/optimized/estrella-calificacion-134.webp 134w" sizes="(min-width:1025px) 4vw, 28px" width="67" height="67" alt="" loading="lazy"><img src="img/optimized/estrella-calificacion-67.webp" srcset="img/optimized/estrella-calificacion-67.webp 67w, img/optimized/estrella-calificacion-134.webp 134w" sizes="(min-width:1025px) 4vw, 28px" width="67" height="67" alt="" loading="lazy"><img src="img/optimized/estrella-calificacion-67.webp" srcset="img/optimized/estrella-calificacion-67.webp 67w, img/optimized/estrella-calificacion-134.webp 134w" sizes="(min-width:1025px) 4vw, 28px" width="67" height="67" alt="" loading="lazy"></span>
+        </div>
+        <div class="best-layout">
+          <img class="best-photo" src="img/optimized/botas-negras-hierba-901.webp"
+               srcset="img/optimized/botas-negras-hierba-450.webp 450w, img/optimized/botas-negras-hierba-901.webp 901w"
+               sizes="(min-width:1025px) 52vw, 100vw" width="901" height="647" loading="lazy"
+               alt="Persona con jeans claros y botas negras de cuero con agujetas, sobre pasto seco">
+          <div class="best-side">
+            <ul class="best-grid">
+            <li class="best-item">
+              <img src="img/optimized/botas-cafe-casual-147.webp"
+                   srcset="img/optimized/botas-cafe-casual-147.webp 147w, img/optimized/botas-cafe-casual-268.webp 268w"
+                   sizes="(min-width:1025px) 9vw, 110px" width="147" height="115" loading="lazy"
+                   alt="Botas casuales de cuero café">
+              <h3>Casual Boots Martin O'Neil Brown</h3>
+            </li>
+            <li class="best-item">
+              <img src="img/optimized/botas-cafe-casual-147.webp"
+                   srcset="img/optimized/botas-cafe-casual-147.webp 147w, img/optimized/botas-cafe-casual-268.webp 268w"
+                   sizes="(min-width:1025px) 9vw, 110px" width="147" height="115" loading="lazy"
+                   alt="Botas casuales de cuero café">
+              <h3>Casual Boots Martin O'Neil Brown</h3>
+            </li>
+            <li class="best-item">
+              <img src="img/optimized/botas-cafe-casual-147.webp"
+                   srcset="img/optimized/botas-cafe-casual-147.webp 147w, img/optimized/botas-cafe-casual-268.webp 268w"
+                   sizes="(min-width:1025px) 9vw, 110px" width="147" height="115" loading="lazy"
+                   alt="Botas casuales de cuero café">
+              <h3>Casual Boots Martin O'Neil Brown</h3>
+            </li>
+            <li class="best-item">
+              <img src="img/optimized/botas-cafe-casual-147.webp"
+                   srcset="img/optimized/botas-cafe-casual-147.webp 147w, img/optimized/botas-cafe-casual-268.webp 268w"
+                   sizes="(min-width:1025px) 9vw, 110px" width="147" height="115" loading="lazy"
+                   alt="Botas casuales de cuero café">
+              <h3>Casual Boots Martin O'Neil Brown</h3>
+            </li>
+            <li class="best-item">
+              <img src="img/optimized/botas-cafe-casual-147.webp"
+                   srcset="img/optimized/botas-cafe-casual-147.webp 147w, img/optimized/botas-cafe-casual-268.webp 268w"
+                   sizes="(min-width:1025px) 9vw, 110px" width="147" height="115" loading="lazy"
+                   alt="Botas casuales de cuero café">
+              <h3>Casual Boots Martin O'Neil Brown</h3>
+            </li>
+            <li class="best-item">
+              <img src="img/optimized/botas-cafe-casual-147.webp"
+                   srcset="img/optimized/botas-cafe-casual-147.webp 147w, img/optimized/botas-cafe-casual-268.webp 268w"
+                   sizes="(min-width:1025px) 9vw, 110px" width="147" height="115" loading="lazy"
+                   alt="Botas casuales de cuero café">
+              <h3>Casual Boots Martin O'Neil Brown</h3>
+            </li>
+            </ul>
+            <div class="best-actions">
+              <button class="best-btn" type="button">Buy Pair</button>
+              <a class="best-btn" href="sorprendeme.html">Surprise me</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="contact" id="contact" lang="en" aria-labelledby="contact-title">
+      <div class="contact-inner">
+        <h2 id="contact-title">Any problems? Contact us</h2>
+        <address class="contact-list">
+          <a class="contact-item" href="tel:123456789">Phone Number: 12 345 6789</a>
+          <a class="contact-item" href="mailto:shoefit@mail.com">Mail: shoefit@mail.com</a>
+        </address>
+      </div>
+    </section>
+    <section class="trust" id="trust" lang="es" aria-label="Galería y garantías de compra">
+      <ul class="gallery" tabindex="0" aria-label="Galería de fotografías">
+            <li style="--w:337"><img src="img/optimized/galeria-tenis-blancos-674.webp" srcset="img/optimized/galeria-tenis-blancos-337.webp 337w, img/optimized/galeria-tenis-blancos-674.webp 674w" sizes="(min-width:651px) 20vw, 200px" width="337" height="358" loading="lazy" alt="Dos pares de tenis blancos sobre una repisa, con las piernas apoyadas"></li>
+            <li style="--w:273"><img src="img/optimized/galeria-tenis-claros-478.webp" srcset="img/optimized/galeria-tenis-claros-273.webp 273w, img/optimized/galeria-tenis-claros-478.webp 478w" sizes="(min-width:651px) 20vw, 200px" width="273" height="358" loading="lazy" alt="Tenis claros y pantalón morado sobre un fondo rosa pálido"></li>
+            <li style="--w:239"><img src="img/optimized/galeria-mujer-edificio-478.webp" srcset="img/optimized/galeria-mujer-edificio-239.webp 239w, img/optimized/galeria-mujer-edificio-478.webp 478w" sizes="(min-width:651px) 20vw, 200px" width="239" height="358" loading="lazy" alt="Mujer sentada con abrigo azul claro y tenis blancos frente a un edificio de vidrio"></li>
+            <li style="--w:202"><img src="img/optimized/galeria-abrigo-calle-354.webp" srcset="img/optimized/galeria-abrigo-calle-202.webp 202w, img/optimized/galeria-abrigo-calle-354.webp 354w" sizes="(min-width:651px) 20vw, 200px" width="202" height="358" loading="lazy" alt="Hombre con abrigo camel caminando por una calle adoquinada"></li>
+            <li style="--w:358"><img src="img/optimized/galeria-tenis-azules-447.webp" srcset="img/optimized/galeria-tenis-azules-358.webp 358w, img/optimized/galeria-tenis-azules-447.webp 447w" sizes="(min-width:651px) 20vw, 200px" width="358" height="358" loading="lazy" alt="Tenis azules y blancos sobre un fondo azul con luces de neón"></li>
+            <li style="--w:239"><img src="img/optimized/galeria-hombre-escaleras-334.webp" srcset="img/optimized/galeria-hombre-escaleras-239.webp 239w, img/optimized/galeria-hombre-escaleras-334.webp 334w" sizes="(min-width:651px) 20vw, 200px" width="239" height="358" loading="lazy" alt="Hombre con suéter beige sentado en unas escaleras"></li>
+      </ul>
+      <ul class="trust-list" lang="en">
+        <li class="trust-item"><svg class="trust-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="currentColor"><path fill="currentColor" d="m10 17l-4-4l1.41-1.41L10 14.17l6.59-6.59L18 9m-6-8L3 5v6c0 5.55 3.84 10.74 9 12c5.16-1.26 9-6.45 9-12V5z"/></svg><span>Purchases 100% secure</span></li>
+        <li class="trust-item"><svg class="trust-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="currentColor"><path fill="currentColor" d="M11 21v-2h8v-7.1q0-2.925-2.037-4.962T12 4.9T7.038 6.938T5 11.9V18H4q-.825 0-1.412-.587T2 16v-2q0-.525.263-.987T3 12.275l.075-1.325q.2-1.7.988-3.15t1.975-2.525T8.762 3.6T12 3t3.225.6t2.725 1.663t1.975 2.512t1 3.15l.075 1.3q.475.225.738.675t.262.95v2.3q0 .5-.262.95t-.738.675V19q0 .825-.587 1.413T19 21zm-2.713-7.287Q8 13.425 8 13t.288-.712T9 12t.713.288T10 13t-.288.713T9 14t-.712-.288m6 0Q14 13.426 14 13t.288-.712T15 12t.713.288T16 13t-.288.713T15 14t-.712-.288M6.025 12.45Q5.85 9.8 7.625 7.9T12.05 6q2.225 0 3.913 1.413T18 11.025Q15.725 11 13.813 9.8t-2.938-3.25q-.4 2-1.687 3.563T6.025 12.45"/></svg><span>Support 24/7</span></li>
+        <li class="trust-item"><svg class="trust-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="currentColor"><path fill="currentColor" d="M9 11q-.85 0-1.425-.575T7 9V4q0-.825.575-1.412T9 2h6v9zm8 0V2h3q.825 0 1.413.588T22 4v5q0 .85-.587 1.425T20 11zM8 21v-8h6.8q.35 0 .6.2t.35.475t.038.575t-.338.525L13.975 16H10v1.5h4.5l4.05-3.35q.55-.4 1.163-.5t1.212.05t1.138.513t.912.937L17.1 20.075q-.55.45-1.2.688T14.55 21zm-5 1q-.425 0-.712-.288T2 21v-7q0-.425.288-.712T3 13h3v8q0 .425-.288.713T5 22z"/></svg><span>Free Refunds</span></li>
+      </ul>
+    </section>
+  </main>
+  <footer class="site-footer" id="footer" lang="en" aria-label="Pie de página">
+    <div class="footer-inner">
+      <section class="footer-col" aria-labelledby="footer-about-title">
+        <h2 id="footer-about-title">About us</h2>
+        <ul class="footer-links">
+          <li><a href="#" data-placeholder>History, Vision and Mission</a></li>
+          <li><a href="#" data-placeholder>Technology</a></li>
+          <li><a href="#" data-placeholder>Job Offers</a></li>
+          <li><a href="#" data-placeholder>Values</a></li>
+        </ul>
+      </section>
+      <section class="footer-col" aria-labelledby="footer-help-title">
+        <h2 id="footer-help-title">Help</h2>
+        <ul class="footer-links">
+          <li><a href="#contact">Contacts</a></li>
+          <li><a href="#" data-placeholder>FAQ</a></li>
+          <li><a href="#" data-placeholder>Guide</a></li>
+        </ul>
+      </section>
+    </div>
+  </footer>
+  <script>document.documentElement.classList.add('js');</script>
 </body>
 </html>

@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Inicia sesión en Shoefit con tu correo electrónico.">
+  <title>Shoefit | Login</title>
+  <link rel="icon" href="img/optimized/logo-marca.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Pacifico&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/media_query.css">
+  <script src="js/main.js" defer></script>
+  <script src="js/auth.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <header class="site-header">
+    <a class="brand" href="index.html#inicio" aria-label="Shoefit, inicio">
+      <img src="img/optimized/logo-marca.svg" alt="" width="42" height="24">
+      <span>Shoefit</span>
+    </a>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Abrir menú">
+      <span class="menu-lines" aria-hidden="true"></span>
+    </button>
+    <nav class="primary-nav" id="primary-nav" aria-label="Navegación principal">
+      <a href="index.html#flash-products">Men <span aria-hidden="true">⌄</span></a>
+      <a href="index.html#flash-products">Women <span aria-hidden="true">⌄</span></a>
+      <a href="coleccion.html">Collection <span aria-hidden="true">⌄</span></a>
+    </nav>
+    <div class="header-actions" aria-label="Acciones">
+      <button type="button" aria-label="Buscar" class="action-icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.4"/><path d="m16 16 4.2 4.2"/></svg>
+      </button>
+      <button type="button" aria-label="Carrito" class="action-icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 5h2l2 11.2h10.8l2-8.1H6.2"/><circle cx="9.2" cy="19.2" r="1.1"/><circle cx="17.2" cy="19.2" r="1.1"/></svg>
+      </button>
+      <a class="action-icon" href="login.html" aria-label="Cuenta" aria-current="page">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.1"/><path d="M5.5 19c.6-3.1 2.8-4.7 6.5-4.7s5.9 1.6 6.5 4.7"/></svg>
+      </a>
+    </div>
+  </header>
+
+  <main id="contenido">
+    <section class="auth" lang="en" aria-labelledby="auth-title">
+      <div class="auth-card">
+        <h1 id="auth-title">Login</h1>
+        <p class="auth-note" id="login-note">All fields are required.</p>
+        <noscript><p class="auth-error auth-noscript">JavaScript is needed to check this form. Login is not available yet.</p></noscript>
+        <form class="auth-form" id="login-form" method="post" novalidate data-auth-form="login" aria-describedby="login-note">
+          <div class="auth-field">
+            <label for="login-email">Email</label>
+            <input id="login-email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="254" required aria-required="true" aria-describedby="login-email-error" data-rule="email">
+            <p class="auth-error" id="login-email-error"></p>
+          </div>
+          <div class="auth-field">
+            <label for="login-password">Password</label>
+            <input id="login-password" name="password" type="password" autocomplete="current-password" maxlength="128" required aria-required="true" aria-describedby="login-password-error" data-rule="password">
+            <p class="auth-error" id="login-password-error"></p>
+          </div>
+          <div class="auth-submit">
+            <button class="auth-btn" type="submit">Log In</button>
+          </div>
+          <p class="auth-status" id="login-status" role="status"></p>
+          <div class="auth-row">
+            <a class="auth-link" href="registro.html">Sign Up</a>
+            <label class="auth-check"><input type="checkbox" name="remember" value="1"><span>Remember me</span></label>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+  <script>document.documentElement.classList.add('js');</script>
+</body>
+</html>

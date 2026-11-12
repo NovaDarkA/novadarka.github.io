@@ -1,4 +1,178 @@
-*{
-    margin: 0px;
-    padding: 0px;
-}
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--cream:#fff3d6;--sand:#ffdfa5;--yellow:#fbff7a;--red:#ff4444;--ink:#17130e;--mono:"DM Mono",monospace}
+html{scroll-behavior:smooth}
+body{font-family:var(--mono),monospace;color:var(--ink);background:var(--cream)}
+button,a{-webkit-tap-highlight-color:transparent}
+a{color:inherit}
+.skip-link{position:absolute;left:12px;top:-60px;z-index:20;padding:10px;background:white}
+.skip-link:focus{top:8px}
+.site-header{height:54px;padding:0 clamp(12px,2.2vw,30px);display:grid;grid-template-columns:minmax(150px,1fr) auto minmax(150px,1fr);align-items:center;gap:18px;background:var(--sand);position:relative;z-index:5}
+.brand{display:flex;align-items:center;gap:5px;width:max-content;text-decoration:none}
+.brand img{width:39px;height:auto}
+.brand span{font-family:"Pacifico",cursive;font-size:17px;color:var(--red);line-height:1}
+.primary-nav{display:flex;align-items:center;justify-content:center;gap:clamp(18px,3vw,42px)}
+.primary-nav a{font-size:11px;font-weight:500;text-decoration:none;white-space:nowrap}
+.primary-nav a span{font-size:13px;margin-left:3px}
+.primary-nav a:hover{text-decoration:underline;text-underline-offset:4px}
+.header-actions{display:flex;justify-content:flex-end;gap:9px}
+.action-icon{width:31px;height:31px;display:grid;place-items:center;border:1px solid #a8a77b;border-radius:7px;background:#faffc8;cursor:pointer}
+.action-icon svg{width:17px;height:17px;fill:none;stroke:#33321f;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.action-icon:hover{background:#fff}
+.menu-toggle{display:none}
+.hero{height:clamp(310px,46vw,590px);position:relative;overflow:hidden;background:#292720;border-bottom:4px solid var(--red)}
+.hero-image{width:100%;height:100%;display:block;object-fit:cover;object-position:center 54%}
+.hero-copy{position:absolute;top:7%;right:5.5%;width:min(40%,390px);text-align:center;color:#fff;font-style:italic;text-shadow:0 1px 4px #111}
+.hero-copy p,.hero-copy h1{font-size:clamp(14px,1.55vw,20px);font-weight:500;line-height:1.5}
+.hero-link{display:inline-flex;align-items:center;gap:8px;margin-top:16px;padding:7px 12px;background:var(--yellow);color:#17130e;border-radius:5px;text-decoration:none;text-shadow:none;font-size:13px;font-weight:500}
+.hero-link:hover{background:#fff}
+.hero-link span{font-size:19px;line-height:12px}
+.visually-hidden{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+/* ===== Sección 2: Flash Sale =====
+   Proporciones medidas sobre el frame "MacBook Pro 16" - 1" de Figma, expresadas en cqw
+   (1cqw = 1% del ancho del contenedor) para que escalen igual que el diseño. */
+.flash-sale{container-type:inline-size;background:var(--cream)}
+.flash-inner{padding:3.2cqw 3.6cqw 6.6cqw}
+.flash-heading{display:flex;align-items:center;gap:6.1cqw;margin-left:4.5cqw;margin-bottom:2.8cqw}
+.sale-ribbon{display:grid;place-items:center;width:21cqw;height:4.5cqw;background:var(--red);color:#fff;font-size:clamp(11px,2.3cqw,40px);font-style:italic;font-weight:500;letter-spacing:.02em;line-height:1;clip-path:polygon(9% 0,100% 0,91% 100%,0 100%)}
+.flash-heading h2{font-size:clamp(13px,2.34cqw,42px);font-weight:500;font-style:italic;line-height:1.2;letter-spacing:0}
+.flash-carousel-wrap{display:grid;grid-template-columns:2.8cqw minmax(0,1fr) 2.8cqw;column-gap:1.7cqw;align-items:center}
+.flash-products{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 3 * 2.6cqw) / 4);gap:2.6cqw;align-items:stretch;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;overscroll-behavior-x:contain}
+.flash-products::-webkit-scrollbar{display:none}
+.flash-card{position:relative;min-width:0;min-height:24.3cqw;padding:.98cqw 1cqw 1.7cqw;background:var(--sand);border-radius:1.6cqw;display:flex;flex-direction:column;scroll-snap-align:start;font-size:clamp(11px,1.41cqw,26px)}
+.flash-card img{display:block;width:9.85cqw;min-width:56px;max-width:100%;aspect-ratio:1;height:auto;object-fit:contain;align-self:center;margin-bottom:.76cqw}
+.flash-card h3{font-size:1em;font-weight:400;line-height:1.35}
+.flash-card p{line-height:1.35}
+.price-old{margin-top:1.5cqw;padding-left:.5cqw;color:#8b8573}
+.price-old del{text-decoration-thickness:1px}
+.price-new{padding-left:2.4cqw;color:var(--red);font-weight:500}
+.carousel-arrow{display:grid;place-items:center;width:2.8cqw;height:4.5cqw;min-width:28px;min-height:46px;padding:0;border:0;border-radius:3px;background:var(--red);cursor:pointer}
+.carousel-arrow svg{width:36%;height:52%;fill:none;stroke:#fff;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+.carousel-arrow:hover:not(:disabled){background:#d93232}
+.carousel-arrow:disabled{cursor:default;opacity:.35}
+.is-static .carousel-arrow:disabled{opacity:1}
+
+/* ===== Sección 3: Best Rated Products =====
+   Proporciones medidas sobre el frame de Figma, en cqw (1cqw = 1% del ancho del contenedor). */
+.best-rated{container-type:inline-size;background:var(--sand)}
+.best-inner{padding:3.2cqw 4.7cqw 3.6cqw}
+.best-heading{display:flex;align-items:center;flex-wrap:wrap;gap:.8cqw 2.6cqw;margin-bottom:3.1cqw}
+.best-heading h2{font-size:clamp(14px,2.83cqw,52px);font-weight:500;font-style:italic;line-height:1.2}
+.best-stars{display:flex;gap:.84cqw}
+.best-stars img{display:block;width:3.4cqw;min-width:20px;height:auto;aspect-ratio:1}
+.best-layout{display:grid;grid-template-columns:minmax(0,52fr) minmax(0,37.7fr);column-gap:.76cqw;align-items:stretch}
+.best-photo{display:block;width:100%;height:100%;aspect-ratio:901/647;object-fit:cover;border-radius:1.15cqw}
+.best-side{display:flex;flex-direction:column;min-width:0}
+.best-grid{flex:1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:.85cqw;row-gap:2.1cqw;align-content:start;list-style:none;padding:2.3cqw .6cqw 1.25cqw 2cqw;background:var(--cream);border-radius:.9cqw}
+.best-item{display:flex;flex-direction:column;min-width:0}
+.best-item img{display:block;width:8.3cqw;min-width:64px;max-width:100%;height:auto;aspect-ratio:147/115;align-self:center;margin-bottom:.7cqw}
+.best-item h3{font-size:clamp(10px,1.3cqw,24px);font-weight:400;font-style:italic;line-height:1.33}
+.best-actions{display:flex;justify-content:space-between;gap:1cqw;margin-top:1.4cqw}
+.best-btn{display:grid;place-items:center;min-height:5.8cqw;padding:0 1cqw;border:0;border-radius:.9cqw;background:var(--yellow);color:var(--ink);font:italic 500 clamp(13px,2.3cqw,42px)/1 var(--mono),monospace;cursor:pointer}
+.best-btn:first-child{width:15.3cqw}
+.best-btn:last-child{width:17.3cqw}
+.best-btn:hover{background:#fff}
+
+/* ===== Sección 4: Contact us =====
+   Proporciones medidas sobre el frame de Figma, en cqw. */
+.contact{container-type:inline-size;background:var(--cream)}
+.contact-inner{padding:3.3cqw 4cqw 4cqw}
+.contact h2{margin-bottom:3cqw;text-align:center;font-size:clamp(16px,2.81cqw,52px);font-weight:500;line-height:1.2}
+.contact-list{display:grid;grid-template-columns:repeat(2,33.5cqw);column-gap:10.3cqw;justify-content:start;margin-left:8.9cqw;font-style:normal}
+.contact-item{display:grid;place-items:center;min-height:5.7cqw;padding:.6cqw;background:var(--sand);color:var(--ink);text-align:center;text-decoration:none;font-size:clamp(11px,2.12cqw,40px);font-weight:500;line-height:1.3}
+.contact-item:hover{background:var(--yellow)}
+
+/* ===== Sección 5: galería y garantías =====
+   Proporciones medidas sobre el frame de Figma, en cqw. Las columnas de la galería
+   son proporcionales al ancho original de cada fotografía (337/273/239/202/358/239). */
+.trust{container-type:inline-size;background:var(--cream);padding-bottom:3cqw}
+.gallery{display:grid;grid-template-columns:337fr 273fr 239fr 202fr 358fr 239fr;column-gap:.72cqw;padding:0 1.1cqw 0 .76cqw;list-style:none}
+.gallery li{min-width:0}
+.gallery img{display:block;width:100%;height:auto;aspect-ratio:var(--w)/358;object-fit:cover}
+.trust-list{display:grid;grid-template-columns:33.6cqw 27.3cqw 1fr;align-items:center;min-height:5.8cqw;margin-top:3.7cqw;padding-left:10cqw;list-style:none}
+.trust-item{display:flex;align-items:center;gap:.3cqw;color:var(--ink);font-size:clamp(11px,2.13cqw,40px);font-weight:500;line-height:1.35}
+.trust-item span{max-width:19cqw;text-align:center}
+.trust-icon{flex:none;width:3.6cqw;min-width:24px;height:auto;aspect-ratio:1}
+
+/* ===== Sección 6: Footer =====
+   Proporciones medidas sobre el frame de Figma, en cqw. Banda de ancho completo en --sand;
+   columna "About us" a ~20.1cqw del borde y "Help" a ~70.1cqw. */
+.site-footer{container-type:inline-size;background:var(--sand)}
+.footer-inner{display:grid;grid-template-columns:50cqw minmax(0,1fr);padding:4.1cqw 4cqw 3.5cqw 20.1cqw}
+.footer-col{min-width:0}
+.footer-col h2{font-size:clamp(14px,2.1cqw,40px);font-weight:700;line-height:1.2}
+.footer-links{list-style:none}
+.footer-links a{display:inline-block;font-size:clamp(11px,1.41cqw,28px);font-weight:500;line-height:1.72;text-decoration:none}
+.footer-links a:hover{text-decoration:underline;text-underline-offset:3px}
+
+/* ===== Sección 7: Collection (frame "MacBook Pro 16" - 2" de Figma) =====
+   Proporciones medidas sobre el frame, en cqw. Cuadrícula de 4 columnas con márgenes de 6cqw. */
+.collection{container-type:inline-size;background:var(--cream)}
+.collection-inner{padding:3.4cqw 6cqw 5.4cqw}
+.collection h1{margin-bottom:3.28cqw;font-size:clamp(15px,2.36cqw,44px);font-weight:500;line-height:1.2}
+.product-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));column-gap:4.06cqw;row-gap:2.4cqw}
+.product-card{min-width:0;padding:.85cqw .77cqw 1.3cqw;background:var(--sand);border-radius:1cqw;font-size:clamp(11px,1.41cqw,26px);line-height:1.32}
+.product-card img{display:block;width:100%;height:auto;aspect-ratio:302/170;border:1px solid #000;background:#fff}
+.product-card h2{margin-top:1.77cqw;font-size:1em;font-weight:400;line-height:inherit}
+.product-price{margin-top:.77cqw;font-weight:500}
+
+/* ===== Sección 8: experiencia especial "Surprise me" (frame "MacBook Pro 16" - 3" de Figma) =====
+   Proporciones medidas sobre el frame, en cqw. El botón de entrada es un enlace con el mismo aspecto
+   que .best-btn (solo se quita el subrayado). */
+a.best-btn{text-decoration:none}
+.special{container-type:inline-size;position:relative;background:var(--cream)}
+.special-back{position:absolute;top:1.5cqw;left:6.5cqw;z-index:1;display:inline-flex;align-items:center;gap:.5em;padding:.4em .2em;font-size:clamp(14px,1.41cqw,26px);font-weight:500;text-decoration:none}
+.special-back:hover{text-decoration:underline;text-underline-offset:4px}
+.special-inner{display:grid;grid-template-columns:38fr 45.4fr;column-gap:3.7cqw;align-items:start;padding:5.5cqw 6.35cqw 7.1cqw 6.5cqw}
+.special-gallery{min-width:0;padding:.24cqw 1.1cqw;border:1px solid #3a372f}
+.special-gallery img{display:block;width:100%;height:auto}
+.sg-row{display:grid;grid-template-columns:310fr 309fr;align-items:start}
+.special-gallery .sg-top{width:75.28%;margin-inline:auto}
+.special-panel{min-width:0;padding:2.99cqw 3.6cqw 4.05cqw;background:var(--sand);border-radius:.3cqw;box-shadow:0 .1cqw .25cqw rgba(0,0,0,.25);font-size:clamp(12px,2.12cqw,40px)}
+.special-crumb,.special-color,.special-price{line-height:1.2}
+.special-panel h1{margin-top:3.46cqw;font-size:clamp(14px,2.36cqw,44px);font-weight:500;line-height:1.2}
+.special-meta{display:grid;grid-template-columns:23.2cqw auto auto;justify-content:start;column-gap:2.2cqw;margin-top:1.51cqw}
+.special-icon{display:grid;place-items:center;width:3.5cqw;height:3.8cqw;min-width:24px;min-height:24px;margin-top:.37cqw;padding:0;border:0;background:none;cursor:pointer}
+.special-icon svg{width:100%;height:100%;fill:none;stroke-width:1.1;stroke-linecap:round;stroke-linejoin:round}
+.special-share svg{stroke:#6f6a5e}
+.special-fav svg{stroke:#f96a6e}
+.special-icon:hover svg{stroke-width:1.8}
+.special-price{margin-top:4.03cqw;font-weight:500}
+.special-stars{display:flex;gap:.68cqw;margin-top:1.36cqw}
+.special-stars img{display:block;width:3.75cqw;min-width:20px;height:auto;aspect-ratio:1}
+.special-actions{display:flex;gap:4.1cqw;margin:7.27cqw 0 0 -.9cqw}
+.special-btn{display:grid;place-items:center;width:17.6cqw;height:5.8cqw;min-height:40px;padding:0 .5cqw;border:0;border-radius:1.2cqw;background:#fdffb7;color:var(--ink);font:500 clamp(12px,2.34cqw,44px)/1 var(--mono),monospace;cursor:pointer}
+.special-btn:hover{background:#fff}
+
+:focus-visible{outline:2px solid #17130e;outline-offset:3px}
+
+/* ===== Sección 9: Login / Sign Up (frame "MacBook Pro 16" - 4" de Figma) =====
+   Proporciones medidas sobre el frame (1728 px = 100cqw): tarjeta 737x683 a 97px bajo la barra;
+   campos de 602x55; botón de 197x60; fila inferior con "Sign Up" y "Remember me".
+   Desviaciones deliberadas por accesibilidad: borde fino de 3.7:1 en los campos, "Sign Up" subrayado
+   y una nota "All fields are required." dentro del hueco entre el título y el primer campo. */
+.auth{container-type:inline-size;background:var(--cream);padding:5.6cqw 0 12.6cqw}
+.auth-card{width:42.65cqw;margin-inline:auto;padding:1.39cqw 4.22cqw 3.41cqw 3.59cqw;background:var(--sand);border-radius:.3cqw;box-shadow:0 .1cqw .25cqw rgba(0,0,0,.25);font-size:clamp(14px,2.12cqw,40px);line-height:1.366}
+.auth-card h1{padding-right:1.2cqw;font-size:1em;font-weight:400;text-align:center}
+.auth-note{margin-top:.3cqw;padding-right:1.2cqw;font-size:clamp(11px,1.2cqw,24px);line-height:1.3;text-align:center;color:#5a5036}
+.auth-form{margin-top:.5cqw}
+.auth-field+.auth-field{margin-top:2.6cqw}
+.auth-field label{display:block}
+.auth-field input{display:block;width:100%;height:3.18cqw;min-height:40px;margin-top:.75cqw;padding:0 1cqw;border:1px solid #7a7350;border-radius:1cqw;background:#fef3b0;color:var(--ink);font:400 clamp(14px,1.6cqw,30px)/1.2 var(--mono),monospace}
+.auth-field input[aria-invalid="true"]{border:2px solid #9b1c1c}
+.auth-error,.auth-hint,.auth-status{font-size:clamp(12px,1.3cqw,24px);line-height:1.35}
+.auth-error,.auth-hint{margin-top:.4cqw}
+.auth-error{color:#9b1c1c}
+.auth-hint{color:#5a5036}
+.auth-error:empty,.auth-status:empty{display:none}
+.auth-submit{display:flex;justify-content:center;margin-top:3.18cqw;padding-left:.8cqw}
+.auth-btn{display:inline-grid;place-items:center;width:11.4cqw;min-width:120px;height:3.47cqw;min-height:44px;padding:0 1cqw;border:0;border-radius:1.2cqw;background:#fdffb7;color:var(--ink);font:400 1em/1 var(--mono),monospace;cursor:pointer}
+.auth-btn:hover{background:#fff}
+.auth-status{margin-top:1cqw;text-align:center}
+.auth-status.is-error{color:#9b1c1c}
+.auth-row{display:grid;grid-template-columns:18.06cqw minmax(0,1fr);align-items:center;margin-top:3.59cqw;min-height:2.89cqw}
+.auth-row-single{display:flex;flex-wrap:wrap;gap:.2em .9cqw}
+.auth-link{color:var(--ink);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.2em}
+.auth-link:hover{background:var(--yellow)}
+.auth-check{display:flex;align-items:center;gap:.93cqw;margin-right:-1.2cqw;white-space:nowrap;cursor:pointer}
+.auth-check input{appearance:none;-webkit-appearance:none;flex:none;display:grid;place-items:center;width:2.89cqw;height:2.89cqw;min-width:24px;min-height:24px;margin:0;border:1px solid #3a372f;border-radius:.3cqw;background:transparent center/80% no-repeat;cursor:pointer}
+.auth-check input:checked{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='m5 12.5 4.5 4.5L19 7' fill='none' stroke='%2317130e' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}

@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Crea tu cuenta de Shoefit con tu correo electrónico.">
+  <title>Shoefit | Sign Up</title>
+  <link rel="icon" href="img/optimized/logo-marca.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Pacifico&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/media_query.css">
+  <script src="js/main.js" defer></script>
+  <script src="js/auth.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <header class="site-header">
+    <a class="brand" href="index.html#inicio" aria-label="Shoefit, inicio">
+      <img src="img/optimized/logo-marca.svg" alt="" width="42" height="24">
+      <span>Shoefit</span>
+    </a>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Abrir menú">
+      <span class="menu-lines" aria-hidden="true"></span>
+    </button>
+    <nav class="primary-nav" id="primary-nav" aria-label="Navegación principal">
+      <a href="index.html#flash-products">Men <span aria-hidden="true">⌄</span></a>
+      <a href="index.html#flash-products">Women <span aria-hidden="true">⌄</span></a>
+      <a href="coleccion.html">Collection <span aria-hidden="true">⌄</span></a>
+    </nav>
+    <div class="header-actions" aria-label="Acciones">
+      <button type="button" aria-label="Buscar" class="action-icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.4"/><path d="m16 16 4.2 4.2"/></svg>
+      </button>
+      <button type="button" aria-label="Carrito" class="action-icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 5h2l2 11.2h10.8l2-8.1H6.2"/><circle cx="9.2" cy="19.2" r="1.1"/><circle cx="17.2" cy="19.2" r="1.1"/></svg>
+      </button>
+      <a class="action-icon" href="login.html" aria-label="Cuenta">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.1"/><path d="M5.5 19c.6-3.1 2.8-4.7 6.5-4.7s5.9 1.6 6.5 4.7"/></svg>
+      </a>
+    </div>
+  </header>
+
+  <main id="contenido">
+    <section class="auth" lang="en" aria-labelledby="auth-title">
+      <div class="auth-card">
+        <h1 id="auth-title">Sign Up</h1>
+        <p class="auth-note" id="reg-note">All fields are required.</p>
+        <noscript><p class="auth-error auth-noscript">JavaScript is needed to check this form. Sign up is not available yet.</p></noscript>
+        <form class="auth-form" id="register-form" method="post" novalidate data-auth-form="register" aria-describedby="reg-note">
+          <div class="auth-field">
+            <label for="reg-email">Email</label>
+            <input id="reg-email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="254" required aria-required="true" aria-describedby="reg-email-error" data-rule="email">
+            <p class="auth-error" id="reg-email-error"></p>
+          </div>
+          <div class="auth-field">
+            <label for="reg-password">Password</label>
+            <input id="reg-password" name="password" type="password" autocomplete="new-password" minlength="8" maxlength="128" required aria-required="true" aria-describedby="reg-password-hint reg-password-error" data-rule="new-password">
+            <p class="auth-hint" id="reg-password-hint">At least 8 characters.</p>
+            <p class="auth-error" id="reg-password-error"></p>
+          </div>
+          <div class="auth-field">
+            <label for="reg-confirm">Confirm password</label>
+            <input id="reg-confirm" name="confirm" type="password" autocomplete="new-password" maxlength="128" required aria-required="true" aria-describedby="reg-confirm-error" data-rule="confirm" data-match="reg-password">
+            <p class="auth-error" id="reg-confirm-error"></p>
+          </div>
+          <div class="auth-submit">
+            <button class="auth-btn" type="submit">Sign Up</button>
+          </div>
+          <p class="auth-status" id="register-status" role="status"></p>
+          <div class="auth-row auth-row-single">
+            <span>Have an account?</span>
+            <a class="auth-link" href="login.html">Log In</a>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+  <script>document.documentElement.classList.add('js');</script>
+</body>
+</html>
