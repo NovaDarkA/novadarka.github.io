@@ -1,9 +1,4 @@
-/* Sección 9: validación de los formularios Login y Sign Up.
-   IMPORTANTE: este sitio es estático (GitHub Pages) y NO tiene backend. Por eso este script solo
-   valida los campos en el navegador. No envía datos a ningún servidor, no crea cuentas, no inicia
-   sesión, no guarda contraseñas ni correos (ni en localStorage ni en cookies) y no simula que
-   la autenticación funciona. Para activarla hace falta un servicio de autenticación externo
-   (ver la nota de entrega del proyecto). */
+
 (function () {
   "use strict";
 
@@ -22,7 +17,7 @@
     registerUnavailable: "Your details look valid, but sign up is not available yet: this site has no server to create accounts. Nothing was sent or saved."
   };
 
-  /* Devuelve el texto del error de un campo o "" si es válido. */
+  
   function check(input) {
     var rule = input.dataset.rule;
     var value = input.value;
@@ -67,14 +62,12 @@
     }
 
     fields.forEach(function (input) {
-      // Al salir del campo se valida; mientras se corrige, el error se actualiza al momento.
       input.addEventListener("blur", function () {
         if (input.value !== "" || input.hasAttribute("aria-invalid")) show(input, check(input));
       });
       input.addEventListener("input", function () {
         say("", false);
         if (input.hasAttribute("aria-invalid")) show(input, check(input));
-        // Si cambia la contraseña, vuelve a comprobar la confirmación ya marcada.
         if (input.dataset.rule === "new-password") {
           fields.forEach(function (other) {
             if (other.dataset.rule === "confirm" && other.value !== "") show(other, check(other));
@@ -84,7 +77,6 @@
     });
 
     form.addEventListener("submit", function (event) {
-      // Siempre se evita el envío real: no existe un servidor que lo reciba.
       event.preventDefault();
       var firstInvalid = null;
       fields.forEach(function (input) {
