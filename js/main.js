@@ -41,7 +41,6 @@
 })();
 
 (function(){
- // Sección 6: destinos aún sin página en el diseño; evitan saltar al inicio de la página.
  document.querySelectorAll(".site-footer a[data-placeholder]").forEach(a=>{
    a.addEventListener("click",e=>e.preventDefault());
  });
