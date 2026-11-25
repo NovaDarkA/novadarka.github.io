@@ -1,8 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import health from "../api/health.ts";
-import { readSupabaseConfig } from "../src/config/env.ts";
-import { route, HttpError } from "../src/lib/http.ts";
+import { readSupabaseConfig } from "../src/config/env.js";
+import { route, HttpError } from "../src/lib/http.js";
 import { createSupabaseTransport } from "../src/services/supabase.ts";
 
 const config = { url: "https://shoefit.supabase.co", publishableKey: "sb_publishable_test" };

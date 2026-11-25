@@ -1,7 +1,8 @@
-declare const process: { env: Record<string, string | undefined> };
-export type SupabaseConfig = { url: string; publishableKey: string };
+/** @typedef {{url: string, publishableKey: string}} SupabaseConfig */
+const node = /** @type {{process: {env: Record<string, string | undefined>}}} */ (/** @type {unknown} */ (globalThis));
 
-export function readSupabaseConfig(env: Record<string, string | undefined> = process.env): SupabaseConfig {
+/** @param {Record<string, string | undefined>} [env] @returns {SupabaseConfig} */
+export function readSupabaseConfig(env = node.process.env) {
   const raw = env.SUPABASE_URL?.trim();
   const key = env.SUPABASE_PUBLISHABLE_KEY?.trim();
   if (!raw || !key) throw new Error("Supabase configuration missing");

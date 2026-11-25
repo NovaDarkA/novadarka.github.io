@@ -1,5 +1,5 @@
-import { readSupabaseConfig, type SupabaseConfig } from "../config/env.ts";
-import { HttpError } from "../lib/http.ts";
+import { readSupabaseConfig, type SupabaseConfig } from "../config/env.js";
+import { HttpError } from "../lib/http.js";
 
 // Requests use the caller's JWT, so database RLS remains authoritative.
 export function createSupabaseTransport(config: SupabaseConfig = readSupabaseConfig(), transport: typeof fetch = fetch) {

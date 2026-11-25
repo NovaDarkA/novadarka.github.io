@@ -1,14 +1,14 @@
 export class HttpError extends Error {
-  readonly status: number;
-  readonly code: string;
-  constructor(status: number, code: string) {
+  /** @param {number} status @param {string} code */
+  constructor(status, code) {
     super(code);
     this.status = status;
     this.code = code;
   }
 }
 
-export function json(data: unknown, status = 200, headers: HeadersInit = {}): Response {
+/** @param {unknown} data @param {number} [status] @param {HeadersInit} [headers] @returns {Response} */
+export function json(data, status = 200, headers = {}) {
   const result = new Headers(headers);
   result.set("Cache-Control", "no-store");
   result.set("X-Content-Type-Options", "nosniff");
@@ -16,12 +16,14 @@ export function json(data: unknown, status = 200, headers: HeadersInit = {}): Re
   return Response.json(data, { status, headers: result });
 }
 
-type Handler = (request: Request) => Response | Promise<Response>;
+/** @typedef {(request: Request) => Response | Promise<Response>} Handler */
 
-export function route(methods: Readonly<Record<string, Handler>>) {
-  return async (request: Request): Promise<Response> => {
+/** @param {Readonly<Record<string, Handler>>} methods */
+export function route(methods) {
+  return async (/** @type {Request} */ request) => {
     const id = crypto.randomUUID();
-    let response: Response;
+    /** @type {Response} */
+    let response;
     try {
       const handler = Object.hasOwn(methods, request.method) ? methods[request.method] : undefined;
       response = handler
