@@ -18,6 +18,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run check
+      - name: Desktop and mobile browser smoke tests
+        run: npm run test:browser
       - name: Verify static output contains no server files
         run: |
           test -f dist/index.html

@@ -9,8 +9,10 @@
   "scripts": {
     "build": "node scripts/build-static.mjs",
     "typecheck": "tsc --noEmit",
-    "test": "node --experimental-strip-types --test tests/*.test.mjs",
-    "check": "npm run typecheck && npm test && npm run build"
+    "test": "node --experimental-strip-types --test tests/foundation.test.mjs",
+    "check": "npm run typecheck && npm test && npm run build && npm run test:static",
+    "test:static": "node --test tests/static-output.test.mjs",
+    "test:browser": "node scripts/browser-smoke.mjs"
   },
   "devDependencies": {
     "typescript": "5.8.3"
