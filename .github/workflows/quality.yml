@@ -27,3 +27,6 @@ jobs:
           test ! -e dist/api
           test ! -e dist/src
           test ! -e dist/.env.example
+      - name: Verify anonymous access to development preview
+        if: github.ref == 'refs/heads/develop/shoefit-fullstack'
+        run: node scripts/public-preview-smoke.mjs

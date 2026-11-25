@@ -4,7 +4,9 @@ Aplicación académica Full Stack de zapatería. Desarrollo en develop/shoefit-f
 ## Desarrollo
 Requisitos: Node.js 22 y npm.
 - npm ci
-- npm run check: comprobación TypeScript, pruebas unitarias y preparación del frontend.
+- npm run check: comprobación TypeScript, pruebas unitarias, preparación del frontend y validación de archivos, enlaces y fragmentos.
+- npm run test:browser: pruebas Chrome en 1366 y 390 px después del build; requiere Google Chrome (CHROME_BIN puede indicar otro ejecutable Chromium). Usa fuentes de respaldo sin depender de Google Fonts; no sustituye revisión visual manual.
+- node scripts/public-preview-smoke.mjs: prueba HTTP anónima de la vista previa pública existente; no envía credenciales ni sigue redirecciones.
 - npm run build: copia los archivos públicos existentes a dist.
 - Vercel: importar repositorio y desplegar una vista previa de la rama de desarrollo; usar vercel.json. No fusionar a main sin autorización.
 - GET /api/health: comprobación del backend inicial (no de la base de datos).
