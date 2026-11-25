@@ -64,6 +64,10 @@ try {
         const valid=await evaluate("(()=>{const f=document.querySelector('[data-auth-form]');f.requestSubmit();return !!f.querySelector('[aria-invalid=true]')})()");
         assert.equal(valid,true,page+" empty-form validation");
       }
+      if(page==="index.html"||page==="coleccion.html"){
+        const linked=await evaluate("(()=>{const cards=[...document.querySelectorAll('.flash-card,.best-item,.product-card')];return cards.length>0&&cards.every(c=>c.querySelector('.product-select[href]'))})()");
+        assert.equal(linked,true,page+" product selection links");
+      }
       if(page==="carrito.html"){
         const ok=await evaluate("(async()=>{const key='shoefit.cart.v1';const old=localStorage.getItem(key);try{localStorage.setItem(key,JSON.stringify([{id:'flexible-sneakers-gray',size:'26',quantity:1}]));dispatchEvent(new StorageEvent('storage',{key}));const plus=document.querySelector('[data-action=plus]');if(!plus)return false;plus.click();const count=document.querySelector('#cart-count').textContent;const total=document.querySelector('#cart-total').textContent;const noOverflow=document.documentElement.scrollWidth<=innerWidth+2;document.querySelector('.cart-remove').click();return count==='2 artículos'&&total.includes('4,980')&&noOverflow&&!document.querySelector('#cart-empty').hidden;}finally{if(old===null)localStorage.removeItem(key);else localStorage.setItem(key,old);dispatchEvent(new StorageEvent('storage',{key}));}})()");
         assert.equal(ok,true,page+" cart operations");

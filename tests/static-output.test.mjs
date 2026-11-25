@@ -22,7 +22,8 @@ test("all local HTML links, fragments and responsive image sources exist", async
     for (const m of source.matchAll(/http-equiv="refresh"[^>]*content="[^"]*url=([^"]+)"/gi)) refs.push(m[1]);
     for (const ref of refs) {
       if (ref === "#" || /^(?:https?:|mailto:|tel:|data:|\/\/)/i.test(ref)) continue;
-      const [path, hash] = ref.split("#");
+      const [pathWithQuery, hash] = ref.split("#");
+      const path = pathWithQuery.split("?")[0];
       const dest = resolve(root, path || page);
       assert.ok(!relative(root,dest).startsWith(".."), page+": "+ref);
       assert.ok((await stat(dest)).isFile(), page+": "+ref);
@@ -49,4 +50,14 @@ test("cart links are navigable and admin preview does not enable mutations", asy
     assert.ok(admin.includes('id="'+section+'"'));
   }
   assert.equal([...admin.matchAll(/<button type="button" disabled>/g)].length,3);
+});
+
+test("all visible product cards have a selection link with a known product", async()=>{
+  const {getProduct}=await import("../js/products.js");
+  for(const page of ["index.html","coleccion.html"]){
+    const html=await read(page);
+    const cards=[...html.matchAll(/<(article|li) class="(?:flash-card|best-item|product-card)">([\s\S]*?)<\/\1>/g)];
+    assert.equal(cards.length,page==="index.html"?10:8);
+    for(const card of cards){const match=card[2].match(/href="sorprendeme.html\?producto=([^"]+)"/);assert.ok(match);assert.ok(getProduct(match[1]));}
+  }
 });

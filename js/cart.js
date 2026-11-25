@@ -1,27 +1,31 @@
 // Temporary client-side draft. Server-side validation and persistence will replace it.
 export const CART_KEY="shoefit.cart.v1";
-export const PRODUCT=Object.freeze({id:"flexible-sneakers-gray",name:"Flexible Sneakers for men",color:"Gray",image:"img/optimized/tenis-gris-lateral-619.webp",priceCents:249000});
+import {PRODUCT,getProduct} from "./products.js";
+export {PRODUCT};
 const validSize=s=>typeof s==="string"&&/^(2[2-9]|30)$/.test(s);
 export function normalize(value){
   if(!Array.isArray(value))return [];
   const map=new Map();
   for(const item of value){
-    if(!item||item.id!==PRODUCT.id||!validSize(item.size)||!Number.isInteger(item.quantity)||item.quantity<1)continue;
-    map.set(item.size,Math.min(99,(map.get(item.size)||0)+item.quantity));
+    const product=getProduct(item?.id);
+    if(!product||product.priceCents===null||!validSize(item.size)||!Number.isInteger(item.quantity)||item.quantity<1)continue;
+    const key=product.id+":"+item.size;
+    map.set(key,{id:product.id,size:item.size,quantity:Math.min(99,(map.get(key)?.quantity||0)+item.quantity)});
   }
-  return [...map].map(([size,quantity])=>({id:PRODUCT.id,size,quantity}));
+  return [...map.values()];
 }
-export function changeCart(items,size,delta){
+export function changeCart(items,size,delta,id=PRODUCT.id){
   const current=normalize(items);
-  if(!validSize(size)||!Number.isInteger(delta))return current;
-  const item=current.find(i=>i.size===size);
+  const product=getProduct(id);
+  if(!product||product.priceCents===null||!validSize(size)||!Number.isInteger(delta))return current;
+  const item=current.find(i=>i.id===id&&i.size===size);
   const quantity=Math.max(0,Math.min(99,(item?.quantity||0)+delta));
   if(item){item.quantity=quantity;return current.filter(i=>i.quantity>0);}
-  return quantity?[...current,{id:PRODUCT.id,size,quantity}]:current;
+  return quantity?[...current,{id,size,quantity}]:current;
 }
 export function totals(items){
-  const count=normalize(items).reduce((sum,i)=>sum+i.quantity,0);
-  return {count,cents:count*PRODUCT.priceCents};
+  const rows=normalize(items);
+  return {count:rows.reduce((sum,i)=>sum+i.quantity,0),cents:rows.reduce((sum,i)=>sum+i.quantity*getProduct(i.id).priceCents,0)};
 }
 const money=cents=>new Intl.NumberFormat("es-MX",{style:"currency",currency:"MXN"}).format(cents/100)+" MXN";
 function boot(){
@@ -46,27 +50,59 @@ function boot(){
     document.getElementById("cart-empty").hidden=count>0;
     list.replaceChildren();
     for(const item of items){
+      const product=getProduct(item.id);
       const card=el("article","cart-item");
-      const image=el("img");image.src=PRODUCT.image;image.alt=PRODUCT.name;
-      const info=el("div");info.append(el("h2",null,PRODUCT.name),el("p",null,"Color: "+PRODUCT.color+" · Talla: "+item.size+" MX"),el("p",null,"Precio unitario: "+money(PRODUCT.priceCents)));
+      const image=el("img");image.src=product.image;image.alt=product.name;
+      const info=el("div");info.append(el("h2",null,product.name),el("p",null,"Color: "+product.color+" · Talla: "+item.size+" MX"),el("p",null,"Precio unitario: "+money(product.priceCents)));
       const actions=el("div","cart-item-actions");
       const controls=el("div","cart-quantity");
-      const update=(delta,action)=>{if(!save(changeCart(items,item.size,delta))){status.textContent="No fue posible guardar el carrito en este navegador.";return;}render();status.textContent="Carrito actualizado.";const target=list.querySelector('[data-size="'+item.size+'"][data-action="'+action+'"]');if(target&&!target.disabled)target.focus();else list.querySelector("button:not(:disabled)")?.focus();};
-      const minus=el("button",null,"−");minus.type="button";minus.dataset.size=item.size;minus.dataset.action="minus";minus.setAttribute("aria-label","Disminuir cantidad talla "+item.size);minus.disabled=item.quantity<=1;minus.addEventListener("click",()=>update(-1,"minus"));
+      const update=(delta,action)=>{if(!save(changeCart(items,item.size,delta,item.id))){status.textContent="No fue posible guardar el carrito en este navegador.";return;}render();status.textContent="Carrito actualizado.";const target=list.querySelector('[data-product="'+item.id+'"][data-size="'+item.size+'"][data-action="'+action+'"]');if(target&&!target.disabled)target.focus();else list.querySelector("button:not(:disabled)")?.focus();};
+      const minus=el("button",null,"−");minus.type="button";minus.dataset.size=item.size;minus.dataset.product=item.id;minus.dataset.action="minus";minus.setAttribute("aria-label","Disminuir cantidad talla "+item.size);minus.disabled=item.quantity<=1;minus.addEventListener("click",()=>update(-1,"minus"));
       const qty=el("output",null,String(item.quantity));
-      const plus=el("button",null,"+");plus.type="button";plus.dataset.size=item.size;plus.dataset.action="plus";plus.setAttribute("aria-label","Aumentar cantidad talla "+item.size);plus.disabled=item.quantity>=99;plus.addEventListener("click",()=>update(1,"plus"));
+      const plus=el("button",null,"+");plus.type="button";plus.dataset.size=item.size;plus.dataset.product=item.id;plus.dataset.action="plus";plus.setAttribute("aria-label","Aumentar cantidad talla "+item.size);plus.disabled=item.quantity>=99;plus.addEventListener("click",()=>update(1,"plus"));
       controls.append(minus,qty,plus);
       const remove=el("button","cart-remove","Eliminar");remove.type="button";remove.setAttribute("aria-label","Eliminar talla "+item.size);remove.addEventListener("click",()=>update(-item.quantity,"remove"));
-      actions.append(controls,el("p","cart-item-subtotal","Subtotal: "+money(item.quantity*PRODUCT.priceCents)),remove);
+      actions.append(controls,el("p","cart-item-subtotal","Subtotal: "+money(item.quantity*product.priceCents)),remove);
       card.append(image,info,actions);list.append(card);
     }
   }
   const add=document.getElementById("add-to-cart");
+  let selected=PRODUCT;
+  if(add){
+    const requested=new URLSearchParams(location.search).get("producto");
+    if(requested!==null){
+      selected=getProduct(requested);
+      const title=document.getElementById("special-title");
+      const gallery=document.querySelector(".special-gallery");
+      if(!selected){
+        title.textContent="Producto no disponible";
+        gallery.replaceChildren();
+        document.querySelector(".special-crumb").textContent="";
+        document.querySelector(".special-color").textContent="";
+        document.querySelector(".special-price").textContent="";
+        document.querySelector(".special-stars").hidden=true;
+        productStatus.textContent="Regresa a la colección para seleccionar un producto.";
+      }else if(selected.id!==PRODUCT.id){
+        title.textContent=selected.name;
+        document.title="Shoefit | "+selected.name;
+        document.querySelector(".special-crumb").textContent=selected.category;
+        document.querySelector(".special-color").textContent="Color: "+selected.color;
+        document.querySelector(".special-price").textContent=selected.priceCents===null?"Precio por confirmar":money(selected.priceCents);
+        document.querySelector(".special-stars").hidden=true;
+        for(const button of document.querySelectorAll(".special-icon"))button.hidden=true;
+        const image=el("img","sg-main");image.src=selected.image;image.alt=selected.name;
+        gallery.replaceChildren(image);
+        if(selected.priceCents===null)productStatus.textContent="Precio pendiente de confirmar. No se puede añadir al carrito todavía.";
+      }
+      if(!selected||selected.priceCents===null){add.disabled=true;document.getElementById("cart-size").disabled=true;}
+    }
+  }
   add?.addEventListener("click",()=>{
+    if(!selected||selected.priceCents===null)return;
     const size=document.getElementById("cart-size");
     if(!validSize(size.value)){productStatus.textContent="Selecciona una talla antes de añadir el producto.";size.focus();return;}
-    if(items.find(i=>i.size===size.value)?.quantity>=99){productStatus.textContent="Límite de 99 artículos por talla.";return;}
-    if(!save(changeCart(items,size.value,1))){productStatus.textContent="No fue posible guardar el carrito en este navegador.";return;}
+    if(items.find(i=>i.id===selected.id&&i.size===size.value)?.quantity>=99){productStatus.textContent="Límite de 99 artículos por talla.";return;}
+    if(!save(changeCart(items,size.value,1,selected.id))){productStatus.textContent="No fue posible guardar el carrito en este navegador.";return;}
     location.href="carrito.html";
   });
   window.addEventListener("storage",e=>{if(e.key===CART_KEY||e.key===null){items=read();render();}});
