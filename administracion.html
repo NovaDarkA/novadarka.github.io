@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Panel administrativo de Shoefit.">
+  <title>Shoefit | Administración</title>
+  <link rel="icon" href="img/optimized/logo-marca.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Pacifico&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/media_query.css">
+  <link rel="stylesheet" href="css/management.css">
+  <script src="js/main.js" defer></script>
+  <script src="js/administracion.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <header class="site-header">
+    <a class="brand" href="index.html#inicio" aria-label="Shoefit, inicio">
+      <img src="img/optimized/logo-marca.svg" alt="" width="42" height="24">
+      <span>Shoefit</span>
+    </a>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Abrir menú">
+      <span class="menu-lines" aria-hidden="true"></span>
+    </button>
+    <nav class="primary-nav" id="primary-nav" aria-label="Navegación principal">
+      <a href="index.html#flash-products">Men <span aria-hidden="true">⌄</span></a>
+      <a href="index.html#flash-products">Women <span aria-hidden="true">⌄</span></a>
+      <a href="coleccion.html">Collection <span aria-hidden="true">⌄</span></a>
+    </nav>
+    <div class="header-actions" aria-label="Acciones">
+      <button type="button" aria-label="Buscar" class="action-icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.4"/><path d="m16 16 4.2 4.2"/></svg>
+      </button>
+      <a href="carrito.html" aria-label="Carrito" class="action-icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 5h2l2 11.2h10.8l2-8.1H6.2"/><circle cx="9.2" cy="19.2" r="1.1"/><circle cx="17.2" cy="19.2" r="1.1"/></svg>
+      </a>
+      <a class="action-icon" href="login.html" aria-label="Cuenta">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.1"/><path d="M5.5 19c.6-3.1 2.8-4.7 6.5-4.7s5.9 1.6 6.5 4.7"/></svg>
+      </a>
+    </div>
+  </header>
+
+  <main id="contenido" class="management-layout">
+    <h1 class="visually-hidden">Administración</h1>
+    <nav class="management-sidebar" aria-label="Módulos administrativos">
+      <a href="#productos" data-module="productos" aria-current="true">Productos</a>
+      <a href="#clientes" data-module="clientes">Clientes</a>
+      <a href="#ventas" data-module="ventas">Ventas</a>
+      <a href="#empleados" data-module="empleados">Empleados</a>
+    </nav>
+    <section class="management-content" aria-label="Contenido administrativo">
+      <div class="management-actions" aria-label="Operaciones de administración">
+        <button type="button" disabled>Agregar</button>
+        <button type="button" disabled>Eliminar</button>
+        <button type="button" disabled>Modificar</button>
+      </div>
+      <div class="management-panel">
+        <p class="management-status" role="status">Vista previa de diseño. Las operaciones estarán disponibles después de conectar la base de datos y los permisos de administrador.</p>
+        <section id="productos" data-module-panel aria-labelledby="productos-title">
+          <h2 id="productos-title">Productos</h2>
+          <p>Sin datos disponibles todavía.</p>
+        </section>
+        <section id="clientes" data-module-panel hidden aria-labelledby="clientes-title">
+          <h2 id="clientes-title">Clientes</h2>
+          <p>Sin datos disponibles todavía.</p>
+        </section>
+        <section id="ventas" data-module-panel hidden aria-labelledby="ventas-title">
+          <h2 id="ventas-title">Ventas</h2>
+          <p>Sin datos disponibles todavía.</p>
+        </section>
+        <section id="empleados" data-module-panel hidden aria-labelledby="empleados-title">
+          <h2 id="empleados-title">Empleados</h2>
+          <p>Sin datos disponibles todavía.</p>
+        </section>
+        <noscript><p>Activa JavaScript para cambiar de módulo.</p></noscript>
+      </div>
+    </section>
+  </main>
+  <script>document.documentElement.classList.add("js");</script>
+</body>
+</html>

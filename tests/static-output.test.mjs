@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { readFile, stat, readdir } from "node:fs/promises";
 import { join, relative, resolve } from "node:path";
 const root = resolve("dist");
-const pages = ["index.html", "coleccion.html", "sorprendeme.html", "login.html", "registro.html", "page_collection.html", "page_login.html", "page_surprise.html"];
+const pages = ["index.html", "coleccion.html", "sorprendeme.html", "login.html", "registro.html", "administracion.html", "carrito.html", "page_collection.html", "page_login.html", "page_surprise.html"];
 const read = path => readFile(join(root,path),"utf8");
 
 test("published output exposes only the intended frontend", async () => {
@@ -38,4 +38,15 @@ test("legacy pages redirect to the current pages", async () => {
   for (const [old,current] of Object.entries({"page_collection.html":"coleccion.html","page_login.html":"login.html","page_surprise.html":"sorprendeme.html"})) {
     assert.ok((await read(old)).includes('content="0;url='+current+'"'));
   }
+});
+
+test("cart links are navigable and admin preview does not enable mutations", async () => {
+  for (const page of pages.filter(p=>!p.startsWith("page_"))) {
+    assert.match(await read(page), /<a href="carrito.html" aria-label="Carrito"/);
+  }
+  const admin=await read("administracion.html");
+  for (const section of ["productos","clientes","ventas","empleados"]) {
+    assert.ok(admin.includes('id="'+section+'"'));
+  }
+  assert.equal([...admin.matchAll(/<button type="button" disabled>/g)].length,3);
 });

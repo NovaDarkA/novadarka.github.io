@@ -32,3 +32,6 @@ Trabajar únicamente en develop/shoefit-fullstack. No fusionar con main sin apro
 `node scripts/build-static.mjs` genera dist sin mover archivos originales.
 Configurar Vercel con la rama de desarrollo y las variables de entorno cuando corresponda.
 No hay despliegue ni conexión de datos todavía.
+
+## Ampliación de alcance (25/11/2026)
+Añadir las dos pantallas restantes del diseño Figma: administración (Productos, Clientes, Ventas y Empleados; Agregar, Eliminar y Modificar) y carrito. F3 debe contemplar entidades de clientes, empleados, ventas y detalles, carritos y detalles, además de catálogo e inventario. Los empleados requieren perfiles/roles autorizados; no duplicar credenciales. Las pantallas actuales son vistas previas sin operaciones ni datos sensibles. F4–F6 implementarán API, persistencia, validación y permisos; no confiar en controles HTML para autorización. El diseño de contenidos del panel gris no está especificado por Figma; se preparó un estado informativo hasta definir datos reales.

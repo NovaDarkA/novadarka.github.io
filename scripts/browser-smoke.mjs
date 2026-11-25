@@ -18,14 +18,16 @@ const server=createServer(async(req,res)=>{
 const delay=ms=>new Promise(r=>setTimeout(r,ms));
 const profile=await mkdtemp(join(tmpdir(),"shoefit-chrome-"));
 let chrome, socket;
+let chromeLog="";
 try {
   await new Promise(r=>server.listen(0,"127.0.0.1",r));
   const origin="http://127.0.0.1:"+server.address().port;
-  chrome=spawn(process.env.CHROME_BIN||"google-chrome",["--headless","--no-sandbox","--disable-dev-shm-usage","--no-first-run","--no-default-browser-check","--remote-debugging-port=0","--user-data-dir="+profile,"about:blank"],{stdio:"ignore"});
+  chrome=spawn(process.env.CHROME_BIN||"google-chrome",["--headless","--no-sandbox","--disable-dev-shm-usage","--no-first-run","--no-default-browser-check","--remote-debugging-port=0","--user-data-dir="+profile,"about:blank"],{stdio:["ignore","ignore","pipe"]});
+  chrome.stderr.on("data",chunk=>{chromeLog=(chromeLog+chunk).slice(-4000)});
   let launchError; chrome.on("error",e=>{launchError=e});
   let port;
-  for(let i=0;i<100&&!port;i++){if(launchError)throw launchError;try{port=(await readFile(join(profile,"DevToolsActivePort"),"utf8")).split("\n")[0]}catch{await delay(100)}}
-  assert.ok(port,"Chrome DevTools did not start");
+  for(let i=0;i<400&&!port;i++){if(launchError)throw launchError;try{port=(await readFile(join(profile,"DevToolsActivePort"),"utf8")).split("\n")[0]}catch{await delay(100)}}
+  assert.ok(port,"Chrome DevTools did not start: "+chromeLog);
   const tabs=await (await fetch("http://127.0.0.1:"+port+"/json/list")).json();
   socket=new WebSocket(tabs.find(t=>t.type==="page").webSocketDebuggerUrl);
   await new Promise((r,j)=>{socket.addEventListener("open",r,{once:true});socket.addEventListener("error",j,{once:true})});
@@ -39,7 +41,7 @@ try {
   await call("Page.enable");await call("Network.enable");
   // External fonts are intentionally excluded; check the local application without network dependencies.
   await call("Network.setBlockedURLs",{urls:["*fonts.googleapis.com/*","*fonts.gstatic.com/*"]});
-  const pages=["index.html","coleccion.html","sorprendeme.html","login.html","registro.html"];
+  const pages=["index.html","coleccion.html","sorprendeme.html","login.html","registro.html","administracion.html","carrito.html"];
   for(const width of [1366,390]){
     await call("Emulation.setDeviceMetricsOverride",{width,height:844,deviceScaleFactor:1,mobile:width===390});
     for(const page of pages){
@@ -62,6 +64,11 @@ try {
         const valid=await evaluate("(()=>{const f=document.querySelector('[data-auth-form]');f.requestSubmit();return !!f.querySelector('[aria-invalid=true]')})()");
         assert.equal(valid,true,page+" empty-form validation");
       }
+      if(page==="administracion.html"){
+        const works=await evaluate("(async()=>{document.querySelector('[data-module=clientes]').click();await new Promise(r=>setTimeout(r,150));return !document.querySelector('#clientes').hidden&&document.querySelector('#productos').hidden&&[...document.querySelectorAll('.management-actions button')].every(b=>b.disabled)})()");
+        assert.equal(works,true,page+" module navigation");
+      }
+      assert.equal(await evaluate("document.querySelector('[aria-label=Carrito]').getAttribute('href')"),"carrito.html",page+" cart navigation");
       console.log(width+"px "+page+" OK ("+state.images+" images)");
     }
   }

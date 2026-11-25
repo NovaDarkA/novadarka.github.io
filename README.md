@@ -16,3 +16,7 @@ Copiar .env.example a .env para ejecución local con las variables cargadas en e
 La conexión real, esquema SQL, autenticación, CRUD y correo están pendientes. Las pruebas de transporte usan respuestas simuladas, no una base de datos real.
 
 Ver docs/architecture.md para alcance y criterios de evaluación.
+
+## Nuevas pantallas de Figma
+- administracion.html: vista previa del panel con Productos, Clientes, Ventas y Empleados; no contiene datos privados ni permite operaciones. F4–F6 implementarán CRUD y autorización real.
+- carrito.html: interfaz del carrito, enlazada desde la cabecera de todas las pantallas; conexión real pendiente de F3–F5.
