@@ -35,3 +35,6 @@ No hay despliegue ni conexión de datos todavía.
 
 ## Ampliación de alcance (25/11/2026)
 Añadir las dos pantallas restantes del diseño Figma: administración (Productos, Clientes, Ventas y Empleados; Agregar, Eliminar y Modificar) y carrito. F3 debe contemplar entidades de clientes, empleados, ventas y detalles, carritos y detalles, además de catálogo e inventario. Los empleados requieren perfiles/roles autorizados; no duplicar credenciales. Las pantallas actuales son vistas previas sin operaciones ni datos sensibles. F4–F6 implementarán API, persistencia, validación y permisos; no confiar en controles HTML para autorización. El diseño de contenidos del panel gris no está especificado por Figma; se preparó un estado informativo hasta definir datos reales.
+
+## Revisión del carrito
+Referencia visual: carrito Erick's Caps aportado por el usuario. Mantener paleta Shoefit, productos a la izquierda y resumen a la derecha, versión móvil apilada. Borrador local limitado al producto de detalle existente, con tallas ilustrativas, cantidades y cálculo en centavos; no se confirma inventario, envío, compra ni pago. F3–F5 deben conectar catálogo y variantes reales, persistencia, cálculo autoritativo del servidor y autorización. No incluir WhatsApp ni datos de Erick's Caps.

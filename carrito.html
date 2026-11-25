@@ -11,8 +11,9 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Pacifico&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/media_query.css">
-  <link rel="stylesheet" href="css/management.css">
+  <link rel="stylesheet" href="css/cart.css">
   <script src="js/main.js" defer></script>
+  <script type="module" src="js/cart.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
@@ -42,12 +43,35 @@
     </div>
   </header>
 
-  <main id="contenido" class="cart-layout">
-    <section class="cart-panel" aria-labelledby="cart-title">
-      <h1 id="cart-title">Carrito</h1>
-      <p>El carrito se conectará al catálogo y a la base de datos en la fase de integración.</p>
-      <a class="cart-continue" href="coleccion.html">Ver colección</a>
-    </section>
+  <main id="contenido" class="shopping-cart">
+    <div class="cart-heading">
+      <div><h1>Carrito</h1><p>Revisa los productos de tu pedido.</p></div>
+      <p id="cart-count" aria-live="polite">0 artículos</p>
+    </div>
+    <div class="cart-columns">
+      <section aria-label="Productos del carrito">
+        <div id="cart-items" class="cart-items"></div>
+        <div id="cart-empty" class="cart-empty">
+          <h2>Tu carrito está vacío</h2>
+          <p>Explora nuestra colección y añade el calzado que más te guste.</p>
+          <a class="cart-primary" href="coleccion.html">Ver colección</a>
+        </div>
+        <noscript><p>Activa JavaScript para gestionar tu carrito.</p></noscript>
+      </section>
+      <aside class="cart-summary" aria-labelledby="summary-title">
+        <h2 id="summary-title">Resumen del pedido</h2>
+        <dl>
+          <div><dt>Subtotal general</dt><dd id="cart-subtotal">$0.00 MXN</dd></div>
+          <div><dt>Envío</dt><dd>Por calcular</dd></div>
+          <div class="cart-total"><dt>Total de productos</dt><dd id="cart-total">$0.00 MXN</dd></div>
+        </dl>
+        <p class="cart-note">Los precios, tallas, disponibilidad y envío se confirmarán con el servidor antes de registrar un pedido.</p>
+        <button class="cart-primary" type="button" disabled>Continuar con el pedido</button>
+        <p class="cart-note">El registro de pedidos estará disponible al conectar la base de datos.</p>
+        <a class="cart-back" href="coleccion.html">Seguir comprando</a>
+        <p id="cart-status" role="status"></p>
+      </aside>
+    </div>
   </main>
   <script>document.documentElement.classList.add("js");</script>
 </body>

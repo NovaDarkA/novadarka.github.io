@@ -11,7 +11,9 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Pacifico&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/media_query.css">
+  <link rel="stylesheet" href="css/cart.css">
   <script src="js/main.js" defer></script>
+  <script type="module" src="js/cart.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
@@ -78,9 +80,22 @@
           <p class="special-price"><span class="visually-hidden">Price: </span>$2,490 MXN</p>
           <span class="special-stars" role="img" aria-label="Rated 5 out of 5 stars"><img src="img/optimized/estrella-calificacion-67.webp" srcset="img/optimized/estrella-calificacion-67.webp 67w, img/optimized/estrella-calificacion-134.webp 134w" sizes="(min-width:761px) 4vw, 28px" width="67" height="67" alt=""><img src="img/optimized/estrella-calificacion-67.webp" srcset="img/optimized/estrella-calificacion-67.webp 67w, img/optimized/estrella-calificacion-134.webp 134w" sizes="(min-width:761px) 4vw, 28px" width="67" height="67" alt=""><img src="img/optimized/estrella-calificacion-67.webp" srcset="img/optimized/estrella-calificacion-67.webp 67w, img/optimized/estrella-calificacion-134.webp 134w" sizes="(min-width:761px) 4vw, 28px" width="67" height="67" alt=""><img src="img/optimized/estrella-calificacion-67.webp" srcset="img/optimized/estrella-calificacion-67.webp 67w, img/optimized/estrella-calificacion-134.webp 134w" sizes="(min-width:761px) 4vw, 28px" width="67" height="67" alt=""><img src="img/optimized/estrella-calificacion-67.webp" srcset="img/optimized/estrella-calificacion-67.webp 67w, img/optimized/estrella-calificacion-134.webp 134w" sizes="(min-width:761px) 4vw, 28px" width="67" height="67" alt=""></span>
           <div class="special-actions">
-            <button class="special-btn" type="button">Select Size</button>
-            <button class="special-btn" type="button">Add to Cart</button>
+            <label class="visually-hidden" for="cart-size">Talla MX</label>
+            <select class="special-btn cart-size" id="cart-size" aria-describedby="cart-product-status">
+              <option value="">Select Size</option>
+              <option value="22">22 MX</option>
+              <option value="23">23 MX</option>
+              <option value="24">24 MX</option>
+              <option value="25">25 MX</option>
+              <option value="26">26 MX</option>
+              <option value="27">27 MX</option>
+              <option value="28">28 MX</option>
+              <option value="29">29 MX</option>
+              <option value="30">30 MX</option>
+            </select>
+            <button class="special-btn" type="button" id="add-to-cart">Add to Cart</button>
           </div>
+          <p class="cart-product-status" id="cart-product-status" role="status">Tallas de prueba; disponibilidad pendiente de confirmar.</p>
         </div>
       </div>
     </section>

@@ -9,7 +9,7 @@
   "scripts": {
     "build": "node scripts/build-static.mjs",
     "typecheck": "tsc --noEmit",
-    "test": "node --experimental-strip-types --test tests/foundation.test.mjs",
+    "test": "node --experimental-strip-types --test tests/foundation.test.mjs tests/cart.test.mjs",
     "check": "npm run typecheck && npm test && npm run build && npm run test:static",
     "test:static": "node --test tests/static-output.test.mjs",
     "test:browser": "node scripts/browser-smoke.mjs"

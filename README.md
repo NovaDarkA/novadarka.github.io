@@ -19,4 +19,4 @@ Ver docs/architecture.md para alcance y criterios de evaluación.
 
 ## Nuevas pantallas de Figma
 - administracion.html: vista previa del panel con Productos, Clientes, Ventas y Empleados; no contiene datos privados ni permite operaciones. F4–F6 implementarán CRUD y autorización real.
-- carrito.html: interfaz del carrito, enlazada desde la cabecera de todas las pantallas; conexión real pendiente de F3–F5.
+- carrito.html: diseño de dos columnas inspirado en Erick's Caps y paleta Shoefit. Borrador local funcional desde el detalle de tenis grises; cantidad, eliminación y subtotales. Tallas ilustrativas y precio del catálogo estático. Sin pedidos, stock ni pagos reales; F3–F5 sustituirán datos y persistencia local por API/BD.
