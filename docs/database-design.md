@@ -39,3 +39,10 @@ El SQL original del equipo contiene ocho entidades; su contenido se revisó dire
 5. Documentar evidencias y cerrar F3 antes de F4.
 
 Referencias: https://supabase.com/docs/guides/database/postgres/row-level-security
+
+## F3 — segunda entrega de borradores
+Se mantiene una única tabla usuario y rolez con cliente, empleado y administrador, tal como se indicó en el SQL original. No se añade una tabla de administradores ni se almacenan contraseñas. Los usuarios no tienen permiso para modificar rolez. Se añaden políticas administrativas por rol de la fila propia, sin SECURITY DEFINER, y se conservan lecturas propias de clientes. No se habilitan escrituras de pedidos a usuarios finales todavía.
+- database/drafts/02_logic.sql: políticas CRUD por rol, campo color (requerido por el frontend), vistas JOIN security_invoker, triggers de precio y total, procedimiento real recalcular_total_pedido (solo servidor). Los detalles bloquean su pedido, conservan el precio registrado y no se alteran si está cerrado. No resuelve inventario: activo significa visible, no existencia.
+- database/drafts/03_catalog_seed.sql: cuatro modelos existentes, precios conocidos, color e imágenes originales; sin proveedor, stock ni precio faltante inventado.
+- database/tests/: fixture de Auth mínimo, identidades ficticias y prueba transaccional SQL. CI PostgreSQL 17 aislada sin credenciales de Supabase. Verifica ocho tablas RLS, JOIN, trigger insert/update/delete, precio no manipulable, FK de pedido/cliente, procedimiento, CRUD de producto/proveedor y permisos de cliente/administrador. No equivale a una prueba de Supabase Auth real; habrá que repetir en Shoefit dedicado.
+Pendientes: proyecto Supabase independiente y migraciones reales, alta de perfiles y autenticación, reglas de inventario y tallas, venta/pedido transaccional con stock, verificación de permisos y advisors reales. No se toca ATLAS. No declarar F3 completada antes de validar en el proyecto de Shoefit.

@@ -1,0 +1,36 @@
+name: Shoefit database draft quality
+on:
+  push:
+    branches: [main, develop/shoefit-fullstack]
+    paths: ['database/**','.github/workflows/database-quality.yml']
+  pull_request:
+    branches: [main]
+    paths: ['database/**','.github/workflows/database-quality.yml']
+permissions:
+  contents: read
+jobs:
+  postgres:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: disposable_ci_only
+          POSTGRES_DB: shoefit_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test schema and SQL on disposable PostgreSQL
+        env:
+          CONTAINER: ${{ job.services.postgres.id }}
+        run: |
+          set -euo pipefail
+          for file in database/tests/00_auth_fixture.sql database/drafts/01_schema.sql database/drafts/02_logic.sql database/drafts/03_catalog_seed.sql database/tests/01_integration.sql; do
+            echo "Running $file"
+            docker exec -i "$CONTAINER" psql -X -U postgres -d shoefit_test -v ON_ERROR_STOP=1 < "$file"
+          done
