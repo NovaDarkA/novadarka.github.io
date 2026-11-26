@@ -27,11 +27,6 @@
    const out=document.createElement("button");out.type="button";out.textContent="Cerrar sesión";out.addEventListener("click",signOut);dropdown.append(out);
   }
   if(profilePage){
-   document.querySelector(".account-name").textContent=profile.nombre;
-   document.querySelector(".account-sidebar .account-muted").textContent="Sesión iniciada · "+profile.rolez;
-   document.querySelector(".account-notice").textContent="Sesión iniciada correctamente. La edición de datos y los pedidos todavía están en implementación.";
-   const fields=document.querySelectorAll(".account-fields input");
-   fields[0].value=profile.nombre||"";fields[1].value=[profile.ap,profile.am].filter(Boolean).join(" ");fields[2].value=profile.mail||"";
    document.querySelectorAll(".account-sidebar button,.account-security-row button").forEach(b=>{b.disabled=false;b.addEventListener("click",signOut);});
    document.querySelector('.account-sidebar a[href="login.html"]')?.remove();
   }

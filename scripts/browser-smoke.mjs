@@ -8,13 +8,15 @@ import {regularPages} from "./frontend-manifest.mjs";
 import {rows as catalogRows} from "../tests/catalog-fixture.mjs";
 const root=resolve("dist");
 const mime={".html":"text/html",".css":"text/css",".js":"text/javascript",".svg":"image/svg+xml",".webp":"image/webp"};
-let checkoutFixture=false,attempts=[];
+let checkoutFixture=false,attempts=[],profilePatch=null,orderPatch=null;
 const server=createServer(async(req,res)=>{
   try {
     const requestUrl=new URL(req.url,"http://localhost");const pathname=requestUrl.pathname;
     if(pathname==="/api/products"){res.setHeader("Content-Type","application/json");res.end(JSON.stringify({data:catalogRows,page:1,hasMore:false}));return;}
     if(pathname==="/api/availability"){const p=catalogRows.find(p=>p.slug===requestUrl.searchParams.get("slug"));res.setHeader("Content-Type","application/json");res.end(JSON.stringify({data:{id_producto:p.id_producto,slug:p.slug,precio:p.precio,variantes:checkoutFixture?[{id_variante:7,talla:26,existencias:5,disponible:true}]:[]}}));return;}
-    if(checkoutFixture&&pathname==="/api/profile"){res.setHeader("Content-Type","application/json");res.end(JSON.stringify({data:{id_user:999,rolez:"cliente",nombre:"Cliente prueba",mail:"test@example.invalid",calle:"Calle A",numero:"1",cp:"01234",colonia:"Centro"}}));return;}
+    if(checkoutFixture&&pathname==="/api/profile"){if(req.method==="PATCH"){let raw="";for await(const chunk of req)raw+=chunk;profilePatch=JSON.parse(raw);}res.setHeader("Content-Type","application/json");res.end(JSON.stringify({data:{id_user:999,rolez:"cliente",nombre:"Cliente prueba",mail:"test@example.invalid",calle:"Calle A",numero:"1",cp:"01234",colonia:"Centro",...profilePatch}}));return;}
+    if(checkoutFixture&&pathname==="/api/orders"&&req.method==="PATCH"){let raw="";for await(const chunk of req)raw+=chunk;orderPatch=JSON.parse(raw);res.setHeader("Content-Type","application/json");res.end(JSON.stringify({data:{id_pedido:123,estado:"cancelado"}}));return;}
+    if(checkoutFixture&&pathname==="/api/orders"&&req.method==="GET"){res.setHeader("Content-Type","application/json");res.end(JSON.stringify({data:[{id_pedido:123,estado:orderPatch?"cancelado":"pendiente",costo:4980,creado_en:"2026-11-25T00:00:00Z",pedido_productos:[{id_producto:1,cantidad:2,producto:{nom_prod:"Tenis"}}]}]}));return;}
     if(checkoutFixture&&pathname==="/api/orders"&&req.method==="POST"){let raw="";for await(const chunk of req)raw+=chunk;attempts.push(JSON.parse(raw));res.setHeader("Content-Type","application/json");if(attempts.length===1){res.statusCode=503;res.end(JSON.stringify({error:"unavailable"}));}else{res.statusCode=201;res.end(JSON.stringify({data:{id_pedido:123,estado:"pendiente",costo:4980,reused:true}}));}return;}
     const path=resolve(root,"."+ (pathname==="/"?"/index.html":pathname));
     if(relative(root,path).startsWith("..")) {res.writeHead(403).end();return;}
@@ -127,6 +129,13 @@ try {
   assert.equal(result,true,"authenticated checkout retry and confirmation");
   assert.equal(attempts.length,2);assert.deepEqual(attempts[0],attempts[1]);assert.deepEqual(attempts[0].items,[{id_variante:7,cantidad:2}]);
   console.log("PASS checkout uses identical idempotency key after ambiguous response and clears purchased cart");
+  await call("Page.navigate",{url:origin+"/cuenta.html"});
+  for(let i=0;i<100;i++){try{if(await evaluate("location.pathname==='/cuenta.html' && document.querySelector('#profile-nombre')?.value==='Cliente prueba'"))break;}catch{}await delay(100);}
+  const profileResult=await evaluate("(async()=>{document.querySelector('#profile-nombre').value='Cliente actualizado';document.querySelector('#profile-save').click();for(let i=0;i<100&&!document.querySelector('#profile-status').textContent.includes('guardados');i++)await new Promise(r=>setTimeout(r,50));return document.querySelector('.account-name').textContent==='Cliente actualizado'&&document.querySelector('#profile-mail').disabled})()");
+  assert.equal(profileResult,true,"profile update from UI");assert.deepEqual(profilePatch,{nombre:"Cliente actualizado"});
+  const orderResult=await evaluate("(async()=>{document.querySelector('[data-account-tab=pedidos]').click();for(let i=0;i<100&&!document.querySelector('#account-orders button');i++)await new Promise(r=>setTimeout(r,50));if(!document.querySelector('#account-orders button'))return false;window.confirm=()=>true;document.querySelector('#account-orders button').click();for(let i=0;i<100&&!document.querySelector('#account-orders').textContent.includes('Cancelado');i++)await new Promise(r=>setTimeout(r,50));return document.querySelector('#account-orders').textContent.includes('Cancelado')&&!document.querySelector('#account-orders button')})()");
+  assert.equal(orderResult,true,"customer order cancellation");assert.deepEqual(orderPatch,{id:123,estado:"cancelado"});
+  console.log("PASS account profile edit and order cancellation with simulated authenticated API");
 } finally {
   socket?.close();chrome?.kill();server.close();await delay(300);await rm(profile,{recursive:true,force:true,maxRetries:5,retryDelay:200});
 }

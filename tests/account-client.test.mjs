@@ -1,0 +1,4 @@
+import test from "node:test";import assert from "node:assert/strict";import {profileChanges,orderState} from "../frontend/assets/js/account-client.js";
+const original={nombre:"Cliente",ap:null,am:null,calle:null,numero:null,colonia:null,cp:null,talla:null};
+test("only changed allowed profile fields are transmitted",()=>assert.deepEqual(profileChanges({...original,nombre:" Cliente ",cp:"01234",talla:"26.5",rolez:"administrador",mail:"other@example.com"},original),{cp:"01234",talla:26.5}));
+test("empty optional fields are nullable and invalid values rejected",()=>{assert.deepEqual(profileChanges({...original,cp:""},{...original,cp:"12345"}),{cp:null});for(const v of [{nombre:""},{cp:"123"},{talla:"-1"},{talla:"26.55"}])assert.throws(()=>profileChanges({...original,...v},original));assert.equal(orderState("cancelado"),"Cancelado");});

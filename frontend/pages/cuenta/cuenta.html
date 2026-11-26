@@ -44,23 +44,28 @@
       </aside>
       <div class="account-content">
         <section class="account-panel" id="perfil" data-account-panel aria-labelledby="profile-title">
-          <h2 id="profile-title">Información personal</h2><p class="account-muted">Consulta y edita los datos de tu cuenta cuando esté conectada.</p>
+          <h2 id="profile-title">Información personal</h2><p class="account-muted">Consulta y actualiza los datos de tu cuenta. El correo se conserva como identificador de acceso.</p>
           <div class="account-fields">
-            <label>Nombre<input type="text" placeholder="Nombre" disabled></label>
-            <label>Apellidos<input type="text" placeholder="Apellidos" disabled></label>
-            <label>Correo electrónico<input type="email" placeholder="Correo electrónico" disabled></label>
-            <label>Teléfono<input type="tel" placeholder="Teléfono" disabled></label>
-            <label class="account-wide">Dirección<input type="text" placeholder="Dirección de entrega" disabled></label>
+            <label>Nombre<input id="profile-nombre" type="text" maxlength="100" autocomplete="given-name" required disabled></label>
+            <label>Apellido paterno<input id="profile-ap" type="text" maxlength="100" autocomplete="family-name" disabled></label>
+            <label>Apellido materno<input id="profile-am" type="text" maxlength="100" disabled></label>
+            <label>Correo electrónico<input id="profile-mail" type="email" autocomplete="email" disabled></label>
+            <label>Calle<input id="profile-calle" type="text" maxlength="150" autocomplete="address-line1" disabled></label>
+            <label>Número<input id="profile-numero" type="text" maxlength="20" disabled></label>
+            <label>Colonia<input id="profile-colonia" type="text" maxlength="100" disabled></label>
+            <label>Código postal<input id="profile-cp" type="text" maxlength="5" inputmode="numeric" pattern="[0-9]{5}" autocomplete="postal-code" disabled></label>
+            <label>Talla (MX)<input id="profile-talla" type="number" min="0.1" max="999.9" step="0.1" disabled></label>
           </div>
-          <div class="account-actions"><button type="button" class="account-primary" disabled>Guardar cambios</button><button type="button" class="account-secondary" disabled>Cancelar</button></div>
+          <div class="account-actions"><button type="button" id="profile-save" class="account-primary" disabled>Guardar cambios</button><button type="button" id="profile-reset" class="account-secondary" disabled>Cancelar</button></div>
+          <p id="profile-status" class="account-muted" role="status"></p>
         </section>
         <section class="account-panel" id="pedidos" data-account-panel hidden aria-labelledby="orders-title">
-          <h2 id="orders-title">Mis pedidos</h2><p class="account-muted">Aquí podrás consultar el historial y estado de tus pedidos.</p>
-          <div class="account-table-wrap"><table class="account-table"><thead><tr><th scope="col">Pedido</th><th scope="col">Fecha</th><th scope="col">Estado</th><th scope="col">Total</th></tr></thead><tbody><tr><td colspan="4">No hay pedidos para mostrar. Inicia sesión cuando el servicio esté disponible.</td></tr></tbody></table></div>
-          <a class="account-primary" href="coleccion.html">Explorar colección</a>
+          <h2 id="orders-title">Mis pedidos</h2><p class="account-muted">Consulta el historial y estado de tus pedidos. Puedes cancelar los pendientes.</p>
+          <div class="account-table-wrap"><table class="account-table"><thead><tr><th scope="col">Pedido</th><th scope="col">Fecha</th><th scope="col">Estado</th><th scope="col">Total</th><th scope="col">Acciones</th></tr></thead><tbody id="account-orders"><tr><td colspan="5">Inicia sesión para consultar tus pedidos.</td></tr></tbody></table></div>
+          <p id="orders-status" class="account-muted" role="status"></p><a class="account-primary" href="coleccion.html">Explorar colección</a>
         </section>
         <section class="account-panel" id="favoritos" data-account-panel hidden aria-labelledby="favorites-title">
-          <h2 id="favorites-title">Mis favoritos</h2><p class="account-muted">Productos guardados en este navegador. No están asociados a una cuenta real.</p>
+          <h2 id="favorites-title">Mis favoritos</h2><p class="account-muted">Productos guardados en este navegador; no se sincronizan con la cuenta.</p>
           <p id="account-favorites-status" role="status"></p>
           <div id="account-favorites" class="account-favorites"></div>
           <div id="account-favorites-empty" class="account-empty"><p>Aún no tienes favoritos guardados.</p><a href="coleccion.html" class="account-primary">Ver productos</a></div>
