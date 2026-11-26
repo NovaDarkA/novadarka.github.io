@@ -28,34 +28,36 @@
     <nav class="order-steps" aria-label="Etapas del pedido"><a href="carrito.html"><span>1</span> Carrito</a><span aria-current="step"><span>2</span> Revisar pedido</span><span><span>3</span> Confirmación</span></nav>
     <a class="checkout-back" href="carrito.html">← Regresar al carrito</a>
     <div class="cart-heading"><div><h1>Revisar pedido</h1><p>Comprueba tus artículos y la información de entrega.</p></div></div>
-    <p class="checkout-banner" role="note">Vista previa del diseño. No se envían datos, no se cobra ni se registra ningún pedido.</p>
+    <p class="checkout-banner" role="note">Revisa tu pedido. La confirmación registra los artículos y reserva existencias; no realiza un cobro.</p>
     <div class="cart-columns">
       <div class="checkout-sections">
         <section class="checkout-panel" aria-labelledby="checkout-contact-title">
           <h2 id="checkout-contact-title">1. Datos de contacto</h2>
-          <p class="cart-note">Campos preparados para conectar el perfil del cliente.</p>
+          <p class="cart-note">Datos de tu cuenta. Puedes actualizarlos desde Mi cuenta.</p>
           <div class="checkout-fields">
-            <label>Nombre completo<input type="text" placeholder="Nombre y apellidos" autocomplete="off" disabled></label>
-            <label>Correo electrónico<input type="email" placeholder="correo@ejemplo.com" autocomplete="off" disabled></label>
-            <label>Teléfono<input type="tel" placeholder="Número de contacto" autocomplete="off" disabled></label>
+            <label>Nombre completo<input id="checkout-name" type="text" placeholder="Nombre y apellidos" autocomplete="off" disabled></label>
+            <label>Correo electrónico<input id="checkout-email" type="email" placeholder="correo@ejemplo.com" autocomplete="off" disabled></label>
+            
           </div>
         </section>
         <section class="checkout-panel" aria-labelledby="checkout-address-title">
           <h2 id="checkout-address-title">2. Datos de entrega</h2>
           <div class="checkout-fields">
-            <label class="checkout-wide">Dirección<input type="text" placeholder="Calle y número" autocomplete="off" disabled></label>
-            <label>Ciudad<input type="text" placeholder="Ciudad" autocomplete="off" disabled></label>
-            <label>Estado<input type="text" placeholder="Estado" autocomplete="off" disabled></label>
-            <label>Código postal<input type="text" placeholder="Código postal" autocomplete="off" disabled></label>
-            <label class="checkout-wide">Referencias<textarea rows="2" placeholder="Indicaciones de entrega (opcional)" disabled></textarea></label>
+            <label class="checkout-wide">Dirección<input id="checkout-address" type="text" placeholder="Calle y número" autocomplete="off" disabled></label>
+            <label>Colonia<input id="checkout-colony" type="text" placeholder="Colonia" disabled></label>
+            
+            <label>Código postal<input id="checkout-postal" type="text" placeholder="Código postal" autocomplete="off" disabled></label>
+            
           </div>
           <p class="cart-note">Modalidad y costo de envío pendientes de definir.</p>
         </section>
         <section class="checkout-panel" aria-labelledby="checkout-confirm-title">
           <h2 id="checkout-confirm-title">3. Confirmación</h2>
-          <p class="cart-note">La confirmación real requiere una cuenta, inventario y precios verificados. El botón está preparado visualmente.</p>
-          <button type="button" class="cart-primary checkout-confirm" disabled>Confirmar pedido</button>
-          <button type="button" class="checkout-preview" id="checkout-preview" disabled>Ver vista previa de confirmación</button>
+          <p class="cart-note">Confirma el pedido con una cuenta de cliente. El envío y el pago se definirán por separado.</p>
+          <button type="button" class="cart-primary checkout-confirm" id="checkout-confirm" disabled>Confirmar pedido</button>
+          <button type="button" class="checkout-preview" id="checkout-preview" disabled>Revisar resumen</button>
+          <button type="button" class="checkout-preview" id="checkout-retry" hidden>Reintentar pedido pendiente</button>
+          <p id="checkout-status" role="status">Consultando tu cuenta…</p><a id="checkout-login" href="login.html">Iniciar sesión</a>
         </section>
       </div>
       <aside class="cart-summary" aria-labelledby="checkout-summary-title">
@@ -68,15 +70,15 @@
           <div><dt>Envío</dt><dd>Por calcular</dd></div>
           <div class="cart-total"><dt>Total de productos</dt><dd id="checkout-total">$0.00 MXN</dd></div>
         </dl>
-        <p class="cart-note">Importe provisional. El total definitivo requiere validar existencias y envío.</p>
+        <p class="cart-note">Total estimado de productos. El servidor confirma el importe al registrar el pedido.</p>
         <a class="cart-back" href="carrito.html">Modificar carrito</a>
       </aside>
     </div>
     <dialog class="checkout-dialog" id="checkout-dialog" aria-labelledby="checkout-dialog-title">
       <div class="checkout-dialog-mark" aria-hidden="true">✓</div>
       <h2 id="checkout-dialog-title">Revisión del pedido</h2>
-      <p>Así se mostrará la confirmación al completar una compra.</p>
-      <p class="checkout-banner">Vista previa: no se ha creado ningún pedido ni se ha efectuado un pago.</p>
+      <p id="checkout-dialog-message">Comprueba los productos antes de confirmar.</p>
+      <p class="checkout-banner" id="checkout-dialog-note">Esta revisión no registra ningún pedido ni efectúa un pago.</p>
       <button type="button" class="cart-primary" id="checkout-close">Volver a la revisión</button>
     </dialog>
   </main>
