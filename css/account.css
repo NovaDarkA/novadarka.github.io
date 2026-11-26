@@ -1,0 +1,49 @@
+/* FE.05 — account views, no authentication or personal data. */
+.account-page{max-width:1450px;margin:auto;padding:clamp(22px,4vw,56px) clamp(14px,5vw,72px) 56px}
+.account-crumb{font-size:13px;line-height:1.5}
+.account-heading{margin:18px 0 24px}
+.account-heading h1{font-size:clamp(30px,4vw,48px);font-weight:500;margin-bottom:10px}
+.account-heading p,.account-muted{font-size:14px;color:#645238;line-height:1.6}
+.account-notice{background:#ffedbd;border:1px solid #d7b679;border-radius:8px;padding:14px;font-size:13px;line-height:1.5;margin-bottom:22px}
+.account-layout{display:grid;grid-template-columns:minmax(200px,255px) minmax(0,1fr);gap:clamp(16px,3vw,34px);align-items:start}
+.account-sidebar,.account-panel,.account-recovery-card{background:var(--sand);border:1px solid #dfbd83;border-radius:12px;padding:clamp(16px,2.5vw,30px);min-width:0}
+.account-avatar{width:64px;height:64px;background:var(--cream);border:1px solid #c9ab72;border-radius:50%;display:grid;place-items:center;margin:0 auto 12px}
+.account-avatar svg{width:34px;fill:none;stroke:var(--ink);stroke-width:1.5}
+.account-name{font-size:18px;font-weight:500;text-align:center}
+.account-sidebar>.account-muted{text-align:center}
+.account-nav{display:grid;gap:5px;margin:20px 0}
+.account-nav a{padding:12px 9px;text-decoration:none;border-radius:6px;font-size:13px;line-height:1.4}
+.account-nav a[aria-current=true],.account-nav a:hover{background:var(--cream)}
+.account-primary,.account-secondary{display:inline-flex;justify-content:center;align-items:center;text-align:center;min-height:42px;padding:10px 14px;border:1px solid #a99466;border-radius:7px;color:var(--ink);background:#fdffb7;font:500 13px/1.4 var(--mono);text-decoration:none;cursor:pointer}
+.account-secondary{background:var(--cream)}
+.account-primary:not(:disabled):hover,.account-secondary:not(:disabled):hover{background:white}
+.account-primary:disabled,.account-secondary:disabled{opacity:.55;cursor:not-allowed}
+.account-sidebar>.account-primary,.account-sidebar>.account-secondary{width:100%;margin-top:8px}
+.account-panel[hidden],.account-empty[hidden]{display:none}
+.account-panel h2{font-size:clamp(20px,2.4vw,28px);font-weight:500;margin-bottom:12px}
+.account-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:22px 0}
+.account-fields label{display:grid;gap:8px;min-width:0;font-size:13px}
+.account-fields input{width:100%;min-width:0;background:var(--cream);border:1px solid #a99466;border-radius:6px;padding:12px;color:var(--ink);font:13px var(--mono)}
+.account-fields input:disabled{opacity:.8;cursor:not-allowed}
+.account-wide{grid-column:1/-1}
+.account-actions{display:flex;gap:12px;flex-wrap:wrap}
+.account-table-wrap{overflow-x:auto;margin:22px 0}
+.account-table{width:100%;border-collapse:collapse;font-size:13px;text-align:left}
+.account-table th,.account-table td{padding:12px;border-bottom:1px solid #d7b679;line-height:1.5}
+.account-table th{background:var(--cream)}
+.account-empty{padding:24px 0;font-size:14px;line-height:1.6}.account-empty a{margin-top:12px}
+#account-favorites-status{font-size:13px;margin:14px 0}
+.account-favorites{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.account-favorite-card{display:flex;flex-direction:column;gap:10px;background:var(--cream);border:1px solid #dfbd83;border-radius:8px;padding:12px;min-width:0}
+.account-favorite-card img{width:100%;aspect-ratio:4/3;object-fit:contain;background:white;border-radius:6px}
+.account-favorite-card h3,.account-favorite-card p{font-size:13px;line-height:1.5;overflow-wrap:anywhere}
+.account-favorite-card .account-primary{margin-top:auto}
+.account-security-row{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding:18px 0;border-top:1px solid #d7b679;margin-top:12px}
+.account-security-row h3{font-size:15px;margin-bottom:6px}.account-security-row p{font-size:13px;line-height:1.5}
+.account-recovery{padding:clamp(24px,6vw,80px) 14px;min-height:calc(100vh - 80px)}
+.account-recovery-card{max-width:520px;margin:auto;display:grid;gap:16px}
+.account-recovery-card h1{font-size:clamp(22px,3vw,32px);font-weight:500}
+.account-recovery-card p{font-size:14px;line-height:1.6}
+.account-recovery-card .account-notice,.account-recovery-card .account-fields{margin:0}
+@media(max-width:760px){.account-layout{grid-template-columns:minmax(0,1fr)}.account-nav{grid-template-columns:repeat(2,minmax(0,1fr))}.account-fields{grid-template-columns:1fr}.account-favorites{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:350px){.account-favorites{grid-template-columns:1fr}}

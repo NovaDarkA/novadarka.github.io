@@ -36,3 +36,6 @@ Galería seleccionable de cuatro vistas para tenis grises, una foto para los dem
 
 ## FE.04 — Carrito y revisión del pedido
 Conserva carrito inspirado en Erick's Caps; nueva ruta pedido.html con etapas visuales, campos de contacto y entrega deshabilitados, resumen real del borrador local y diálogo de confirmación de diseño. Sin enviar datos, cobrar o registrar pedidos. El enlace desde carrito se habilita al contener productos. El costo de envío no se inventa.
+
+## FE.05 — Cuenta y perfil
+cuenta.html incorpora diseño de perfil, información personal, pedidos, favoritos locales, seguridad y cierre de sesión; recuperar.html incluye recuperación visual. Campos personales y acciones de cuenta deshabilitados hasta conectar autenticación; sin datos personales ni envíos. Acceso de vista previa en el menú de cuenta y enlace de recuperación en login.

@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Vista previa de la cuenta de Shoefit.">
+  <title>Shoefit | Mi cuenta</title>
+  <link rel="icon" href="img/optimized/logo-marca.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Pacifico&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/media_query.css">
+  <link rel="stylesheet" href="css/cart.css">
+  <script src="js/main.js" defer></script>
+  <script type="module" src="js/cart.js"></script>
+  <link rel="stylesheet" href="css/catalog-tools.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/account.css">
+  <script type="module" src="js/catalog-tools.js"></script>
+  <script type="module" src="js/account.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <header class="site-header">
+    <a class="brand" href="index.html#inicio" aria-label="Shoefit, inicio">
+      <img src="img/optimized/logo-marca.svg" alt="" width="42" height="24">
+      <span>Shoefit</span>
+    </a>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Abrir menú">
+      <span class="menu-lines" aria-hidden="true"></span>
+    </button>
+    <nav class="primary-nav" id="primary-nav" aria-label="Navegación principal">
+      <details class="nav-disclosure">
+        <summary>Men <span aria-hidden="true">⌄</span></summary>
+        <div class="nav-dropdown">
+          <a href="sorprendeme.html?producto=flexible-sneakers-gray">Flexible Sneakers</a>
+          <a href="sorprendeme.html?producto=martin-dingman-brown">Martin Dingman</a>
+          <a href="coleccion.html">Ver colección</a>
+        </div>
+      </details>
+      <details class="nav-disclosure">
+        <summary>Women <span aria-hidden="true">⌄</span></summary>
+        <div class="nav-dropdown">
+          <p class="nav-note">Colección de mujer pendiente de incorporar.</p>
+          <a href="coleccion.html">Ver catálogo general</a>
+        </div>
+      </details>
+      <details class="nav-disclosure">
+        <summary>Collection <span aria-hidden="true">⌄</span></summary>
+        <div class="nav-dropdown">
+          <a href="coleccion.html">Colección Martin Dingman</a>
+          <a href="index.html#flash-products">Ofertas</a>
+          <a href="index.html#best-rated">Mejor valorados</a>
+          <a href="sorprendeme.html">Surprise me</a>
+        </div>
+      </details>
+    </nav>
+    <div class="header-actions" aria-label="Acciones">
+      <button type="button" aria-label="Buscar" aria-haspopup="dialog" class="action-icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.4"/><path d="m16 16 4.2 4.2"/></svg>
+      </button>
+      <a href="carrito.html" aria-label="Carrito" class="action-icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 5h2l2 11.2h10.8l2-8.1H6.2"/><circle cx="9.2" cy="19.2" r="1.1"/><circle cx="17.2" cy="19.2" r="1.1"/></svg>
+      </a>
+      <details class="account-disclosure nav-disclosure">
+        <summary class="action-icon" aria-label="Cuenta">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.1"/><path d="M5.5 19c.6-3.1 2.8-4.7 6.5-4.7s5.9 1.6 6.5 4.7"/></svg>
+      </summary>
+        <div class="nav-dropdown account-dropdown">
+          <p class="nav-note">Mi cuenta</p>
+          <a href="cuenta.html">Vista previa del perfil</a>
+          <a href="login.html">Iniciar sesión</a>
+          <a href="registro.html">Crear cuenta</a>
+          <button type="button" data-open-favorites>Mis favoritos</button>
+          <a href="carrito.html">Mi carrito</a>
+        </div>
+      </details>
+    </div>
+  </header>
+
+  <main id="contenido" class="account-page">
+    <nav class="account-crumb" aria-label="Ruta de navegación"><a href="index.html">Inicio</a> / <span aria-current="page">Mi cuenta</span></nav>
+    <div class="account-heading"><h1>Mi cuenta</h1><p>Tu perfil, pedidos y productos favoritos.</p></div>
+    <p class="account-notice">Vista previa del diseño. No has iniciado sesión y no se muestran datos personales ni pedidos reales.</p>
+    <div class="account-layout">
+      <aside class="account-sidebar" aria-label="Secciones de mi cuenta">
+        <div class="account-avatar" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3"/><path d="M5 20c0-4 3-6 7-6s7 2 7 6"/></svg></div>
+        <p class="account-name">Mi perfil</p><p class="account-muted">Sesión no iniciada</p>
+        <nav class="account-nav" aria-label="Opciones del perfil">
+          <a href="#perfil" data-account-tab="perfil" aria-current="true">Información personal</a>
+          <a href="#pedidos" data-account-tab="pedidos">Mis pedidos</a>
+          <a href="#favoritos" data-account-tab="favoritos">Mis favoritos</a>
+          <a href="#seguridad" data-account-tab="seguridad">Seguridad</a>
+        </nav>
+        <a class="account-primary" href="login.html">Iniciar sesión</a>
+        <button type="button" class="account-secondary" disabled>Cerrar sesión</button>
+      </aside>
+      <div class="account-content">
+        <section class="account-panel" id="perfil" data-account-panel aria-labelledby="profile-title">
+          <h2 id="profile-title">Información personal</h2><p class="account-muted">Consulta y edita los datos de tu cuenta cuando esté conectada.</p>
+          <div class="account-fields">
+            <label>Nombre<input type="text" placeholder="Nombre" disabled></label>
+            <label>Apellidos<input type="text" placeholder="Apellidos" disabled></label>
+            <label>Correo electrónico<input type="email" placeholder="Correo electrónico" disabled></label>
+            <label>Teléfono<input type="tel" placeholder="Teléfono" disabled></label>
+            <label class="account-wide">Dirección<input type="text" placeholder="Dirección de entrega" disabled></label>
+          </div>
+          <div class="account-actions"><button type="button" class="account-primary" disabled>Guardar cambios</button><button type="button" class="account-secondary" disabled>Cancelar</button></div>
+        </section>
+        <section class="account-panel" id="pedidos" data-account-panel hidden aria-labelledby="orders-title">
+          <h2 id="orders-title">Mis pedidos</h2><p class="account-muted">Aquí podrás consultar el historial y estado de tus pedidos.</p>
+          <div class="account-table-wrap"><table class="account-table"><thead><tr><th scope="col">Pedido</th><th scope="col">Fecha</th><th scope="col">Estado</th><th scope="col">Total</th></tr></thead><tbody><tr><td colspan="4">No hay pedidos para mostrar. Inicia sesión cuando el servicio esté disponible.</td></tr></tbody></table></div>
+          <a class="account-primary" href="coleccion.html">Explorar colección</a>
+        </section>
+        <section class="account-panel" id="favoritos" data-account-panel hidden aria-labelledby="favorites-title">
+          <h2 id="favorites-title">Mis favoritos</h2><p class="account-muted">Productos guardados en este navegador. No están asociados a una cuenta real.</p>
+          <p id="account-favorites-status" role="status"></p>
+          <div id="account-favorites" class="account-favorites"></div>
+          <div id="account-favorites-empty" class="account-empty"><p>Aún no tienes favoritos guardados.</p><a href="coleccion.html" class="account-primary">Ver productos</a></div>
+        </section>
+        <section class="account-panel" id="seguridad" data-account-panel hidden aria-labelledby="security-title">
+          <h2 id="security-title">Seguridad de la cuenta</h2><p class="account-muted">Administra el acceso a tu cuenta.</p>
+          <div class="account-security-row"><div><h3>Contraseña</h3><p>Recuperación mediante correo electrónico.</p></div><a href="recuperar.html" class="account-secondary">Recuperar contraseña</a></div>
+          <div class="account-security-row"><div><h3>Sesión actual</h3><p>No hay una sesión iniciada.</p></div><button type="button" class="account-secondary" disabled>Cerrar sesión</button></div>
+        </section>
+      </div>
+    </div>
+  </main>
+  <script>document.documentElement.classList.add("js");</script>
+</body>
+</html>
