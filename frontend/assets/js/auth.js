@@ -2,7 +2,7 @@
 (function () {
   "use strict";
 
-  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  var EMAIL_RE = /^[^\s@.]+(?:\.[^\s@.]+)*@[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)+$/i;
 
   var MESSAGES = {
     emailEmpty: "Enter your email address.",
@@ -98,7 +98,7 @@
       try {
         var response=await fetch(kind==="register"?"/api/register":"/api/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:form.elements.email.value,password:form.elements.password.value})});
         var data=await response.json();
-        if(!response.ok){say(response.status===401?"Correo o contraseña incorrectos.":response.status===429?"Demasiados intentos. Intenta más tarde.":"No se pudo completar la operación.",true);return;}
+        if(!response.ok){say(data.error==="invalid_email"?"Introduce un correo válido, por ejemplo nombre@gmail.com.":data.error==="registration_unavailable"?"No se pudo crear la cuenta. Comprueba el correo e inténtalo más tarde.":response.status===401?"Correo o contraseña incorrectos.":response.status===429?"Demasiados intentos. Intenta más tarde.":"No se pudo completar la operación.",true);return;}
         if(kind==="register"){form.reset();say("Revisa tu correo para confirmar tu cuenta.",false);}
         else if(data.redirect==="/administracion.html"||data.redirect==="/cuenta.html"){location.assign(data.redirect);}
         else say("No se pudo iniciar sesión.",true);
