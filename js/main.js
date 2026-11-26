@@ -1,16 +1,22 @@
 (function(){
  const button=document.querySelector(".menu-toggle");
  const nav=document.querySelector("#primary-nav");
+ const header=document.querySelector(".site-header");
+ const disclosures=[...document.querySelectorAll(".nav-disclosure")];
  if(!button||!nav)return;
+ function closeMenus(except){for(const d of disclosures)if(d!==except)d.open=false;}
  function setOpen(open){
+   if(!open)closeMenus();
    button.setAttribute("aria-expanded",String(open));
    button.setAttribute("aria-label",open?"Cerrar menú":"Abrir menú");
    nav.classList.toggle("is-open",open);
  }
  button.addEventListener("click",()=>setOpen(button.getAttribute("aria-expanded")!=="true"));
  nav.addEventListener("click",e=>{if(e.target.closest("a"))setOpen(false)});
- document.addEventListener("keydown",e=>{if(e.key==="Escape"&&button.getAttribute("aria-expanded")==="true"&&!document.querySelector("dialog[open]")){setOpen(false);button.focus()}});
- window.addEventListener("resize",()=>{if(window.innerWidth>650)setOpen(false)});
+ for(const d of disclosures)d.addEventListener("toggle",()=>{if(d.open){closeMenus(d);if(d.classList.contains("account-disclosure")&&nav.classList.contains("is-open")){button.setAttribute("aria-expanded","false");button.setAttribute("aria-label","Abrir menú");nav.classList.remove("is-open");}}});
+ document.addEventListener("click",e=>{if(header&&!header.contains(e.target))setOpen(false)});
+ document.addEventListener("keydown",e=>{if(e.key!=="Escape"||document.querySelector("dialog[open]"))return;const active=disclosures.find(d=>d.open);if(active){active.open=false;active.querySelector("summary").focus();e.preventDefault();}else if(button.getAttribute("aria-expanded")==="true"){setOpen(false);button.focus();}});
+ const desktop=matchMedia("(min-width:651px)");desktop.addEventListener("change",()=>setOpen(false));
 })();
 
 (function(){

@@ -17,12 +17,12 @@ let opener;
 dialog.addEventListener("close",()=>opener?.focus());
 function open(label,source){if(dialog.open)dialog.close();opener=source;title.textContent=label;body.replaceChildren();dialog.showModal();}
 const searchButton=document.querySelector('button[aria-label="Buscar"]');
-searchButton?.addEventListener("click",()=>{
- open("Buscar productos",searchButton);
+function openSearch(source,onlyFavorites=false){
+ open(onlyFavorites?"Mis favoritos":"Buscar productos",source);
  const label=el("label",null,"Nombre, tipo o color");label.htmlFor="catalog-query";
  const input=el("input","catalog-query");input.id="catalog-query";input.type="search";input.placeholder="Ej. tenis gris";
  const tools=el("div","catalog-search-tools");
- const filterLabel=el("label",null," Solo favoritos");const filter=el("input");filter.type="checkbox";filterLabel.prepend(filter);
+ const filterLabel=el("label",null," Solo favoritos");const filter=el("input");filter.type="checkbox";filter.checked=onlyFavorites;filterLabel.prepend(filter);
  tools.append(filterLabel);
  const count=el("p","catalog-count");count.setAttribute("role","status");
  const results=el("ul","catalog-results");
@@ -40,7 +40,10 @@ searchButton?.addEventListener("click",()=>{
    if(!items.length)results.append(el("li","catalog-no-results","No se encontraron productos."));
  }
  input.addEventListener("input",render);filter.addEventListener("change",render);render();input.focus();
-});
+}
+searchButton?.addEventListener("click",()=>openSearch(searchButton));
+const favoritesButton=document.querySelector("[data-open-favorites]");
+favoritesButton?.addEventListener("click",()=>{const account=favoritesButton.closest("details");const summary=account.querySelector("summary");account.open=false;openSearch(summary,true);});
 const favorite=document.querySelector(".special-fav");
 if(favorite){
  const product=selected();

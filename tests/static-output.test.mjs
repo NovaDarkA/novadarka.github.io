@@ -61,3 +61,7 @@ test("all visible product cards have a selection link with a known product", asy
     for(const card of cards){const match=card[2].match(/href="sorprendeme.html\?producto=([^"]+)"/);assert.ok(match);assert.ok(getProduct(match[1]));}
   }
 });
+
+test("all seven screens share the same header disclosures",async()=>{
+ for(const page of pages.filter(p=>!p.startsWith("page_"))){const html=await read(page);assert.equal([...html.matchAll(/class="nav-disclosure"/g)].length,3,page);assert.match(html,/class="account-disclosure nav-disclosure"/);assert.match(html,/data-open-favorites/);assert.match(html,/href="css\/header.css"/);}
+});

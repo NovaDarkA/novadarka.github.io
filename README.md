@@ -24,3 +24,6 @@ Ver docs/architecture.md para alcance y criterios de evaluación.
 El catálogo provisional incluye botones Ver producto en inicio y colección. El detalle y carrito usan referencias a productos estáticos existentes; las botas no tienen precio publicado y su compra está deshabilitada. El SQL original del equipo se revisará y adaptará en F3, conservando las ocho entidades.
 
 Búsqueda local por nombre/tipo/color, filtro de favoritos, favoritos persistentes en el navegador, enlaces de compartir limpios y diálogos informativos de pie de página. No representan cuentas ni registros reales de la base de datos. Información institucional pendiente se indica explícitamente.
+
+## FE.01 — Encabezado y navegación
+Menús desplegables Men, Women y Collection, y menú de cuenta uniforme en las siete pantallas. Men muestra únicamente referencias conocidas; Women indica que la colección está pendiente, sin inventar registros. Favoritos utiliza la búsqueda existente. Cuenta real y perfil se implementarán después. Pruebas de enlaces, apertura/cierre, teclado y adaptación.
