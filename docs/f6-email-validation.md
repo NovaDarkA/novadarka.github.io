@@ -27,3 +27,9 @@ Código incorporado en rama de desarrollo. CI y recepción de correo real pendie
 - Node.js v22.16.0: `node --test tests/*.mjs` en una copia local parcial y aislada de esos nueve archivos: 13 pruebas aprobadas, 0 fallidas, 0 omitidas (6 sesión, 4 recuperación, 3 notificación). Transporte simulado; no se enviaron correos ni se modificaron usuarios.
 - Commit 09a62fb4506da4c4eba7e36886d79a97eee67036: Vercel READY, GitHub estado Vercel success. La consulta disponible de workflows no devolvió ejecuciones; no se acredita aprobación del navegador ni del CI completo por esta prueba local.
 - La configuración Preview sigue sin RESEND_API_KEY y SHOEFIT_EMAIL_FROM. Se mantiene pendiente alta/configuración del proveedor, SMTP/plantilla de Supabase y recepción efectiva en buzón de prueba. No iniciar F7 hasta cerrar F6.
+
+## Validación focalizada del formulario en navegador — 26/11/2026
+- Se verificaron los hashes de blobs Git de recuperar.html (09b5fa439b7c9d7ab0d152d6c8ed2afd9a45016d) y recovery.js (d064602bec117322839307ace129795f86ede922).
+- Chromium y Playwright: PASS en 1366 y 390 px. Se cargó en memoria el HTML sin sus recursos externos y el controlador íntegro; fetch simulado, sin red ni usuarios reales. Se verificaron estado inicial, email inválido sin petición, solicitud, contraseñas diferentes sin petición, OTP incorrecto, HTTP 429, HTTP 503, reenvío con limpieza de campos, cambio aceptado y limpieza final. Seis llamadas simuladas por ancho, sin errores JavaScript.
+- La navegación local fue bloqueada por el entorno y el repositorio no pudo clonarse por falta de DNS. La prueba en memoria es focalizada, no acredita diseño visual completo, acceso público, CI integral ni entrega de correo. GitHub workflow_runs vacío para 24f5798 y 967d6e0.
+- F6 permanece abierta por SMTP, remitente, configuración de correo y prueba real; CI integral sigue sin evidencia. No se cambió código funcional ni cuentas y no se inició F7.
