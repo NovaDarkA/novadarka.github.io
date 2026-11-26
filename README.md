@@ -45,7 +45,7 @@ cuenta.html incorpora diseño de perfil, información personal, pedidos, favorit
 Cuatro módulos (PRODUCTO, CLIENTE, VENTA, EMPLEADO) con campos del SQL original, tablas vacías, búsqueda, ordenamiento, paginación y vistas previas de agregar/modificar/eliminar. Todos los campos de edición y confirmaciones de escritura deshabilitados. Sin datos ni autenticación real. No se modifica SQL.
 
 ### FE.06 — Refinamiento visual autorizado
-Dashboard administrativo con identidad Shoefit, iconos, accesos rápidos, navegación sincronizada, tabla en panel crema, estados vacíos y formularios refinados. Indicadores sin datos conectados, sin métricas inventadas. Se conserva la interfaz y los campos de los cuatro módulos, sin operaciones reales.
+Dashboard administrativo con identidad Shoefit, iconos, navegación lateral, tabla en panel crema, estados vacíos y formularios refinados. Estado de vista previa sin métricas inventadas. Se conserva la interfaz y los campos de los cuatro módulos, sin operaciones reales.
 
 ## FE.07 — Información y ayuda
 Centro de información con siete secciones enlazadas desde el pie de página, FAQ desplegables, guía de compra, contacto pendiente de confirmación y página 404 personalizada con enlaces de recuperación absolutos. No se inventan datos institucionales ni se habilitan contactos de ejemplo. Se conserva el diseño de las páginas anteriores.
@@ -78,3 +78,5 @@ Ver [informe de validación del frontend](docs/frontend-validation.md): evidenci
 
 ### Ajuste final de administración
 El panel administrativo no utiliza el encabezado de la tienda. Conserva su menú lateral y un botón accesible para ocultarlo/restaurarlo; el contenido aprovecha el espacio libre. Los diez documentos de tienda mantienen el encabezado común.
+
+Las cuatro tarjetas duplicadas se eliminaron por solicitud del usuario. La navegación entre módulos se realiza exclusivamente desde la barra lateral.

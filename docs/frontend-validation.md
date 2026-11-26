@@ -43,3 +43,5 @@ Información: siete accesos desde pie de página, preguntas frecuentes, guía y 
 
 ## Ajuste solicitado después de la validación
 El panel administrativo se independiza del encabezado comercial; conserva menú lateral, enlace de retorno y añade control para ocultar/restaurar. Se actualizan las pruebas del manifiesto y del navegador. Los resultados anteriores corresponden al commit indicado arriba; la nueva ejecución debe verificarse por separado.
+
+Se eliminan las cuatro tarjetas de acceso rápido duplicadas; se conserva navegación lateral, botón de ocultar/mostrar, módulos, tablas y diálogos. Se ajusta la distribución móvil del panel y se vuelve a verificar la interacción sin tarjetas.

@@ -154,7 +154,6 @@
    if(dialog.open)dialog.close();
    document.getElementById("admin-current-module").textContent=modules[selected].title;
    document.getElementById("admin-workspace-title").textContent=modules[selected].title;
-   for(const card of document.querySelectorAll("[data-admin-shortcut]")){if(card.dataset.adminShortcut===selected)card.setAttribute("aria-current","true");else card.removeAttribute("aria-current");}
    for(const panel of panels)panel.hidden=panel.id!==selected;
    for(const link of links){if(link.dataset.module===selected)link.setAttribute("aria-current","true");else link.removeAttribute("aria-current");}
  }
