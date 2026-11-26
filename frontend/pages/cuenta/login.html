@@ -29,7 +29,7 @@
       <div class="auth-card">
         <h1 id="auth-title">Login</h1>
         <p class="auth-note" id="login-note">All fields are required.</p>
-        <noscript><p class="auth-error auth-noscript">JavaScript is needed to check this form. Login is not available yet.</p></noscript>
+        <noscript><p class="auth-error auth-noscript">JavaScript is required to sign in.</p></noscript>
         <form class="auth-form" id="login-form" method="post" novalidate data-auth-form="login" aria-describedby="login-note">
           <div class="auth-field">
             <label for="login-email">Email</label>
@@ -47,11 +47,11 @@
           <p class="auth-status" id="login-status" role="status"></p>
           <div class="auth-row">
             <a class="auth-link" href="registro.html">Sign Up</a>
-            <label class="auth-check"><input type="checkbox" name="remember" value="1"><span>Remember me</span></label>
+            <span class="auth-hint">Secure session</span>
           </div>
         </form>
         <p class="auth-note" lang="es"><a href="recuperar.html">¿Olvidaste tu contraseña?</a></p>
-        <p class="auth-note" lang="es"><a href="administracion.html">Vista previa de administración</a></p>
+        <p class="auth-note" lang="es">El acceso de cliente o administrador se determina automáticamente al iniciar sesión.</p>
       </div>
     </section>
   </main>

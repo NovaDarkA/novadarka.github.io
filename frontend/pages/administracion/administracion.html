@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="css/media_query.css">
   <link rel="stylesheet" href="css/management.css">
   <script src="js/administracion.js" defer></script>
+  <script src="js/session.js" defer></script>
   <link rel="stylesheet" href="css/ui.css">
 </head>
 <body>
@@ -28,7 +29,7 @@
         <a href="#ventas" data-module="ventas"><svg class="admin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 3h16v18l-4-2-4 2-4-2-4 2V3Z"/><path d="M8 8h8M8 12h8M8 16h4"/></svg><span>Ventas</span><svg class="admin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 18l6-6-6-6"/></svg></a>
         <a href="#empleados" data-module="empleados"><svg class="admin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18M10 13v2h4v-2"/></svg><span>Empleados</span><svg class="admin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 18l6-6-6-6"/></svg></a>
       </nav>
-      <div class="admin-sidebar-bottom"><div class="admin-access"><svg class="admin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m12 3 8 3v6c0 5-4 8-8 10-4-2-8-5-8-10V6l8-3Z"/><path d="m9 12 2 2 4-4"/></svg><div><strong>Acceso de prueba</strong><small>Sin sesión administrativa</small></div></div><a class="admin-store-link" href="index.html"><svg class="admin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 10h18l-2-6H5l-2 6ZM5 10v11h14V10M9 21v-7h6v7"/></svg> Volver a la tienda</a></div>
+      <div class="admin-sidebar-bottom"><div class="admin-access"><svg class="admin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m12 3 8 3v6c0 5-4 8-8 10-4-2-8-5-8-10V6l8-3Z"/><path d="m9 12 2 2 4-4"/></svg><div><strong>Acceso administrativo</strong><small>Sesión protegida</small></div></div><a class="admin-store-link" href="index.html"><svg class="admin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 10h18l-2-6H5l-2 6ZM5 10v11h14V10M9 21v-7h6v7"/></svg> Volver a la tienda</a><button type="button" class="admin-store-link" data-session-logout>Cerrar sesión</button></div>
     </aside>
     <section class="management-content" aria-label="Contenido administrativo">
       <div class="admin-toolbar">
@@ -38,8 +39,8 @@
         </button>
         <div class="admin-breadcrumb"><a href="index.html">Tienda</a><svg class="admin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 18l6-6-6-6"/></svg><span>Administración</span><svg class="admin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 18l6-6-6-6"/></svg><span id="admin-current-module">Productos</span></div>
       </div>
-      <div class="admin-heading"><div><p class="admin-kicker">SHOEFIT / GESTIÓN</p><h1>Panel administrativo</h1><p>Todo lo necesario para gestionar tu tienda en un solo lugar.</p></div><span class="admin-preview-label"><span></span> Entorno de diseño</span></div>
-      <div class="management-status" role="status"><svg class="admin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg><div><strong>Modo vista previa</strong><p>Las operaciones están preparadas visualmente. La base de datos y la autenticación aún no están conectadas.</p></div></div>
+      <div class="admin-heading"><div><p class="admin-kicker">SHOEFIT / GESTIÓN</p><h1>Panel administrativo</h1><p>Todo lo necesario para gestionar tu tienda en un solo lugar.</p></div><span class="admin-preview-label"><span></span> Administración</span></div>
+      <div class="management-status" role="status"><svg class="admin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg><div><strong>Modo vista previa</strong><p>La autenticación está conectada. Las operaciones de gestión están pendientes de integración.</p></div></div>
       <div class="management-panel">
         <div class="admin-workspace-bar"><div><p class="admin-kicker">ESPACIO DE TRABAJO</p><strong id="admin-workspace-title">Productos</strong></div>
           <div class="management-actions" aria-label="Operaciones de administración">

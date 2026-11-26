@@ -1,5 +1,20 @@
 {
   "framework": null,
-  "buildCommand": "node scripts/build-static.mjs",
-  "outputDirectory": "dist"
+  "buildCommand": "node scripts/build-static.mjs --protected",
+  "outputDirectory": "dist",
+  "functions": {
+    "api/admin-page.ts": {
+      "includeFiles": "frontend/pages/administracion/administracion.html"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/administracion.html",
+      "destination": "/api/admin-page"
+    },
+    {
+      "source": "/administracion",
+      "destination": "/api/admin-page"
+    }
+  ]
 }

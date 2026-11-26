@@ -76,7 +76,7 @@
       });
     });
 
-    form.addEventListener("submit", function (event) {
+    form.addEventListener("submit", async function (event) {
       event.preventDefault();
       var firstInvalid = null;
       fields.forEach(function (input) {
@@ -89,7 +89,17 @@
         firstInvalid.focus();
         return;
       }
-      say(kind === "register" ? MESSAGES.registerUnavailable : MESSAGES.loginUnavailable, false);
+      var button=form.querySelector('button[type="submit"]');
+      button.disabled=true;
+      try {
+        var response=await fetch(kind==="register"?"/api/register":"/api/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:form.elements.email.value,password:form.elements.password.value})});
+        var data=await response.json();
+        if(!response.ok){say(response.status===401?"Correo o contraseña incorrectos.":response.status===429?"Demasiados intentos. Intenta más tarde.":"No se pudo completar la operación.",true);return;}
+        if(kind==="register"){form.reset();say("Revisa tu correo para confirmar tu cuenta.",false);}
+        else if(data.redirect==="/administracion.html"||data.redirect==="/cuenta.html"){location.assign(data.redirect);}
+        else say("No se pudo iniciar sesión.",true);
+      }catch{say("No se pudo conectar con el servicio.",true);}
+      finally{button.disabled=false;}
     });
   }
 

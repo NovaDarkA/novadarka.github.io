@@ -9,6 +9,7 @@ if(new Set(pages.map(p=>p.name)).size!==pages.length)throw Error("Duplicate publ
 await rm(output,{recursive:true,force:true});
 await mkdir(output,{recursive:true});
 for(const page of pages){
+ if(process.argv.includes('--protected')&&page.name==='administracion.html')continue;
  let html=await readFile(join(root,page.source),"utf8");
  if(page.sharedHeader){
    if(html.split("<!-- SHARED_HEADER -->").length!==2)throw Error("Missing or duplicate header: "+page.source);

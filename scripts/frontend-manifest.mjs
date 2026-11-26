@@ -87,7 +87,7 @@ export function renderHeader(template,page){
     "login.html":['href="login.html">Iniciar sesión','href="login.html" aria-current="page">Iniciar sesión'],
     "registro.html":['href="registro.html">Crear cuenta','href="registro.html" aria-current="page">Crear cuenta'],
     "carrito.html":['href="carrito.html" aria-label="Carrito" class="action-icon"','href="carrito.html" aria-label="Carrito" class="action-icon" aria-current="page"'],
-    "cuenta.html":['href="cuenta.html">Vista previa del perfil','href="cuenta.html" aria-current="page">Vista previa del perfil']
+    "cuenta.html":['href="cuenta.html">Mi perfil','href="cuenta.html" aria-current="page">Mi perfil']
   }[page];
   if(active)result=result.replace(...active);
   return result;

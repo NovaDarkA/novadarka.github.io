@@ -1,0 +1,7 @@
+import test from "node:test";import assert from "node:assert/strict";import {login,sessionToken,sessionCookie,credentials,readSession} from "../src/services/session.js";
+const req=()=>new Request("https://example.com/api/login",{method:"POST",headers:{"origin":"https://example.com","content-type":"application/json"},body:JSON.stringify({email:"a@example.com",password:"sample-pass"})});
+const uid="12345678-1234-1234-1234-123456789abc";
+for(const role of ["cliente","administrador"]){test("login routes "+role,async()=>{const response=await login(req(),async path=>{if(path.includes("grant_type"))return Response.json({access_token:"abc.def.ghi",expires_in:3600});if(path==="/auth/v1/user")return Response.json({id:uid});assert.ok(path.includes("auth_id=eq."));return Response.json([{rolez:role}]);});assert.equal((await response.json()).redirect,role==="administrador"?"/administracion.html":"/cuenta.html");assert.match(response.headers.get("set-cookie"),/HttpOnly; Secure; SameSite=Lax/);});}
+test("forged origin blocked",async()=>{await assert.rejects(credentials(new Request("https://example.com/api/login",{method:"POST",headers:{origin:"https://other.example"}})),{code:"invalid_origin"});});
+test("invalid session rejected",async()=>{await assert.rejects(readSession("abc.def.ghi",async()=>new Response(null,{status:401})),{code:"unauthenticated"});assert.equal(sessionToken(new Request("https://example.com",{headers:{cookie:"__Host-shoefit_session=bad"}})),null);});
+test("logout expires cookie",()=>assert.match(sessionCookie("",0),/Max-Age=0/));
