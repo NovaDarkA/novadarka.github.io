@@ -8,11 +8,14 @@ import {regularPages} from "./frontend-manifest.mjs";
 import {rows as catalogRows} from "../tests/catalog-fixture.mjs";
 const root=resolve("dist");
 const mime={".html":"text/html",".css":"text/css",".js":"text/javascript",".svg":"image/svg+xml",".webp":"image/webp"};
+let checkoutFixture=false,attempts=[];
 const server=createServer(async(req,res)=>{
   try {
     const requestUrl=new URL(req.url,"http://localhost");const pathname=requestUrl.pathname;
     if(pathname==="/api/products"){res.setHeader("Content-Type","application/json");res.end(JSON.stringify({data:catalogRows,page:1,hasMore:false}));return;}
-    if(pathname==="/api/availability"){const p=catalogRows.find(p=>p.slug===requestUrl.searchParams.get("slug"));res.setHeader("Content-Type","application/json");res.end(JSON.stringify({data:{id_producto:p.id_producto,slug:p.slug,precio:p.precio,variantes:[]}}));return;}
+    if(pathname==="/api/availability"){const p=catalogRows.find(p=>p.slug===requestUrl.searchParams.get("slug"));res.setHeader("Content-Type","application/json");res.end(JSON.stringify({data:{id_producto:p.id_producto,slug:p.slug,precio:p.precio,variantes:checkoutFixture?[{id_variante:7,talla:26,existencias:5,disponible:true}]:[]}}));return;}
+    if(checkoutFixture&&pathname==="/api/profile"){res.setHeader("Content-Type","application/json");res.end(JSON.stringify({data:{id_user:999,rolez:"cliente",nombre:"Cliente prueba",mail:"test@example.invalid",calle:"Calle A",numero:"1",cp:"01234",colonia:"Centro"}}));return;}
+    if(checkoutFixture&&pathname==="/api/orders"&&req.method==="POST"){let raw="";for await(const chunk of req)raw+=chunk;attempts.push(JSON.parse(raw));res.setHeader("Content-Type","application/json");if(attempts.length===1){res.statusCode=503;res.end(JSON.stringify({error:"unavailable"}));}else{res.statusCode=201;res.end(JSON.stringify({data:{id_pedido:123,estado:"pendiente",costo:4980,reused:true}}));}return;}
     const path=resolve(root,"."+ (pathname==="/"?"/index.html":pathname));
     if(relative(root,path).startsWith("..")) {res.writeHead(403).end();return;}
     res.setHeader("Content-Type",mime[extname(path)]||"application/octet-stream");
@@ -115,6 +118,15 @@ try {
     assert.ok(missingReady,"custom 404 loaded");
     assert.equal(await evaluate("document.querySelector('.info-error-card a[href=\\\"/index.html\\\"]')!==null&&document.documentElement.scrollWidth<=innerWidth+2"),true,"404 recovery link and layout");
   }
+  // Independent authenticated checkout simulation (not a live Supabase account).
+  checkoutFixture=true;
+  await call("Emulation.setDeviceMetricsOverride",{width:390,height:844,deviceScaleFactor:1,mobile:true});
+  await call("Page.navigate",{url:origin+"/pedido.html"});
+  for(let i=0;i<100;i++){try{if(await evaluate("location.pathname==='/pedido.html' && document.documentElement.dataset.catalogState==='ready' && document.querySelector('#checkout-name')?.value==='Cliente prueba'"))break;}catch{}await delay(100);}
+  const result=await evaluate("(async()=>{const key='shoefit.cart.v1';localStorage.setItem(key,JSON.stringify([{id:'flexible-sneakers-gray',size:'26',quantity:2}]));dispatchEvent(new StorageEvent('storage',{key}));document.querySelector('#checkout-confirm').click();for(let i=0;i<100&&document.querySelector('#checkout-retry').hidden;i++)await new Promise(r=>setTimeout(r,50));const retry=document.querySelector('#checkout-retry');if(retry.hidden)return false;retry.click();for(let i=0;i<100&&!document.querySelector('#checkout-dialog').open;i++)await new Promise(r=>setTimeout(r,50));return document.querySelector('#checkout-dialog-title').textContent==='Pedido #123'&&JSON.parse(localStorage.getItem(key)).length===0&&localStorage.getItem('shoefit.checkout.pending.v1.999')===null})()");
+  assert.equal(result,true,"authenticated checkout retry and confirmation");
+  assert.equal(attempts.length,2);assert.deepEqual(attempts[0],attempts[1]);assert.deepEqual(attempts[0].items,[{id_variante:7,cantidad:2}]);
+  console.log("PASS checkout uses identical idempotency key after ambiguous response and clears purchased cart");
 } finally {
   socket?.close();chrome?.kill();server.close();await delay(300);await rm(profile,{recursive:true,force:true,maxRetries:5,retryDelay:200});
 }

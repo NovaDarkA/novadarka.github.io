@@ -6,8 +6,9 @@ const read=()=>{try{return normalize(JSON.parse(localStorage.getItem(CART_KEY)||
 const list=document.getElementById("checkout-items");
 const preview=document.getElementById("checkout-preview"),dialog=document.getElementById("checkout-dialog"),confirm=document.getElementById("checkout-confirm"),status=document.getElementById("checkout-status"),retry=document.getElementById("checkout-retry");
 let profile=null,busy=false;
+const pendingKey=()=>PENDING+"."+profile?.id_user;
 function node(tag,cls,text){const e=document.createElement(tag);if(cls)e.className=cls;if(text!==undefined)e.textContent=text;return e;}
-function pending(){try{const p=JSON.parse(localStorage.getItem(PENDING)||"null");return p&&p.user===profile?.id_user&&typeof p.key==="string"&&Array.isArray(p.items)&&Array.isArray(p.rows)?p:null;}catch{return null;}}
+function pending(){try{const p=JSON.parse(localStorage.getItem(pendingKey())||"null");return p&&p.user===profile?.id_user&&typeof p.key==="string"&&Array.isArray(p.items)&&Array.isArray(p.rows)?p:null;}catch{return null;}}
 function render(){
  const rows=read(),{count,cents}=totals(rows),previous=pending();
  document.getElementById("checkout-count").textContent=count+" "+(count===1?"artículo":"artículos");
@@ -52,17 +53,17 @@ async function submit(reuse=false){
    if(fingerprint(read())!==snapshot)throw Error("cart_changed");
    attempt={user:profile.id_user,key:crypto.randomUUID(),items,rows};
    // Persist before the request so an interrupted response cannot cause a duplicate.
-   localStorage.setItem(PENDING,JSON.stringify(attempt));
+   localStorage.setItem(pendingKey(),JSON.stringify(attempt));
   }
   status.textContent="Registrando pedido…";
   const r=await fetch("/api/orders",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({key:attempt.key,items:attempt.items}),signal:AbortSignal.timeout(20000)});
-  if(r.status===409||r.status===400){localStorage.removeItem(PENDING);throw Error(r.status===409?"stock_conflict":"invalid_cart");}
+  if(r.status===409||r.status===400){localStorage.removeItem(pendingKey());throw Error(r.status===409?"stock_conflict":"invalid_cart");}
   if(r.status===401||r.status===403)throw Error("session_required");
   if(!r.ok)throw Error("unknown_result");
   const {data}=await r.json();if(!Number.isInteger(data?.id_pedido)||typeof data.costo!=="number"||!["pendiente","cancelado","entregado"].includes(data.estado))throw Error("unknown_result");
   // Remove only quantities covered by the successful order, not unrelated additions.
   const remaining=subtractPurchased(read(),attempt.rows);
-  localStorage.setItem(CART_KEY,JSON.stringify(remaining));localStorage.removeItem(PENDING);
+  localStorage.setItem(CART_KEY,JSON.stringify(remaining));localStorage.removeItem(pendingKey());
   window.dispatchEvent(new StorageEvent("storage",{key:CART_KEY}));
   document.getElementById("checkout-dialog-title").textContent="Pedido #"+data.id_pedido;
   document.getElementById("checkout-dialog-message").textContent="Estado: "+data.estado+". Total registrado: "+money(Math.round(data.costo*100))+".";
@@ -79,5 +80,5 @@ preview.addEventListener("click",()=>{if(totals(read()).count>0){document.getEle
 confirm.addEventListener("click",()=>submit());retry.addEventListener("click",()=>submit(true));
 document.getElementById("checkout-close").addEventListener("click",()=>dialog.close());
 dialog.addEventListener("close",()=>{if(!preview.disabled)preview.focus();});
-window.addEventListener("storage",e=>{if(e.key===CART_KEY||e.key===PENDING||e.key===null)render();});
+window.addEventListener("storage",e=>{if(e.key===CART_KEY||e.key===pendingKey()||e.key===null)render();});
 window.addEventListener("pageshow",render);render();loadProfile();
