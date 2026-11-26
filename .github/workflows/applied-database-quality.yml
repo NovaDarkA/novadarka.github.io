@@ -1,0 +1,40 @@
+name: Shoefit applied database quality
+on:
+  push:
+    branches: [main, develop/shoefit-fullstack]
+    paths: ['supabase/migrations/**','database/checks/**','database/tests/applied-*','.github/workflows/applied-database-quality.yml']
+  pull_request:
+    branches: [main]
+    paths: ['supabase/migrations/**','database/checks/**','database/tests/applied-*','.github/workflows/applied-database-quality.yml']
+permissions:
+  contents: read
+jobs:
+  applied-postgres:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: disposable_ci_only
+          POSTGRES_DB: shoefit_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply real Supabase SQL to disposable PostgreSQL
+        env:
+          CONTAINER: ${{ job.services.postgres.id }}
+        run: |
+          set -euo pipefail
+          for file in database/tests/applied-auth-fixture.sql supabase/migrations/*.sql database/checks/02_integrity_rls.sql database/checks/03_admin_inventory.sql database/checks/04_atomic_checkout.sql database/checks/05_customer_profile.sql; do
+            echo "Running $file"
+            docker exec -i "$CONTAINER" psql -X -U postgres -d shoefit_test -v ON_ERROR_STOP=1 < "$file"
+          done
+      - name: Verify two-session checkout concurrency
+        env:
+          CONTAINER: ${{ job.services.postgres.id }}
+        run: bash database/tests/applied-concurrency.sh
