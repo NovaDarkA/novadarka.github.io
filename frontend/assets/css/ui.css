@@ -4,5 +4,6 @@
 :where(button,input,select,textarea):disabled{cursor:not-allowed}
 [hidden]{display:none!important}
 a[aria-disabled="true"]{cursor:not-allowed}
-.skip-link{z-index:100;max-width:calc(100% - 24px);font-size:14px}
+.skip-link{position:fixed;z-index:100;max-width:calc(100% - 24px);font-size:14px;transform:translateY(-200%);top:0;left:12px}
+.skip-link:focus{top:8px;transform:none}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
