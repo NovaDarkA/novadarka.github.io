@@ -48,7 +48,7 @@ export const pages = [
   {
     "name": "administracion.html",
     "source": "frontend/pages/administracion/administracion.html",
-    "sharedHeader": true
+    "sharedHeader": false
   },
   {
     "name": "informacion.html",
@@ -77,7 +77,8 @@ export const pages = [
   }
 ];
 export const assets = ["css","js","img"];
-export const regularPages = pages.filter(page=>page.sharedHeader).map(page=>page.name);
+export const headerPages = pages.filter(page=>page.sharedHeader).map(page=>page.name);
+export const regularPages = pages.filter(page=>page.sharedHeader||page.name==="administracion.html").map(page=>page.name);
 export function renderHeader(template,page){
   let result=template.trim();
   if(page==="index.html")result=result.replace('href="index.html#inicio"','href="#inicio"');

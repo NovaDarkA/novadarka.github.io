@@ -137,6 +137,17 @@
 };
  const links=[...document.querySelectorAll("[data-module]")],panels=[...document.querySelectorAll("[data-module-panel]")];
  const dialog=document.getElementById("admin-dialog"),content=document.getElementById("admin-dialog-content"),commit=document.getElementById("admin-commit");
+ const layout=document.querySelector(".management-layout"),sidebar=document.getElementById("admin-sidebar"),sidebarToggle=document.getElementById("admin-sidebar-toggle"),toggleLabel=document.getElementById("admin-sidebar-toggle-label");
+ sidebarToggle.addEventListener("click",()=>{
+   const collapsed=!sidebar.hidden;
+   sidebar.hidden=collapsed;
+   layout.classList.toggle("admin-sidebar-collapsed",collapsed);
+   sidebarToggle.setAttribute("aria-expanded",String(!collapsed));
+   const label=collapsed?"Mostrar barra lateral":"Ocultar barra lateral";
+   sidebarToggle.setAttribute("aria-label",label);
+   sidebarToggle.title=label;
+   toggleLabel.textContent=collapsed?"Mostrar menú":"Ocultar menú";
+ });
  let selected="productos",opener;
  function activate(){
    const requested=location.hash.slice(1);selected=Object.hasOwn(modules,requested)?requested:"productos";

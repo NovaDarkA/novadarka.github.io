@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { readFile, stat, readdir } from "node:fs/promises";
 import { join, relative, resolve } from "node:path";
 const root = resolve("dist");
-import {pages as manifest,regularPages,assets} from "../scripts/frontend-manifest.mjs";
+import {pages as manifest,regularPages,headerPages,assets} from "../scripts/frontend-manifest.mjs";
 const pages=manifest.map(p=>p.name);
 const read = path => readFile(join(root,path),"utf8");
 
@@ -43,7 +43,7 @@ test("legacy pages redirect to the current pages", async () => {
 });
 
 test("cart links are navigable and admin preview does not enable mutations", async () => {
-  for (const page of pages.filter(p=>!p.startsWith("page_")&&p!=="404.html")) {
+  for (const page of headerPages) {
     assert.match(await read(page), /<a href="carrito.html" aria-label="Carrito"/);
   }
   const admin=await read("administracion.html");
@@ -66,8 +66,8 @@ test("all visible product cards have a selection link with a known product", asy
   }
 });
 
-test("all eleven regular screens share the same header disclosures",async()=>{
- for(const page of pages.filter(p=>!p.startsWith("page_")&&p!=="404.html")){const html=await read(page);assert.equal([...html.matchAll(/class="nav-disclosure"/g)].length,3,page);assert.match(html,/class="account-disclosure nav-disclosure"/);assert.match(html,/data-open-favorites/);assert.match(html,/href="css\/header.css"/);}
+test("all ten storefront screens share the same header disclosures",async()=>{
+ for(const page of headerPages){const html=await read(page);assert.equal([...html.matchAll(/class="nav-disclosure"/g)].length,3,page);assert.match(html,/class="account-disclosure nav-disclosure"/);assert.match(html,/data-open-favorites/);assert.match(html,/href="css\/header.css"/);}
 });
 
 test("catalog has complete visual controls and no fabricated inventory",async()=>{const html=await read("coleccion.html");for(const id of ["collection-query","collection-brand","collection-type","collection-size","collection-price","collection-sort","collection-prev","collection-next","collection-empty"])assert.ok(html.includes('id="'+id+'"'));assert.match(html,/id="collection-size" disabled/);assert.doesNotMatch(html,/98 Products/);});
@@ -82,5 +82,7 @@ test("admin dashboard has four shortcuts and honest disconnected metrics",async(
 
 test("information and error pages expose safe, complete navigation",async()=>{const info=await read("informacion.html"),home=await read("index.html"),error=await read("404.html");for(const id of ["history","technology","jobs","values","contact","faq","guide"]){assert.ok(info.includes('id="'+id+'"'));assert.ok(home.includes('informacion.html#'+id));}assert.doesNotMatch(home,/href="(?:tel:123456789|mailto:shoefit@mail.com)"/);assert.match(error,/href="\/index.html"/);assert.match(error,/href="\/coleccion.html"/);assert.match(error,/content="noindex"/);});
 
-test("frontend sources are grouped and every regular page uses the shared header",async()=>{const rootEntries=await readdir(".");assert.ok(!rootEntries.some(e=>e.endsWith(".html")));assert.equal(regularPages.length,11);for(const page of manifest){const source=await readFile(page.source,"utf8");assert.equal(source.includes("<!-- SHARED_HEADER -->"),page.sharedHeader,page.name);if(page.sharedHeader){assert.doesNotMatch(source,/<header class="site-header">/);const published=await read(page.name);assert.equal([...published.matchAll(/<header class="site-header">/g)].length,1);assert.match(published,/href="css\/ui.css"/);assert.match(published,/href="#contenido"/);assert.match(published,/id="contenido"/);}}});
+test("frontend sources are grouped and every regular page uses the shared header",async()=>{const rootEntries=await readdir(".");assert.ok(!rootEntries.some(e=>e.endsWith(".html")));assert.equal(regularPages.length,11);assert.equal(headerPages.length,10);for(const page of manifest){const source=await readFile(page.source,"utf8");assert.equal(source.includes("<!-- SHARED_HEADER -->"),page.sharedHeader,page.name);if(page.sharedHeader){assert.doesNotMatch(source,/<header class="site-header">/);const published=await read(page.name);assert.equal([...published.matchAll(/<header class="site-header">/g)].length,1);assert.match(published,/href="css\/ui.css"/);assert.match(published,/href="#contenido"/);assert.match(published,/id="contenido"/);}}});
 test("published pages have unique IDs and a single main heading",async()=>{for(const page of [...regularPages,"404.html"]){const html=await read(page);const ids=[...html.matchAll(/\sid="([^"]+)"/g)].map(m=>m[1]);assert.equal(new Set(ids).size,ids.length,page+" duplicate IDs");assert.equal([...html.matchAll(/<h1(?:\s|>)/g)].length,1,page+" heading");assert.doesNotMatch(html,/<!-- SHARED_HEADER -->/);}});
+
+test("admin is independent of storefront navigation and keeps an accessible sidebar toggle",async()=>{const html=await read("administracion.html");assert.doesNotMatch(html,/class="site-header"|id="primary-nav"|aria-label="Carrito"/);assert.match(html,/id="admin-sidebar" class="management-sidebar"/);assert.match(html,/id="admin-sidebar-toggle" aria-controls="admin-sidebar" aria-expanded="true"/);assert.match(html,/class="admin-store-link" href="index.html"/);assert.match(html,/href="#contenido"/);assert.match(html,/id="contenido"/);});

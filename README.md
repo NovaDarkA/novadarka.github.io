@@ -75,3 +75,6 @@ Las rutas públicas no cambian: el manifiesto explícito genera los HTML en dist
 
 ## FE.09 — Validación técnica
 Ver [informe de validación del frontend](docs/frontend-validation.md): evidencia CI y rutas, límites y aprobación visual pendiente.
+
+### Ajuste final de administración
+El panel administrativo no utiliza el encabezado de la tienda. Conserva su menú lateral y un botón accesible para ocultarlo/restaurarlo; el contenido aprovecha el espacio libre. Los diez documentos de tienda mantienen el encabezado común.

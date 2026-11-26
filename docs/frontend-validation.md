@@ -40,3 +40,6 @@ Información: siete accesos desde pie de página, preguntas frecuentes, guía y 
 - Contenido institucional, catálogo femenino, inventario y fotos faltantes siguen pendientes de datos oficiales.
 - Base de datos, autenticación real, persistencia, CRUD y correos son fases posteriores; la API health no prueba la BD.
 - Antes de iniciar F3, obtener aprobación del cierre visual; no fusionar main sin autorización expresa.
+
+## Ajuste solicitado después de la validación
+El panel administrativo se independiza del encabezado comercial; conserva menú lateral, enlace de retorno y añade control para ocultar/restaurar. Se actualizan las pruebas del manifiesto y del navegador. Los resultados anteriores corresponden al commit indicado arriba; la nueva ejecución debe verificarse por separado.
