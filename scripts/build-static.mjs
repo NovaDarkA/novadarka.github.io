@@ -19,8 +19,8 @@ for(const page of pages){
  // Canonical public routes. Keep HTML file names as internal build artifacts.
  html=html.replace(/(href|action)="\/?(coleccion|sorprendeme|carrito|pedido|login|registro|cuenta|recuperar|administracion|informacion|404)\.html(?=["?#])/g,'$1="/$2').replace(/(url=)\/?(coleccion|login|sorprendeme)\.html(?=")/g,'$1/$2');
  // Version local styles and scripts so existing browsers fetch the corrected assets.
- html=html.replace(/(href|src)="((?:css|js)\/[^"?]+\.(?:css|js))"/g,'$1="$2?v=20261126-06"');
- if(page.name!=="administracion.html")html=html.replace("</head>",'<script type="module" src="/js/language.js?v=20261126-06"></script>\n</head>');
+ html=html.replace(/(href|src)="((?:css|js)\/[^"?]+\.(?:css|js))"/g,'$1="$2?v=20261126-07"');
+ if(page.name!=="administracion.html")html=html.replace("</head>",'<script type="module" src="/js/language.js?v=20261126-07"></script>\n</head>');
  await writeFile(join(output,page.name),html,"utf8");
 }
 for(const asset of assets)await cp(join(root,"frontend/assets",asset),join(output,asset),{recursive:true});

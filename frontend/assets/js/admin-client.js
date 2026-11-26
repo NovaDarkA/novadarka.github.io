@@ -259,11 +259,6 @@ export const modules={
         "am",
         "Apellido materno",
         "text"
-      ],
-      [
-        "rolez",
-        "Rol",
-        "text"
       ]
     ]
   }
