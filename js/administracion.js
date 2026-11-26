@@ -141,12 +141,16 @@
  function activate(){
    const requested=location.hash.slice(1);selected=Object.hasOwn(modules,requested)?requested:"productos";
    if(dialog.open)dialog.close();
+   document.getElementById("admin-current-module").textContent=modules[selected].title;
+   document.getElementById("admin-workspace-title").textContent=modules[selected].title;
+   for(const card of document.querySelectorAll("[data-admin-shortcut]")){if(card.dataset.adminShortcut===selected)card.setAttribute("aria-current","true");else card.removeAttribute("aria-current");}
    for(const panel of panels)panel.hidden=panel.id!==selected;
    for(const link of links){if(link.dataset.module===selected)link.setAttribute("aria-current","true");else link.removeAttribute("aria-current");}
  }
  function node(tag,cls,value){const e=document.createElement(tag);if(cls)e.className=cls;if(value!==undefined)e.textContent=value;return e;}
  function field(key,label,type){
-   const wrapper=node("label","admin-field",label),input=node(type==="select"?"select":"input");
+   const wrapper=node("label","admin-field"),input=node(type==="select"?"select":"input");
+   wrapper.append(node("span","admin-field-label",label));
    input.dataset.column=key;input.disabled=true;
    if(type==="select"){input.append(node("option",null,"Sin registros disponibles"));}
    else{input.type=type;input.placeholder=label;if(type==="number")input.step="any";}
@@ -162,6 +166,7 @@
      content.append(node("p","admin-delete-note","¿Deseas eliminar el registro seleccionado? Esta acción requerirá confirmación y permisos cuando el sistema esté conectado."));
      content.append(node("p","admin-dialog-note","No hay ningún registro seleccionado. No se realizará ninguna eliminación."));
    }else{
+     content.append(node("h3","admin-form-heading","Información del registro"));
      const fields=node("div","admin-fields");for(const f of m.fields)fields.append(field(...f));content.append(fields);
    }
    dialog.showModal();

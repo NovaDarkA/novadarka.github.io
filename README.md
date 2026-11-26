@@ -42,3 +42,6 @@ cuenta.html incorpora diseño de perfil, información personal, pedidos, favorit
 
 ## FE.06 — Administración
 Cuatro módulos (PRODUCTO, CLIENTE, VENTA, EMPLEADO) con campos del SQL original, tablas vacías, búsqueda, ordenamiento, paginación y vistas previas de agregar/modificar/eliminar. Todos los campos de edición y confirmaciones de escritura deshabilitados. Sin datos ni autenticación real. No se modifica SQL.
+
+### FE.06 — Refinamiento visual autorizado
+Dashboard administrativo con identidad Shoefit, iconos, accesos rápidos, navegación sincronizada, tabla en panel crema, estados vacíos y formularios refinados. Indicadores sin datos conectados, sin métricas inventadas. Se conserva la interfaz y los campos de los cuatro módulos, sin operaciones reales.
