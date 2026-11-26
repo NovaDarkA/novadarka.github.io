@@ -55,7 +55,8 @@ export const modules={
         "activo",
         "Publicado",
         "bool"
-      ]
+      ],
+      ["publico","Público","text"]
     ]
   },
   "clientes": {
@@ -269,7 +270,7 @@ export function fieldValue(field,raw){
  if(type==="bool")return raw===true;
  const value=String(raw??"").trim();
  if(!value){if(required)throw Error("Completa "+label+".");return null;}
- if(type==="text"){if(key==="cp"&&!/^\d{5}$/.test(value))throw Error("Código postal de cinco dígitos.");if(key==="slug"&&!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(value))throw Error("Identificador web inválido.");return value;}
+ if(type==="text"){if(key==="publico"&&!["hombre","mujer","unisex"].includes(value))throw Error("Selecciona un público válido.");if(key==="cp"&&!/^\d{5}$/.test(value))throw Error("Código postal de cinco dígitos.");if(key==="slug"&&!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(value))throw Error("Identificador web inválido.");return value;}
  const n=Number(value),min=type==="money"||key==="existencias"?0:type==="size"?0.1:1;
  if(!Number.isFinite(n)||n<min||(type==="int"||type==="ref")&&!Number.isInteger(n)||type==="size"&&Math.abs(n*10-Math.round(n*10))>1e-6||type==="money"&&Math.abs(n*100-Math.round(n*100))>0.001)throw Error("Revisa "+label+".");
  return n;

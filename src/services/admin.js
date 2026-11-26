@@ -6,7 +6,7 @@ import {HttpError,json} from "../lib/http.js";
 /** @typedef {{table:string,id:string,fields:Record<string,Field>,readOnly?:boolean}} Module */
 /** @type {Record<string,Module>} */
 const modules={
- productos:{table:"producto",id:"id_producto",fields:{id_proveedor:{type:"id"},nom_prod:{type:"text",max:150,required:true},marca:{type:"text",max:100},talla:{type:"size"},precio:{type:"money"},tipo_prod:{type:"text",max:100},img:{type:"text",max:255,pattern:/^img\/[a-zA-Z0-9_./-]+$/},slug:{type:"text",max:150,required:true,pattern:/^[a-z0-9]+(-[a-z0-9]+)*$/},activo:{type:"bool"},color:{type:"text",max:100}}},
+ productos:{table:"producto",id:"id_producto",fields:{id_proveedor:{type:"id"},nom_prod:{type:"text",max:150,required:true},marca:{type:"text",max:100},talla:{type:"size"},precio:{type:"money"},tipo_prod:{type:"text",max:100},img:{type:"text",max:255,pattern:/^img\/[a-zA-Z0-9_./-]+$/},slug:{type:"text",max:150,required:true,pattern:/^[a-z0-9]+(-[a-z0-9]+)*$/},activo:{type:"bool"},color:{type:"text",max:100},publico:{type:"text",max:10,pattern:/^(hombre|mujer|unisex)$/}}},
  clientes:{table:"cliente",id:"id_cliente",fields:{id_doe:{type:"id",required:true},calle:{type:"text",max:150},numero:{type:"text",max:20},colonia:{type:"text",max:100},cp:{type:"text",max:5,pattern:/^\d{5}$/},talla:{type:"size"}}},
  empleados:{table:"empleado",id:"id_empleado",fields:{id_doe:{type:"id",required:true},genero:{type:"text",max:20},puesto:{type:"text",max:100,required:true},salario:{type:"money",required:true}}},
  ventas:{table:"venta",id:"id_venta",fields:{id_cliente:{type:"id",required:true},id_empleado:{type:"id",required:true},id_producto:{type:"id",required:true},cantidad_pares:{type:"int",required:true},costo_de_venta:{type:"money",required:true}}},

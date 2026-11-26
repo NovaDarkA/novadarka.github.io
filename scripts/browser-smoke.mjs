@@ -32,7 +32,7 @@ const server=createServer(async(req,res)=>{
      if(method==="PATCH"){const row=adminProducts.find(x=>x.id_producto===id);Object.assign(row,body);res.end(JSON.stringify({data:row}));return;}
      if(method==="DELETE"){const row=adminProducts.find(x=>x.id_producto===id);adminProducts=adminProducts.filter(x=>x.id_producto!==id);res.end(JSON.stringify({data:row}));return;}
     }
-    const path=resolve(root,"."+ (pathname==="/"?"/index.html":!extname(pathname)?pathname+".html":pathname));
+    const path=resolve(root,"."+ (pathname==="/"?"/index.html":["/hombre","/mujer"].includes(pathname)?"/coleccion.html":!extname(pathname)?pathname+".html":pathname));
     if(relative(root,path).startsWith("..")) {res.writeHead(403).end();return;}
     res.setHeader("Content-Type",mime[extname(path)]||"application/octet-stream");
     res.end(await readFile(path));

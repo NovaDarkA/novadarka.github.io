@@ -26,7 +26,7 @@ test("all local HTML links, fragments and responsive image sources exist", async
       const [pathWithQuery, hash] = ref.split("#");
       const route = pathWithQuery.split("?")[0];
       const cleanPath = route.replace(/^\//,"");
-      const path = route==="/"?"index.html":cleanPath&&!extname(cleanPath)?cleanPath+".html":cleanPath;
+      const path = route==="/"?"index.html":["/hombre","/mujer"].includes(route)?"coleccion.html":cleanPath&&!extname(cleanPath)?cleanPath+".html":cleanPath;
       const dest = resolve(root, path || page);
       assert.ok(!relative(root,dest).startsWith(".."), page+": "+ref);
       assert.ok((await stat(dest)).isFile(), page+": "+ref);
@@ -117,7 +117,7 @@ test("storefront home links use the canonical root and all catalog products are 
 test("home canonical fallback handles the legacy index path and cache-busted UI",async()=>{
  const html=await read("index.html"),css=await read("css/ui.css");
  assert.match(html,/'\/index\.html'/);
- assert.match(html,/href="css\/ui\.css\?v=20261126-07"/);
+ assert.match(html,/href="css\/ui\.css\?v=20261126-08"/);
  assert.match(css,/\.best-item\{display:grid;grid-template-rows:auto 1fr auto/);
  assert.match(css,/\.flash-card\{display:grid;grid-template-rows:auto 1fr auto auto/);
 });
@@ -132,6 +132,8 @@ test("storefront pages and navigation are Spanish",async()=>{
  assert.doesNotMatch(home,/>FLASH SALE<|>See more |Explore our products/);
 });
 
-test("all regular pages include bilingual language support",async()=>{for(const page of regularPages){const html=await read(page);assert.match(html,/data-language/);assert.match(html,/\/js\/language\.js\?v=20261126-07/);}});
+test("all regular pages include bilingual language support",async()=>{for(const page of regularPages){const html=await read(page);assert.match(html,/data-language/);assert.match(html,/\/js\/language\.js\?v=20261126-08/);}});
 
 test("employee and user tables omit roles but keep linked identity",async()=>{const html=await read("administracion.html");for(const name of ["empleados","usuarios"]){const section=html.split('<section id="'+name+'"')[1].split("</section>")[0];assert.doesNotMatch(section,/<th[^>]*>Rol<|<option[^>]*>Rol</);assert.match(section,/>Correo electrónico</);}const js=await read("js/administracion.js");assert.doesNotMatch(js,/u\?\.rolez/);});
+
+test("separate catalog navigation and coming soon label",async()=>{const h=await read("index.html"),d=await read("sorprendeme.html");assert.match(h,/href="\/hombre"/);assert.match(h,/href="\/mujer"/);assert.match(d,/id="detail-coming-soon" hidden>Próximamente/);});

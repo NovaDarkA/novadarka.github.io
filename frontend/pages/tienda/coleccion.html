@@ -20,6 +20,7 @@
   <script type="module" src="js/collection.js"></script>
   <script type="module" src="js/catalog-tools.js"></script>
   <link rel="stylesheet" href="css/ui.css">
+<script>if(location.pathname==="/mujer")document.documentElement.dataset.catalogAudience="mujer";</script><style>html[data-catalog-audience="mujer"] #collection-grid:not([data-scoped]){display:none}html[data-catalog-audience="mujer"] #collection-count:not([data-scoped]){visibility:hidden}</style>
 </head>
 <body>
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
@@ -30,6 +31,7 @@
       <div class="collection-inner">
         <nav class="catalog-crumb" aria-label="Ruta de navegación"><a href="/">Inicio</a><span aria-hidden="true">/</span><span aria-current="page">Colección</span></nav>
         <div class="catalog-heading"><div><p class="catalog-eyebrow">COLECCIÓN SHOEFIT</p><h1 id="collection-title">Colección de calzado</h1><p>Encuentra tu próximo par.</p></div></div>
+        <nav class="catalog-audiences" aria-label="Colección"><a href="/coleccion">Ver todos los productos</a><a href="/hombre">Hombres</a><a href="/mujer">Mujeres</a></nav>
         <div class="catalog-layout">
           <aside class="catalog-filter-panel" aria-label="Filtros del catálogo">
             <details class="catalog-filter-details" open>

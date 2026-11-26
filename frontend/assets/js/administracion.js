@@ -73,8 +73,9 @@ import {modules,mutationBody} from "./admin-client.js";
   try{
    const related=Object.fromEntries(await Promise.all([...new Set(m.fields.filter(f=>f[2]==="ref").map(f=>f[3]))].map(async k=>[k,await refs(k)])));
    if(operation!==op||!dialog.open)return;
-   for(const f of m.fields){const [k,label,type,ref,requiredRef]=f;const wrap=node("label","admin-field"),input=node(type==="ref"?"select":"input");wrap.append(node("span","admin-field-label",label));input.dataset.column=k;
-    if(type==="ref"){input.add(new Option(requiredRef?"Selecciona un registro":"Sin asignar",""));for(const r of related[ref])input.add(new Option(labelRow(ref,r),String(r[modules[ref].id])));}
+   for(const f of m.fields){const [k,label,type,ref,requiredRef]=f;const wrap=node("label","admin-field"),input=node(type==="ref"||k==="publico"?"select":"input");wrap.append(node("span","admin-field-label",label));input.dataset.column=k;
+    if(k==="publico"){for(const [label,value] of [["Sin asignar",""],["Hombres","hombre"],["Mujeres","mujer"],["Unisex","unisex"]])input.add(new Option(label,value));}
+    else if(type==="ref"){input.add(new Option(requiredRef?"Selecciona un registro":"Sin asignar",""));for(const r of related[ref])input.add(new Option(labelRow(ref,r),String(r[modules[ref].id])));}
     else{input.type=type==="bool"?"checkbox":type==="text"?"text":"number";if(input.type==="number")input.step=type==="size"?"0.1":type==="money"?"0.01":"1";}
     if(k==="id_doe"&&action==="edit")input.disabled=true;
     op.inputs[k]=input;wrap.append(input);fields.append(wrap);

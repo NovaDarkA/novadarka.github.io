@@ -11,7 +11,7 @@ createServer(async(req,res)=>{
    const pathname=decodeURIComponent(url.pathname);
    const legacy=({"/index.html":"/","/index":"/","/page_collection":"/coleccion","/page_login":"/login","/page_surprise":"/sorprendeme"})[pathname]??(/\.html$/.test(pathname)?pathname.slice(0,-5):null);
    if(legacy){res.writeHead(308,{Location:legacy+url.search}).end();return;}
-   const path=resolve(root,"."+ (pathname==="/" ? "/index.html":!extname(pathname)?pathname+".html":pathname));
+   const path=resolve(root,"."+ (pathname==="/" ? "/index.html": ["/hombre","/mujer"].includes(pathname)?"/coleccion.html":!extname(pathname)?pathname+".html":pathname));
    const rel=relative(root,path);
    if(rel.startsWith("..")||isAbsolute(rel)){res.writeHead(403).end();return;}
    const body=await readFile(path);

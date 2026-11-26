@@ -11,6 +11,14 @@
     {
       "source": "/administracion",
       "destination": "/api/admin-page"
+    },
+    {
+      "source": "/hombre",
+      "destination": "/coleccion"
+    },
+    {
+      "source": "/mujer",
+      "destination": "/coleccion"
     }
   ],
   "redirects": [

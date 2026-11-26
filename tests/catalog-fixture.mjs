@@ -5,4 +5,4 @@ export const products=[
   {id:"casual-boots-brown",name:"Casual Boots Martin O'Neil Brown",color:"Brown",image:"img/optimized/botas-cafe-casual-268.webp",priceCents:null,category:"Casual Boots"}
 ];
 
-export const rows=products.map((p,i)=>({id_producto:i+1,slug:p.id,nom_prod:p.name,color:p.color,img:p.image,precio:p.priceCents===null?null:p.priceCents/100,marca:i===2?"Martin Dingman":i===3?"Martin O'Neil":null,tipo_prod:["Sneakers","Sport Shoes","Casual Shoes","Casual Boots"][i],talla:null}));
+export const rows=products.map((p,i)=>({id_producto:i+1,slug:p.id,nom_prod:p.name,color:p.color,img:p.image,precio:p.priceCents===null?null:p.priceCents/100,marca:i===2?"Martin Dingman":i===3?"Martin O'Neil":null,tipo_prod:["Sneakers","Sport Shoes","Casual Shoes","Casual Boots"][i],talla:null,publico:"hombre"}));

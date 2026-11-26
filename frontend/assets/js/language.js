@@ -1,5 +1,15 @@
 // UI translations. Spanish is the canonical source; English is the initial preference.
 const english=Object.fromEntries(`Idioma|Language
+Próximamente|Coming soon
+Colección de hombre|Men's collection
+Colección de mujer|Women's collection
+La colección de mujer estará disponible próximamente.|The women's collection is coming soon.
+Público|Audience
+hombre|men
+mujer|women
+unisex|unisex
+Unisex|Unisex
+Selecciona un público válido.|Select a valid audience.
 Hombres|Men
 Mujeres|Women
 Colección|Collection

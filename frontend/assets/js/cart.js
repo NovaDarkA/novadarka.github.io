@@ -76,6 +76,7 @@ function boot(){
     const requested=new URLSearchParams(location.search).get("producto");
     selected=requested===null?PRODUCT:getProduct(requested);
     const title=document.getElementById("special-title"),size=document.getElementById("cart-size"),image=document.getElementById("detail-image");
+    const comingSoon=document.getElementById("detail-coming-soon");if(comingSoon)comingSoon.hidden=!(selected&&selected.priceCents===null);
     add.disabled=true;size.disabled=true;size.replaceChildren(new Option("Elige una talla",""));
     if(!selected){
       title.textContent="Producto no disponible";image.hidden=true;
