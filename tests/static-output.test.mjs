@@ -52,7 +52,7 @@ test("cart links are navigable and admin preview does not enable mutations", asy
   }
   assert.equal([...admin.matchAll(/data-admin-action="/g)].length,3);
   assert.match(admin,/id="admin-commit" disabled/);
-  assert.equal([...admin.matchAll(/class="admin-table"/g)].length,4);
+  assert.equal([...admin.matchAll(/class="admin-table"/g)].length,8);
   assert.doesNotMatch(admin,/<form\b/);
 });
 
@@ -78,7 +78,7 @@ test("checkout requires verified client session before enabling confirmation",as
 
 test("account preview never submits personal information",async()=>{for(const page of ["cuenta.html","recuperar.html"]){const html=await read(page);assert.doesNotMatch(html,/<form\b/);assert.ok([...html.matchAll(/<input\b[^>]*>/g)].every(m=>m[0].includes("disabled")));}const profile=await read("cuenta.html");for(const id of ["perfil","pedidos","favoritos","seguridad"])assert.ok(profile.includes('id="'+id+'"'));assert.match(await read("login.html"),/href="recuperar.html"/);});
 
-test("admin has four sidebar modules without duplicate overview cards",async()=>{const html=await read("administracion.html");assert.equal([...html.matchAll(/data-module="/g)].length,4);assert.doesNotMatch(html,/admin-overview|data-admin-shortcut/);assert.match(html,/id="admin-current-module"/);assert.match(html,/id="admin-workspace-title"/);assert.match(html,/Modo vista previa/);});
+test("admin has eight sidebar modules without duplicate overview cards",async()=>{const html=await read("administracion.html");assert.equal([...html.matchAll(/data-module="/g)].length,8);assert.doesNotMatch(html,/admin-overview|data-admin-shortcut/);assert.match(html,/id="admin-current-module"/);assert.match(html,/id="admin-workspace-title"/);assert.match(html,/Consultando base de datos/);});
 
 test("information and error pages expose safe, complete navigation",async()=>{const info=await read("informacion.html"),home=await read("index.html"),error=await read("404.html");for(const id of ["history","technology","jobs","values","contact","faq","guide"]){assert.ok(info.includes('id="'+id+'"'));assert.ok(home.includes('informacion.html#'+id));}assert.doesNotMatch(home,/href="(?:tel:123456789|mailto:shoefit@mail.com)"/);assert.match(error,/href="\/index.html"/);assert.match(error,/href="\/coleccion.html"/);assert.match(error,/content="noindex"/);});
 

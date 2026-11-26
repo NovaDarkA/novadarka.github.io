@@ -1,142 +1,7 @@
-(() => {
- const modules={
-  "productos": {
-    "title": "Productos",
-    "id": "ID_PRODUCTO",
-    "fields": [
-      [
-        "ID_PROVEEDOR",
-        "Proveedor",
-        "select"
-      ],
-      [
-        "NOM_PROD",
-        "Nombre del producto",
-        "text"
-      ],
-      [
-        "MARCA",
-        "Marca",
-        "text"
-      ],
-      [
-        "TALLA",
-        "Talla",
-        "number"
-      ],
-      [
-        "PRECIO",
-        "Precio (MXN)",
-        "number"
-      ],
-      [
-        "TIPO_PROD",
-        "Tipo de producto",
-        "text"
-      ],
-      [
-        "img",
-        "Ruta de imagen",
-        "text"
-      ]
-    ]
-  },
-  "clientes": {
-    "title": "Clientes",
-    "id": "ID_CLIENTE",
-    "fields": [
-      [
-        "id_doe",
-        "Usuario asociado",
-        "select"
-      ],
-      [
-        "CALLE",
-        "Calle",
-        "text"
-      ],
-      [
-        "NUMERO",
-        "Número",
-        "text"
-      ],
-      [
-        "COLONIA",
-        "Colonia",
-        "text"
-      ],
-      [
-        "CP",
-        "Código postal",
-        "text"
-      ],
-      [
-        "TALLA",
-        "Talla",
-        "number"
-      ]
-    ]
-  },
-  "ventas": {
-    "title": "Ventas",
-    "id": "ID_VENTA",
-    "fields": [
-      [
-        "ID_CLIENTE",
-        "Cliente",
-        "select"
-      ],
-      [
-        "ID_EMPLEADO",
-        "Empleado",
-        "select"
-      ],
-      [
-        "ID_PRODUCTO",
-        "Producto",
-        "select"
-      ],
-      [
-        "CANTIDAD_PARES",
-        "Cantidad de pares",
-        "number"
-      ],
-      [
-        "COSTO_DE_VENTA",
-        "Costo de venta (MXN)",
-        "number"
-      ]
-    ]
-  },
-  "empleados": {
-    "title": "Empleados",
-    "id": "ID_EMPLEADO",
-    "fields": [
-      [
-        "id_doe",
-        "Usuario asociado",
-        "select"
-      ],
-      [
-        "GENERO",
-        "Género",
-        "text"
-      ],
-      [
-        "PUESTO",
-        "Puesto",
-        "text"
-      ],
-      [
-        "SALARIO",
-        "Salario (MXN)",
-        "number"
-      ]
-    ]
-  }
-};
+import {modules,mutationBody} from "./admin-client.js";
  const links=[...document.querySelectorAll("[data-module]")],panels=[...document.querySelectorAll("[data-module-panel]")];
- const dialog=document.getElementById("admin-dialog"),content=document.getElementById("admin-dialog-content"),commit=document.getElementById("admin-commit");
+ const dialog=document.getElementById("admin-dialog"),content=document.getElementById("admin-dialog-content"),commit=document.getElementById("admin-commit"),message=document.getElementById("admin-dialog-message"),heading=document.querySelector(".management-status strong"),notice=document.querySelector(".management-status p");
+ const buttons=[...document.querySelectorAll("[data-admin-action]")],orderActions=document.getElementById("admin-order-actions");
  const layout=document.querySelector(".management-layout"),sidebar=document.getElementById("admin-sidebar"),sidebarToggle=document.getElementById("admin-sidebar-toggle"),toggleLabel=document.getElementById("admin-sidebar-toggle-label");
  sidebarToggle.addEventListener("click",()=>{
    const collapsed=!sidebar.hidden;
@@ -148,41 +13,85 @@
    sidebarToggle.title=label;
    toggleLabel.textContent=collapsed?"Mostrar menú":"Ocultar menú";
  });
- let selected="productos",opener;
- function activate(){
-   const requested=location.hash.slice(1);selected=Object.hasOwn(modules,requested)?requested:"productos";
-   if(dialog.open)dialog.close();
-   document.getElementById("admin-current-module").textContent=modules[selected].title;
-   document.getElementById("admin-workspace-title").textContent=modules[selected].title;
-   for(const panel of panels)panel.hidden=panel.id!==selected;
-   for(const link of links){if(link.dataset.module===selected)link.setAttribute("aria-current","true");else link.removeAttribute("aria-current");}
+
+ let selected="productos",page=1,records=[],hasMore=false,chosen=null,ready=false,version=0,opener,operation=null,busy=false;
+ const node=(tag,cls,value)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(value!==undefined)e.textContent=value;return e;};
+ const path=(key,id=null,p=1)=>"/api/admin?"+new URLSearchParams({module:key,page:String(p),...(id===null?{}:{id:String(id)})});
+ async function request(url,options={}){
+  const r=await fetch(url,{cache:"no-store",signal:AbortSignal.timeout(15000),...options});
+  if(!r.ok){let code="";try{code=(await r.json()).error||"";}catch{}throw Error(r.status===401?"Inicia sesión nuevamente.":r.status===403?"Acceso administrativo requerido.":r.status===409?"El registro está relacionado con otros datos o ya existe.":code.startsWith("invalid_field_")?"Revisa el campo "+code.slice(14)+".":r.status===400?"Revisa los datos del registro.":"No se pudo completar la operación.");}
+  return r.json();
  }
- function node(tag,cls,value){const e=document.createElement(tag);if(cls)e.className=cls;if(value!==undefined)e.textContent=value;return e;}
- function field(key,label,type){
-   const wrapper=node("label","admin-field"),input=node(type==="select"?"select":"input");
-   wrapper.append(node("span","admin-field-label",label));
-   input.dataset.column=key;input.disabled=true;
-   if(type==="select"){input.append(node("option",null,"Sin registros disponibles"));}
-   else{input.type=type;input.placeholder=label;if(type==="number")input.step="any";}
-   wrapper.append(input);return wrapper;
+ function controls(){
+  const m=modules[selected];for(const b of buttons)b.disabled=!ready||busy||m.readOnly===true||(b.dataset.adminAction!=="add"&&!records.length);
+  orderActions.hidden=selected!=="pedidos";for(const b of orderActions.querySelectorAll("button"))b.disabled=!ready||busy||chosen?.estado!=="pendiente";
  }
- for(const button of document.querySelectorAll("[data-admin-action]"))button.addEventListener("click",()=>{
-   const action=button.dataset.adminAction,m=modules[selected];opener=button;content.replaceChildren();
-   document.getElementById("admin-dialog-title").textContent=({add:"Agregar",edit:"Modificar",delete:"Eliminar"})[action]+" — "+m.title;
-   commit.textContent=action==="delete"?"Confirmar eliminación":"Guardar cambios";commit.disabled=true;
-   commit.classList.toggle("admin-danger",action==="delete");
-   if(action!=="add")content.append(field(m.id,"Registro seleccionado","select"));
-   if(action==="delete"){
-     content.append(node("p","admin-delete-note","¿Deseas eliminar el registro seleccionado? Esta acción requerirá confirmación y permisos cuando el sistema esté conectado."));
-     content.append(node("p","admin-dialog-note","No hay ningún registro seleccionado. No se realizará ninguna eliminación."));
-   }else{
-     content.append(node("h3","admin-form-heading","Información del registro"));
-     const fields=node("div","admin-fields");for(const f of m.fields)fields.append(field(...f));content.append(fields);
+ function render(){
+  const panel=document.getElementById(selected),m=modules[selected],body=panel.querySelector("tbody"),query=panel.querySelector('input[type="search"]').value.toLowerCase(),sort=panel.querySelector(".admin-filters select").value;
+  const filtered=records.filter(r=>Object.values(r).some(v=>String(v??"").toLowerCase().includes(query)));
+  if(sort)filtered.sort((a,b)=>typeof a[sort]==="number"&&typeof b[sort]==="number"?a[sort]-b[sort]:String(a[sort]??"").localeCompare(String(b[sort]??""),"es",{numeric:true}));
+  body.replaceChildren();
+  if(!filtered.length){const tr=node("tr"),td=node("td","admin-empty",ready?"Sin registros disponibles.":"Consultando registros…");td.colSpan=m.fields.length+2;tr.append(td);body.append(tr);}
+  for(const row of filtered){
+   const tr=node("tr"),td=node("td"),radio=node("input");radio.type="radio";radio.name="selected-"+selected;radio.checked=chosen?.[m.id]===row[m.id];radio.setAttribute("aria-label","Seleccionar registro "+row[m.id]);radio.addEventListener("change",()=>{chosen=row;controls();});td.append(radio);tr.append(td,node("td",null,String(row[m.id])));
+   for(const [key,,type] of m.fields){const val=row[key];tr.append(node("td",null,val==null?"—":type==="bool"?val?"Sí":"No":String(val)));}
+   body.append(tr);
+  }
+  panel.querySelector(".admin-count").textContent=ready?filtered.length+" registro(s) en esta página":"Sin conexión";
+  const [prev,next]=panel.querySelectorAll(".admin-pagination button");prev.disabled=!ready||page<=1;next.disabled=!ready||!hasMore;panel.querySelector(".admin-pagination span").textContent="Página "+page;
+  controls();
+ }
+ async function load(){
+  const seq=++version,key=selected;ready=false;chosen=null;records=[];render();heading.textContent="Consultando base de datos";notice.textContent="Cargando "+modules[key].title.toLowerCase()+"…";
+  try{const r=await request(path(key,null,page));if(seq!==version)return;if(!Array.isArray(r.data))throw Error("Respuesta inválida.");records=r.data;hasMore=r.hasMore===true;ready=true;heading.textContent="Base de datos conectada";notice.textContent="Operaciones reales protegidas por la cuenta administrativa.";}
+  catch(e){if(seq!==version)return;heading.textContent="Sin acceso a los datos";notice.textContent=e.message;}
+  if(seq===version){const panel=document.getElementById(key);for(const e of panel.querySelectorAll(".admin-filters input,.admin-filters select,.admin-filters button"))e.disabled=!ready;render();}
+ }
+ function activate(){const requested=location.hash.slice(1);selected=Object.hasOwn(modules,requested)?requested:"productos";if(dialog.open&&!busy)dialog.close();page=1;document.getElementById("admin-current-module").textContent=modules[selected].title;document.getElementById("admin-workspace-title").textContent=modules[selected].title;for(const panel of panels)panel.hidden=panel.id!==selected;for(const link of links){if(link.dataset.module===selected)link.setAttribute("aria-current","true");else link.removeAttribute("aria-current");}load();}
+ for(const panel of panels){
+  const m=modules[panel.id],sort=panel.querySelector(".admin-filters select");sort.replaceChildren(new Option("Identificador",m.id),...m.fields.map(f=>new Option(f[1],f[0])));
+  panel.querySelector('input[type="search"]').addEventListener("input",render);sort.addEventListener("change",render);panel.querySelector(".admin-filters button").addEventListener("click",()=>{panel.querySelector('input[type="search"]').value="";sort.value=m.id;render();});
+  const [prev,next]=panel.querySelectorAll(".admin-pagination button");prev.addEventListener("click",()=>{if(ready&&page>1){page--;load();}});next.addEventListener("click",()=>{if(ready&&hasMore){page++;load();}});
+ }
+ async function refs(key){
+  const result=[];for(let i=1;i<=100;i++){const r=await request(path(key,null,i));result.push(...r.data);if(!r.hasMore)return result;}throw Error("Demasiados registros relacionados.");
+ }
+ function labelRow(key,r){return "#"+r[modules[key].id]+" · "+(r.nom_prod||r.nombre||r.marca||r.puesto||r.calle||"Registro");}
+ async function openOperation(action,button){
+  if(!ready||busy)return;const key=selected,m=modules[key];opener=button;operation={key,action,row:chosen||records[0]||null,inputs:{}};
+  const op=operation;content.replaceChildren();message.textContent="Preparando operación…";commit.disabled=true;
+  document.getElementById("admin-dialog-title").textContent=({add:"Agregar",edit:"Modificar",delete:"Eliminar"})[action]+" — "+m.title;
+  commit.textContent=action==="delete"?"Confirmar eliminación":"Guardar cambios";commit.classList.toggle("admin-danger",action==="delete");dialog.showModal();
+  if(action!=="add"){
+   const pick=node("select");for(const r of records)pick.add(new Option(labelRow(key,r),String(r[m.id])));pick.value=String(op.row?.[m.id]);const wrap=node("label","admin-field","Registro seleccionado");wrap.append(pick);content.append(wrap);
+   pick.addEventListener("change",()=>{op.row=records.find(r=>String(r[m.id])===pick.value);fill();});
+  }
+  function fill(){for(const [k,input] of Object.entries(op.inputs)){const value=op.row?.[k];if(input.type==="checkbox")input.checked=value??(key==="variantes"&&action==="add");else input.value=value??(k==="existencias"&&action==="add"?"0":"");}}
+  if(action==="delete"){content.append(node("p","admin-delete-note","¿Deseas eliminar el registro seleccionado? La base de datos rechazará registros que tengan relaciones protegidas."));message.textContent="Esta acción elimina únicamente el registro seleccionado.";commit.disabled=!op.row;return;}
+  const fields=node("div","admin-fields");content.append(fields);
+  try{
+   const related=Object.fromEntries(await Promise.all([...new Set(m.fields.filter(f=>f[2]==="ref").map(f=>f[3]))].map(async k=>[k,await refs(k)])));
+   if(operation!==op||!dialog.open)return;
+   for(const f of m.fields){const [k,label,type,ref,requiredRef]=f;const wrap=node("label","admin-field"),input=node(type==="ref"?"select":"input");wrap.append(node("span","admin-field-label",label));input.dataset.column=k;
+    if(type==="ref"){input.add(new Option(requiredRef?"Selecciona un registro":"Sin asignar",""));for(const r of related[ref])input.add(new Option(labelRow(ref,r),String(r[modules[ref].id])));}
+    else{input.type=type==="bool"?"checkbox":type==="text"?"text":"number";if(input.type==="number")input.step=type==="size"?"0.1":type==="money"?"0.01":"1";}
+    if(k==="id_doe"&&action==="edit")input.disabled=true;
+    op.inputs[k]=input;wrap.append(input);fields.append(wrap);
    }
-   dialog.showModal();
+   if(action==="add")op.row=null;fill();message.textContent="Los cambios se guardarán en Supabase.";commit.disabled=false;
+  }catch(e){if(operation===op)message.textContent=e.message;}
+ }
+ for(const b of buttons)b.addEventListener("click",()=>openOperation(b.dataset.adminAction,b));
+ commit.addEventListener("click",async()=>{
+  const op=operation;if(!op||busy||commit.disabled)return;const m=modules[op.key];busy=true;commit.disabled=true;controls();
+  try{
+   const method={add:"POST",edit:"PATCH",delete:"DELETE"}[op.action];
+   const values=Object.fromEntries(Object.entries(op.inputs).map(([k,i])=>[k,i.type==="checkbox"?i.checked:i.value]));
+   const body=method==="DELETE"?undefined:mutationBody(op.key,values,method==="PATCH"?op.row:null);
+   if(body&&!Object.keys(body).length){message.textContent="No hay cambios pendientes.";return;}
+   await request(path(op.key,method==="POST"?null:op.row[m.id]),{method,headers:{"Content-Type":"application/json"},body:body===undefined?undefined:JSON.stringify(body)});
+   dialog.close();if(selected===op.key){await load();notice.textContent="Operación guardada correctamente.";}
+  }catch(e){message.textContent=e.message;}finally{busy=false;commit.disabled=false;controls();}
  });
- document.querySelector(".admin-close").addEventListener("click",()=>dialog.close());
- document.getElementById("admin-cancel").addEventListener("click",()=>dialog.close());
- dialog.addEventListener("close",()=>opener?.focus());
- window.addEventListener("hashchange",activate);activate();
-})();
+ for(const b of orderActions.querySelectorAll("button"))b.addEventListener("click",async()=>{if(!chosen||busy||chosen.estado!=="pendiente"||!window.confirm("¿Cambiar el estado del pedido #"+chosen.id_pedido+"?"))return;busy=true;controls();try{await request("/api/orders",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:chosen.id_pedido,estado:b.dataset.orderState})});await load();notice.textContent="Estado del pedido actualizado.";}catch(e){notice.textContent=e.message;}finally{busy=false;controls();}});
+ document.querySelector(".admin-close").addEventListener("click",()=>{if(!busy)dialog.close();});document.getElementById("admin-cancel").addEventListener("click",()=>{if(!busy)dialog.close();});dialog.addEventListener("cancel",e=>{if(busy)e.preventDefault();});dialog.addEventListener("close",()=>{operation=null;opener?.focus();});window.addEventListener("hashchange",activate);activate();

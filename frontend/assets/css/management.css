@@ -97,3 +97,5 @@
 .admin-sidebar-toggle .admin-icon{width:19px;height:19px}
 .admin-sidebar-toggle[aria-expanded=false] .admin-toggle-chevron{transform:rotate(180deg);transform-origin:14.5px 12px}
 @media(max-width:760px){.admin-toolbar{gap:10px;margin-bottom:16px}.admin-toolbar .admin-breadcrumb{flex-basis:100%}}
+
+.management-actions button:disabled{opacity:.5;cursor:not-allowed}.admin-table tbody tr+tr{border-top:1px solid var(--admin-line)}.admin-field input[type=checkbox]{width:22px;min-height:22px}.admin-table td{max-width:260px;overflow:hidden;text-overflow:ellipsis}
