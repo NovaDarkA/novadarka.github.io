@@ -41,7 +41,7 @@
 @media(max-width:650px){.shopping-cart{padding:24px 12px 40px;min-height:calc(100vh - 56px)}.cart-heading{align-items:flex-start;flex-wrap:wrap;margin-bottom:20px}.cart-item{grid-template-columns:80px minmax(0,1fr);gap:12px}.cart-item img{height:80px}.cart-item-actions{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}.cart-summary dl>div{font-size:13px}}
 
 .product-select{display:flex;align-items:center;justify-content:center;text-align:center;background:#fdffb7;color:var(--ink);border:1px solid #c4bf83;border-radius:6px;padding:8px 6px;min-height:36px;margin-top:12px;font:500 clamp(11px,1.1vw,16px)/1.3 var(--mono);text-decoration:none}
-.product-select:hover{background:white}.flash-card .product-select{margin-top:auto}.flash-card .price-new{margin-bottom:12px}.best-item .product-select{margin-top:8px}.special-btn:disabled{opacity:.55;cursor:not-allowed}.special-stars[hidden],.special-icon[hidden]{display:none}
+.product-select:hover{background:white}.flash-card .product-select{width:100%;margin-top:auto}.flash-card .price-new{margin-bottom:12px}.best-item .product-select{margin-top:auto}.special-btn:disabled{opacity:.55;cursor:not-allowed}.special-stars[hidden],.special-icon[hidden]{display:none}
 
 /* FE.04: order review and confirmation preview. */
 .order-steps{display:flex;align-items:center;gap:clamp(8px,3vw,32px);flex-wrap:wrap;margin-bottom:28px;font-size:13px}

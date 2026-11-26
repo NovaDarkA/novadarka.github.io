@@ -81,7 +81,6 @@ export const headerPages = pages.filter(page=>page.sharedHeader).map(page=>page.
 export const regularPages = pages.filter(page=>page.sharedHeader||page.name==="administracion.html").map(page=>page.name);
 export function renderHeader(template,page){
   let result=template.trim();
-  if(page==="index.html")result=result.replace('href="index.html#inicio"','href="#inicio"');
   const active={
     "coleccion.html":['href="coleccion.html">Colección Martin Dingman','href="coleccion.html" aria-current="page">Colección Martin Dingman'],
     "login.html":['href="login.html">Iniciar sesión','href="login.html" aria-current="page">Iniciar sesión'],

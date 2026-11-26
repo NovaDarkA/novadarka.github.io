@@ -13,7 +13,7 @@ function render(grid,selector,items){
  }
  if(!items.length){const note=document.createElement("p");note.textContent=catalogAvailable?"No hay productos disponibles.":"Catálogo no disponible.";grid.append(note);}
 }
-render(flash,".flash-card",products.filter(p=>p.priceCents!==null));
+render(flash,".flash-card",products);
 render(best,".best-item",products);
 document.querySelector(".best-stars")?.remove();
 document.querySelector("#best-title").textContent="Explore our products";

@@ -16,5 +16,12 @@
       "source": "/administracion",
       "destination": "/api/admin-page"
     }
+  ],
+  "redirects": [
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": true
+    }
   ]
 }

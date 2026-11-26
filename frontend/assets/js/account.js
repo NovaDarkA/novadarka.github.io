@@ -93,7 +93,7 @@ deleteForm.addEventListener("submit",async event=>{
  try{
   const response=await fetch("/api/profile",{method:"DELETE",cache:"no-store",signal:AbortSignal.timeout(30000),headers:{"Content-Type":"application/json"},body:JSON.stringify({confirm:"ELIMINAR",password:deletePassword.value})});
   const data=await response.json();
-  if(response.ok&&data.status==="account_deleted"){current=null;try{localStorage.removeItem(KEY);}catch{}location.replace("index.html");return;}
+  if(response.ok&&data.status==="account_deleted"){current=null;try{localStorage.removeItem(KEY);}catch{}location.replace("/");return;}
   deleteStatus.textContent=data.error==="pending_orders"?"Cancela o completa tus pedidos pendientes antes de eliminar tu cuenta.":data.error==="invalid_password"?"La contraseña es incorrecta.":data.error==="unauthenticated"?"Inicia sesión nuevamente.":data.error==="try_later"?"Demasiados intentos. Intenta más tarde.":"No se pudo eliminar la cuenta. Comprueba tu sesión antes de volver a intentarlo.";
  }catch{deleteStatus.textContent="No se pudo confirmar la eliminación. Comprueba tu sesión antes de volver a intentarlo.";}
  finally{deletePassword.value="";deleting=false;toggle();}

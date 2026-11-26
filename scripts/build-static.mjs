@@ -15,6 +15,7 @@ for(const page of pages){
    if(html.split("<!-- SHARED_HEADER -->").length!==2)throw Error("Missing or duplicate header: "+page.source);
    html=html.replace("<!-- SHARED_HEADER -->",renderHeader(header,page.name));
  }
+ html=html.replace(/href="\/?index\.html(?:#inicio)?"/g,'href="/"').replace(/href="\/?index\.html#/g,'href="/#');
  await writeFile(join(output,page.name),html,"utf8");
 }
 for(const asset of assets)await cp(join(root,"frontend/assets",asset),join(output,asset),{recursive:true});

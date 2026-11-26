@@ -96,6 +96,8 @@ try {
         assert.equal(valid,true,page+" empty-form validation");
       }
       if(page==="index.html"){
+        assert.equal(await evaluate("document.querySelectorAll(\".flash-card\").length===4&&document.querySelectorAll(\".best-item\").length===4"),true,"all four catalog products shown on home");
+        assert.equal(await evaluate("(()=>{for(const selector of [\".flash-card\",\".best-item\"]){const rows=new Map();for(const card of document.querySelectorAll(selector)){const c=card.getBoundingClientRect(),b=card.querySelector(\".product-select\").getBoundingClientRect();if(Math.abs((b.left+b.right-c.left-c.right)/2)>1)return false;const key=Math.round(c.top);if(rows.has(key)&&Math.abs(rows.get(key)-b.bottom)>1)return false;rows.set(key,b.bottom);} }return true;})()"),true,"centered and row-aligned home product buttons");
         const searchWorks=await evaluate("(()=>{document.querySelector('[aria-label=Buscar]').click();const input=document.querySelector('#catalog-query');if(!input)return false;input.value='tenis gris';input.dispatchEvent(new Event('input'));const found=document.querySelectorAll('.catalog-result').length===1&&document.querySelector('.catalog-result').href.includes('flexible-sneakers-gray');document.querySelector('.catalog-close').click();return found&&!document.querySelector('.catalog-dialog').open})()");
         assert.equal(searchWorks,true,"catalog search and modal");
         assert.equal(await evaluate("document.querySelector('a[href=\\\"informacion.html#guide\\\"]')!==null"),true,"footer guide navigation");
@@ -132,7 +134,7 @@ try {
     await call("Page.navigate",{url:missing});
     let missingReady=false;for(let i=0;i<100;i++){try{missingReady=await evaluate("location.href === "+JSON.stringify(missing)+" && document.readyState === 'complete' && document.title.includes('Página no encontrada')");if(missingReady)break;}catch{}await delay(100);}
     assert.ok(missingReady,"custom 404 loaded");
-    assert.equal(await evaluate("document.querySelector('.info-error-card a[href=\\\"/index.html\\\"]')!==null&&document.documentElement.scrollWidth<=innerWidth+2"),true,"404 recovery link and layout");
+    assert.equal(await evaluate("document.querySelector('.info-error-card a[href=\\\"/\\\"]')!==null&&document.documentElement.scrollWidth<=innerWidth+2"),true,"404 recovery link and layout");
   }
   // Recovery flow against a simulated server; no real email or password changes.
   await call("Emulation.setDeviceMetricsOverride",{width:390,height:844,deviceScaleFactor:1,mobile:true});
