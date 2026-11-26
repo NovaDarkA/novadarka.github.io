@@ -72,3 +72,6 @@ tests/                # pruebas unitarias y de salida
 docs/                 # documentación
 ```
 Las rutas públicas no cambian: el manifiesto explícito genera los HTML en dist/ y copia CSS/JS/imágenes. Se unifican estados de foco, controles deshabilitados, elementos ocultos y movimiento reducido. Las plantillas no se sirven directamente ni se publican los archivos internos.
+
+## FE.09 — Validación técnica
+Ver [informe de validación del frontend](docs/frontend-validation.md): evidencia CI y rutas, límites y aprobación visual pendiente.
