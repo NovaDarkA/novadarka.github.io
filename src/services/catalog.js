@@ -41,7 +41,7 @@ export async function catalogResponse(req,request){
  if(!p.has("page"))return {data:await readCatalog(request)};
  const page=p.get("page")||"";
  if(!/^\d+$/.test(page)||Number(page)<1||Number(page)>10000)throw new HttpError(400,"invalid_page");
- const q=new URLSearchParams({select:"id_producto,slug,nom_prod,marca,talla,precio,tipo_prod,color,img",activo:"eq.true",order:"id_producto.asc",limit:"51",offset:String((Number(page)-1)*50)});
+ const q=new URLSearchParams({select:"id_producto,slug,nom_prod,marca,talla,precio,tipo_prod,color,img,producto_variante(talla,existencias)",activo:"eq.true","producto_variante.activo":"eq.true",order:"id_producto.asc",limit:"51",offset:String((Number(page)-1)*50)});
  const r=await request("/rest/v1/producto?"+q);
  if(!r.ok)throw new HttpError(503,"catalog_unavailable");
  const rows=await r.json();if(!Array.isArray(rows))throw new HttpError(503,"catalog_unavailable");

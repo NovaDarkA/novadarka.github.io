@@ -23,3 +23,6 @@ Pedido #13, tres unidades, 300 MXN; compra y cancelación reales confirmadas, ac
 
 ## Prueba automatizada pendiente
 Desde una terminal local con Node.js 22, definir SHOEFIT_ADMIN_PASSWORD sin escribir la contraseña en el historial y ejecutar `node scripts/live-admin-crud.mjs`. El script usa exclusivamente el preview, crea un proveedor y un producto no publicado con identificadores únicos, consulta, modifica, elimina y verifica ausencia en las dos tablas. Intenta limpiar únicamente esos registros temporales incluso ante una respuesta perdida. No utiliza credenciales en el código ni altera registros preexistentes. Resultado real pendiente de ejecución desde un entorno con acceso HTTP POST/PATCH/DELETE.
+
+## Ajuste de integración
+Filtro de tallas conectado a variantes activas con existencias positivas y precio confirmado. El catálogo paginado incluye las variantes mediante una sola consulta; el detalle y checkout conservan sus comprobaciones independientes de inventario. Validación automatizada en curso. La prueba HTTP administrativa sigue pendiente.

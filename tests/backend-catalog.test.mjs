@@ -21,3 +21,5 @@ test("catalog rejects mutation methods",async()=>{
  const result=await products.fetch(new Request("https://example.com/api/products",{method:"POST"}));
  assert.equal(result.status,405);
 });
+
+test("paginated catalog includes only active variant inventory in a single query",async()=>{const {catalogResponse}=await import("../src/services/catalog.js");const fixture=[{id_producto:1,producto_variante:[{talla:26,existencias:3}]}];const result=await catalogResponse(new Request("https://example.com/api/products?page=1"),async path=>{const q=new URL(path,"https://example.com").searchParams;assert.match(q.get("select"),/producto_variante\(talla,existencias\)/);assert.equal(q.get("producto_variante.activo"),"eq.true");return Response.json(fixture);});assert.deepEqual(result.data,fixture);});

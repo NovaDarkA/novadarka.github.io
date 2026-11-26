@@ -7,7 +7,8 @@ export function mapProduct(row){
  const price=row.precio;
  if(price!==null&&(typeof price!=="number"||!Number.isFinite(price)||price<0))throw Error("invalid_price");
  const image=typeof row.img==="string"&&/^img\/[a-zA-Z0-9_./-]+$/.test(row.img)&&!row.img.split("/").some(v=>v===".."||v===".")?row.img:"";
- return Object.freeze({id:row.slug,dbId:row.id_producto,name:row.nom_prod,color:row.color||"Por confirmar",image,priceCents:price===null?null:Math.round(price*100),category:row.tipo_prod||"Sin tipo",brand:row.marca||"",type:row.tipo_prod||""});
+ const sizes=Object.freeze([...new Set(price===null||!Array.isArray(row.producto_variante)?[]:row.producto_variante.filter(v=>v&&typeof v.talla==="number"&&Number.isFinite(v.talla)&&v.talla>0&&Number.isInteger(v.existencias)&&v.existencias>0).map(v=>String(v.talla)))].sort((a,b)=>Number(a)-Number(b)));
+ return Object.freeze({sizes,id:row.slug,dbId:row.id_producto,name:row.nom_prod,color:row.color||"Por confirmar",image,priceCents:price===null?null:Math.round(price*100),category:row.tipo_prod||"Sin tipo",brand:row.marca||"",type:row.tipo_prod||""});
 }
 export async function fetchCatalog(fetcher=fetch){
  const result=[];
