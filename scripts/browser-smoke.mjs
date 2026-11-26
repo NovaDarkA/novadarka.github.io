@@ -42,7 +42,7 @@ try {
   // External fonts are intentionally excluded; check the local application without network dependencies.
   await call("Network.setBlockedURLs",{urls:["*fonts.googleapis.com/*","*fonts.gstatic.com/*"]});
   const pages=["index.html","coleccion.html","sorprendeme.html","login.html","registro.html","administracion.html","carrito.html"];
-  for(const width of [1366,390]){
+  for(const width of [1366,820,390]){
     await call("Emulation.setDeviceMetricsOverride",{width,height:844,deviceScaleFactor:1,mobile:width===390});
     for(const page of pages){
       const url=origin+"/"+page;
@@ -75,6 +75,10 @@ try {
       if(page==="sorprendeme.html"){
         const toolsWork=await evaluate("(()=>{const b=document.querySelector('.special-fav'),s=document.querySelector('.special-share');const before=b.getAttribute('aria-pressed');b.click();const changed=b.getAttribute('aria-pressed')!==before;b.click();s.click();const link=document.querySelector('#product-share-url')?.value;document.querySelector('.catalog-close').click();return changed&&b.getAttribute('aria-pressed')===before&&link.includes('producto=flexible-sneakers-gray')})()");
         assert.equal(toolsWork,true,"favorite and share");
+      }
+      if(page==="coleccion.html"){
+        const catalogWorks=await evaluate("(async()=>{const f=document.querySelector('#collection-filters'),q=document.querySelector('#collection-query'),sort=document.querySelector('#collection-sort'),cards=()=>[...document.querySelectorAll('.product-card:not([hidden])')];const initial=cards().length===4;q.value='gris';q.dispatchEvent(new Event('input',{bubbles:true}));const match=cards().length===1&&cards()[0].dataset.product==='flexible-sneakers-gray';q.value='zzzz';q.dispatchEvent(new Event('input',{bubbles:true}));const empty=!document.querySelector('#collection-empty').hidden;f.reset();await Promise.resolve();sort.value='desc';sort.dispatchEvent(new Event('change'));const ordered=cards()[0].dataset.product==='martin-dingman-brown'&&cards().at(-1).dataset.product==='casual-boots-brown';f.reset();await Promise.resolve();return initial&&match&&empty&&ordered&&document.querySelector('#collection-size').disabled&&document.documentElement.scrollWidth<=innerWidth+2})()");
+        assert.equal(catalogWorks,true,"catalog filters and empty state");
       }
       if(page==="index.html"||page==="coleccion.html"){
         const linked=await evaluate("(()=>{const cards=[...document.querySelectorAll('.flash-card,.best-item,.product-card')];return cards.length>0&&cards.every(c=>c.querySelector('.product-select[href]'))})()");

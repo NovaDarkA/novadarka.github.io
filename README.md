@@ -27,3 +27,6 @@ Búsqueda local por nombre/tipo/color, filtro de favoritos, favoritos persistent
 
 ## FE.01 — Encabezado y navegación
 Menús desplegables Men, Women y Collection, y menú de cuenta uniforme en las siete pantallas. Men muestra únicamente referencias conocidas; Women indica que la colección está pendiente, sin inventar registros. Favoritos utiliza la búsqueda existente. Cuenta real y perfil se implementarán después. Pruebas de enlaces, apertura/cierre, teclado y adaptación.
+
+## FE.02 — Diseño del catálogo
+Filtros, ordenamiento, paginación, estado vacío, tarjetas y diseño adaptable. Se muestran cuatro modelos únicos existentes en lugar de ocho tarjetas duplicadas y el contador ficticio 98. Clasificación provisional derivada de sus nombres; tallas deshabilitadas hasta confirmar stock. Sin datos de BD. Pruebas ampliadas a 1366, 820 y 390 px.

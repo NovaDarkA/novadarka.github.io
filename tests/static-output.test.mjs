@@ -56,8 +56,8 @@ test("all visible product cards have a selection link with a known product", asy
   const {getProduct}=await import("../js/products.js");
   for(const page of ["index.html","coleccion.html"]){
     const html=await read(page);
-    const cards=[...html.matchAll(/<(article|li) class="(?:flash-card|best-item|product-card)">([\s\S]*?)<\/\1>/g)];
-    assert.equal(cards.length,page==="index.html"?10:8);
+    const cards=[...html.matchAll(/<(article|li) class="(?:flash-card|best-item|product-card)"[^>]*>([\s\S]*?)<\/\1>/g)];
+    assert.equal(cards.length,page==="index.html"?10:4);
     for(const card of cards){const match=card[2].match(/href="sorprendeme.html\?producto=([^"]+)"/);assert.ok(match);assert.ok(getProduct(match[1]));}
   }
 });
@@ -65,3 +65,5 @@ test("all visible product cards have a selection link with a known product", asy
 test("all seven screens share the same header disclosures",async()=>{
  for(const page of pages.filter(p=>!p.startsWith("page_"))){const html=await read(page);assert.equal([...html.matchAll(/class="nav-disclosure"/g)].length,3,page);assert.match(html,/class="account-disclosure nav-disclosure"/);assert.match(html,/data-open-favorites/);assert.match(html,/href="css\/header.css"/);}
 });
+
+test("catalog has complete visual controls and no fabricated inventory",async()=>{const html=await read("coleccion.html");for(const id of ["collection-query","collection-brand","collection-type","collection-size","collection-price","collection-sort","collection-prev","collection-next","collection-empty"])assert.ok(html.includes('id="'+id+'"'));assert.match(html,/id="collection-size" disabled/);assert.doesNotMatch(html,/98 Products/);});
