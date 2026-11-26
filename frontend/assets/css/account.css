@@ -47,3 +47,5 @@
 .account-recovery-card .account-notice,.account-recovery-card .account-fields{margin:0}
 @media(max-width:760px){.account-layout{grid-template-columns:minmax(0,1fr)}.account-nav{grid-template-columns:repeat(2,minmax(0,1fr))}.account-fields{grid-template-columns:1fr}.account-favorites{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:350px){.account-favorites{grid-template-columns:1fr}}
+
+.account-danger{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:10px 14px;background:#a42323;color:#fff;border:1px solid #8e2020;border-radius:7px;font:500 13px/1.4 var(--mono);text-decoration:none;cursor:pointer}.account-danger:hover:not(:disabled){background:#801919}.account-danger:disabled{opacity:.55;cursor:not-allowed}#account-delete-form[hidden]{display:none}
