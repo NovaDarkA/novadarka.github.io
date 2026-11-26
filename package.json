@@ -9,7 +9,7 @@
   "scripts": {
     "build": "node scripts/build-static.mjs",
     "typecheck": "tsc --noEmit",
-    "test": "node --experimental-strip-types --test tests/foundation.test.mjs tests/cart.test.mjs tests/catalog.test.mjs tests/collection.test.mjs tests/backend-catalog.test.mjs tests/session.test.mjs tests/admin-api.test.mjs tests/checkout-api.test.mjs",
+    "test": "node --experimental-strip-types --test tests/foundation.test.mjs tests/cart.test.mjs tests/catalog.test.mjs tests/collection.test.mjs tests/backend-catalog.test.mjs tests/session.test.mjs tests/admin-api.test.mjs tests/checkout-api.test.mjs tests/profile-api.test.mjs",
     "check": "npm run typecheck && npm test && npm run build && npm run test:static",
     "test:static": "node --test tests/static-output.test.mjs",
     "test:browser": "node scripts/browser-smoke.mjs",
