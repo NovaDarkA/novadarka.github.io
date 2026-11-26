@@ -58,6 +58,7 @@
           </div>
           <div class="account-actions"><button type="button" id="profile-save" class="account-primary" disabled>Guardar cambios</button><button type="button" id="profile-reset" class="account-secondary" disabled>Cancelar</button></div>
           <p id="profile-status" class="account-muted" role="status"></p>
+          <div class="account-security-row"><div><h3>Eliminar cuenta</h3><p>Elimina definitivamente tu acceso y tus datos personales.</p></div><a href="#seguridad" class="account-danger">Eliminar mi cuenta</a></div>
         </section>
         <section class="account-panel" id="pedidos" data-account-panel hidden aria-labelledby="orders-title">
           <h2 id="orders-title">Mis pedidos</h2><p class="account-muted">Consulta el historial y estado de tus pedidos. Puedes cancelar los pendientes.</p>
@@ -73,7 +74,10 @@
         <section class="account-panel" id="seguridad" data-account-panel hidden aria-labelledby="security-title">
           <h2 id="security-title">Seguridad de la cuenta</h2><p class="account-muted">Administra el acceso a tu cuenta.</p>
           <div class="account-security-row"><div><h3>Contraseña</h3><p>Recuperación mediante correo electrónico.</p></div><a href="recuperar.html" class="account-secondary">Recuperar contraseña</a></div>
-          <div class="account-security-row"><div><h3>Sesión actual</h3><p>No hay una sesión iniciada.</p></div><button type="button" class="account-secondary" disabled>Cerrar sesión</button></div>
+          <div class="account-security-row"><div><h3>Sesión actual</h3><p id="account-session-state">No hay una sesión iniciada.</p></div><button type="button" class="account-secondary" disabled>Cerrar sesión</button></div>
+          <div class="account-security-row"><div><h3>Eliminar mi cuenta</h3><p>Esta acción es irreversible. Los pedidos y ventas históricos se conservan sin tus datos de perfil. Cancela los pedidos pendientes antes de continuar.</p></div></div>
+          <form id="account-delete-form" class="account-fields" hidden><label class="account-wide">Contraseña actual<input id="account-delete-password" type="password" maxlength="128" autocomplete="current-password" required disabled></label><div class="account-actions account-wide"><button type="submit" id="account-delete-button" class="account-danger" disabled>Eliminar mi cuenta</button></div></form>
+          <p id="account-delete-status" role="status" class="account-muted"></p>
         </section>
       </div>
     </div>
