@@ -73,10 +73,10 @@ function boot(){
     if(requested!==null){
       selected=getProduct(requested);
       const title=document.getElementById("special-title");
-      const gallery=document.querySelector(".special-gallery");
       if(!selected){
         title.textContent="Producto no disponible";
-        gallery.replaceChildren();
+        document.getElementById("detail-image").hidden=true;
+        document.getElementById("detail-thumbnails").hidden=true;
         document.querySelector(".special-crumb").textContent="";
         document.querySelector(".special-color").textContent="";
         document.querySelector(".special-price").textContent="";
@@ -89,10 +89,9 @@ function boot(){
         document.querySelector(".special-crumb").textContent=selected.category;
         document.querySelector(".special-color").textContent="Color: "+selected.color;
         document.querySelector(".special-price").textContent=selected.priceCents===null?"Precio por confirmar":money(selected.priceCents);
-        document.querySelector(".special-stars").hidden=true;
         for(const button of document.querySelectorAll(".special-icon"))button.hidden=false;
-        const image=el("img","sg-main");image.src=selected.image;image.alt=selected.name;
-        gallery.replaceChildren(image);
+        const image=document.getElementById("detail-image");image.src=selected.image;image.alt=selected.name;
+        document.getElementById("detail-thumbnails").hidden=true;
         if(selected.priceCents===null)productStatus.textContent="Precio pendiente de confirmar. No se puede añadir al carrito todavía.";
       }
       if(!selected||selected.priceCents===null){add.disabled=true;document.getElementById("cart-size").disabled=true;}
@@ -102,8 +101,10 @@ function boot(){
     if(!selected||selected.priceCents===null)return;
     const size=document.getElementById("cart-size");
     if(!validSize(size.value)){productStatus.textContent="Selecciona una talla antes de añadir el producto.";size.focus();return;}
-    if(items.find(i=>i.id===selected.id&&i.size===size.value)?.quantity>=99){productStatus.textContent="Límite de 99 artículos por talla.";return;}
-    if(!save(changeCart(items,size.value,1,selected.id))){productStatus.textContent="No fue posible guardar el carrito en este navegador.";return;}
+    const quantity=Number(document.getElementById("detail-quantity").value);
+    if(!Number.isInteger(quantity)||quantity<1||quantity>99){productStatus.textContent="Elige una cantidad entre 1 y 99.";document.getElementById("detail-quantity").focus();return;}
+    if((items.find(i=>i.id===selected.id&&i.size===size.value)?.quantity||0)+quantity>99){productStatus.textContent="Límite de 99 artículos por modelo y talla.";return;}
+    if(!save(changeCart(items,size.value,quantity,selected.id))){productStatus.textContent="No fue posible guardar el carrito en este navegador.";return;}
     location.href="carrito.html";
   });
   window.addEventListener("storage",e=>{if(e.key===CART_KEY||e.key===null){items=read();render();}});

@@ -30,3 +30,6 @@ Menús desplegables Men, Women y Collection, y menú de cuenta uniforme en las s
 
 ## FE.02 — Diseño del catálogo
 Filtros, ordenamiento, paginación, estado vacío, tarjetas y diseño adaptable. Se muestran cuatro modelos únicos existentes en lugar de ocho tarjetas duplicadas y el contador ficticio 98. Clasificación provisional derivada de sus nombres; tallas deshabilitadas hasta confirmar stock. Sin datos de BD. Pruebas ampliadas a 1366, 820 y 390 px.
+
+## FE.03 — Detalle de producto
+Galería seleccionable de cuatro vistas para tenis grises, una foto para los demás modelos; descripción basada en imágenes, tipo y disponibilidad por confirmar, talla ilustrativa y cantidad, subtotal local, productos relacionados, favoritos y compartir. No se inventan reseñas, inventario ni precio faltante. Agregar al carrito utiliza la cantidad elegida.

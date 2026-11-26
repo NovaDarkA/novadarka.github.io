@@ -16,6 +16,8 @@
   <script type="module" src="js/cart.js"></script>
   <link rel="stylesheet" href="css/catalog-tools.css">
   <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/product-detail.css">
+  <script type="module" src="js/product-detail.js"></script>
   <script type="module" src="js/catalog-tools.js"></script>
 </head>
 <body>
@@ -78,26 +80,18 @@
 
   <main id="contenido">
     <noscript><p class="cart-product-status">Activa JavaScript para consultar el producto seleccionado y elegir su talla.</p></noscript>
-    <section class="special" lang="en" aria-labelledby="special-title">
-      <a class="special-back" lang="es" href="index.html#best-rated" aria-label="Volver al sitio principal"><span aria-hidden="true">←</span> Volver a Shoefit</a>
+    <section class="special product-detail" aria-labelledby="special-title">
+      <a class="special-back" lang="es" href="coleccion.html" aria-label="Volver a la colección"><span aria-hidden="true">←</span> Volver a la colección</a>
       <div class="special-inner">
         <div class="special-gallery">
-          <img class="sg-main" src="img/optimized/tenis-gris-lateral-619.webp"
-               srcset="img/optimized/tenis-gris-lateral-619.webp 619w, img/optimized/tenis-gris-lateral-1200.webp 1200w"
-               sizes="(min-width:761px) 36vw, 92vw" width="619" height="298"
-               alt="Par de tenis grises con suela blanca, vista lateral en tres cuartos">
-          <div class="sg-row">
-            <img src="img/optimized/tenis-gris-frontal-310.webp"
-                 srcset="img/optimized/tenis-gris-frontal-310.webp 310w, img/optimized/tenis-gris-frontal-620.webp 620w"
-                 sizes="(min-width:761px) 18vw, 46vw" width="310" height="144"
-                 alt="Tenis gris con suela blanca, perfil derecho">
-            <img src="img/optimized/tenis-gris-trasera-309.webp"
-                 srcset="img/optimized/tenis-gris-trasera-309.webp 309w, img/optimized/tenis-gris-trasera-600.webp 600w"
-                 sizes="(min-width:761px) 18vw, 46vw" width="309" height="138"
-                 alt="Tenis gris con suela blanca, perfil izquierdo">
+          <div class="detail-image-stage"><img class="sg-main" id="detail-image" src="img/optimized/tenis-gris-lateral-619.webp" width="619" height="298" alt="Vista lateral de tenis grises"></div>
+          <div class="detail-thumbnails" id="detail-thumbnails" aria-label="Vistas del producto">
+            <button type="button" class="detail-thumb" aria-pressed="true" aria-label="Vista lateral" data-image="img/optimized/tenis-gris-lateral-619.webp"><img src="img/optimized/tenis-gris-lateral-619.webp" width="90" height="68" alt=""></button>
+            <button type="button" class="detail-thumb" aria-pressed="false" aria-label="Perfil derecho" data-image="img/optimized/tenis-gris-frontal-310.webp"><img src="img/optimized/tenis-gris-frontal-310.webp" width="90" height="68" alt=""></button>
+            <button type="button" class="detail-thumb" aria-pressed="false" aria-label="Perfil izquierdo" data-image="img/optimized/tenis-gris-trasera-309.webp"><img src="img/optimized/tenis-gris-trasera-309.webp" width="90" height="68" alt=""></button>
+            <button type="button" class="detail-thumb" aria-pressed="false" aria-label="Vista superior" data-image="img/optimized/tenis-gris-superior-466.webp"><img src="img/optimized/tenis-gris-superior-466.webp" width="90" height="68" alt=""></button>
           </div>
-          <img class="sg-top" src="img/optimized/tenis-gris-superior-466.webp"
-               width="466" height="523" alt="Par de tenis grises con agujetas blancas, vista superior">
+          <p class="detail-gallery-note" id="detail-gallery-note">Selecciona una vista para ampliar la fotografía.</p>
         </div>
         <div class="special-panel">
           <p class="special-crumb">Men / Sneakers / Gray</p>
@@ -112,11 +106,14 @@
             </button>
           </div>
           <p class="special-price"><span class="visually-hidden">Price: </span>$2,490 MXN</p>
-          <span class="special-stars" role="img" aria-label="Rated 5 out of 5 stars"><img src="img/optimized/estrella-calificacion-67.webp" srcset="img/optimized/estrella-calificacion-67.webp 67w, img/optimized/estrella-calificacion-134.webp 134w" sizes="(min-width:761px) 4vw, 28px" width="67" height="67" alt=""><img src="img/optimized/estrella-calificacion-67.webp" srcset="img/optimized/estrella-calificacion-67.webp 67w, img/optimized/estrella-calificacion-134.webp 134w" sizes="(min-width:761px) 4vw, 28px" width="67" height="67" alt=""><img src="img/optimized/estrella-calificacion-67.webp" srcset="img/optimized/estrella-calificacion-67.webp 67w, img/optimized/estrella-calificacion-134.webp 134w" sizes="(min-width:761px) 4vw, 28px" width="67" height="67" alt=""><img src="img/optimized/estrella-calificacion-67.webp" srcset="img/optimized/estrella-calificacion-67.webp 67w, img/optimized/estrella-calificacion-134.webp 134w" sizes="(min-width:761px) 4vw, 28px" width="67" height="67" alt=""><img src="img/optimized/estrella-calificacion-67.webp" srcset="img/optimized/estrella-calificacion-67.webp 67w, img/optimized/estrella-calificacion-134.webp 134w" sizes="(min-width:761px) 4vw, 28px" width="67" height="67" alt=""></span>
+          <p class="special-stars detail-rating">Calificación pendiente de confirmar.</p>
+          <dl class="detail-facts"><div><dt>Tipo</dt><dd id="detail-type">Tenis</dd></div><div><dt>Disponibilidad</dt><dd id="detail-availability">Por confirmar</dd></div></dl>
+          <h2 class="detail-section-title">Descripción</h2>
+          <p class="detail-description" id="detail-description">Tenis grises con agujetas y suela blanca.</p>
           <div class="special-actions">
-            <label class="visually-hidden" for="cart-size">Talla MX</label>
+            <div class="detail-option"><label for="cart-size">Talla (MX)</label>
             <select class="special-btn cart-size" id="cart-size" aria-describedby="cart-product-status">
-              <option value="">Select Size</option>
+              <option value="">Elige una talla</option>
               <option value="22">22 MX</option>
               <option value="23">23 MX</option>
               <option value="24">24 MX</option>
@@ -126,12 +123,18 @@
               <option value="28">28 MX</option>
               <option value="29">29 MX</option>
               <option value="30">30 MX</option>
-            </select>
-            <button class="special-btn" type="button" id="add-to-cart">Add to Cart</button>
+            </select></div>
+            <div class="detail-option"><label for="detail-quantity">Cantidad</label><div class="detail-quantity-controls"><button type="button" id="detail-minus" aria-label="Disminuir cantidad">−</button><input id="detail-quantity" type="number" inputmode="numeric" min="1" max="99" step="1" value="1"><button type="button" id="detail-plus" aria-label="Aumentar cantidad">+</button></div></div>
+            <button class="special-btn detail-add" type="button" id="add-to-cart">Agregar al carrito</button>
           </div>
+          <p class="detail-estimate">Subtotal estimado: <strong id="detail-subtotal">$2,490 MXN</strong></p>
           <p class="cart-product-status" id="cart-product-status" role="status">Tallas de prueba; disponibilidad pendiente de confirmar.</p>
         </div>
       </div>
+      <section class="detail-related" aria-labelledby="related-title">
+        <div class="detail-related-heading"><h2 id="related-title">También te puede interesar</h2><a href="coleccion.html">Ver colección</a></div>
+        <div id="detail-related-grid" class="detail-related-grid"></div>
+      </section>
     </section>
   </main>
   <script>document.documentElement.classList.add('js');</script>

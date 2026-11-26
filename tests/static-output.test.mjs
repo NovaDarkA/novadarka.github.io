@@ -67,3 +67,5 @@ test("all seven screens share the same header disclosures",async()=>{
 });
 
 test("catalog has complete visual controls and no fabricated inventory",async()=>{const html=await read("coleccion.html");for(const id of ["collection-query","collection-brand","collection-type","collection-size","collection-price","collection-sort","collection-prev","collection-next","collection-empty"])assert.ok(html.includes('id="'+id+'"'));assert.match(html,/id="collection-size" disabled/);assert.doesNotMatch(html,/98 Products/);});
+
+test("detail has four gallery controls, quantity and related products slots",async()=>{const html=await read("sorprendeme.html");assert.equal([...html.matchAll(/class="detail-thumb"/g)].length,4);for(const id of ["detail-image","detail-quantity","detail-minus","detail-plus","detail-subtotal","detail-related-grid","detail-availability"])assert.ok(html.includes('id="'+id+'"'));});
