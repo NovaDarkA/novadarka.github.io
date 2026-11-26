@@ -82,6 +82,7 @@ function boot(){
         document.querySelector(".special-price").textContent="";
         document.querySelector(".special-stars").hidden=true;
         productStatus.textContent="Regresa a la colección para seleccionar un producto.";
+        for(const button of document.querySelectorAll(".special-icon"))button.hidden=true;
       }else if(selected.id!==PRODUCT.id){
         title.textContent=selected.name;
         document.title="Shoefit | "+selected.name;
@@ -89,7 +90,7 @@ function boot(){
         document.querySelector(".special-color").textContent="Color: "+selected.color;
         document.querySelector(".special-price").textContent=selected.priceCents===null?"Precio por confirmar":money(selected.priceCents);
         document.querySelector(".special-stars").hidden=true;
-        for(const button of document.querySelectorAll(".special-icon"))button.hidden=true;
+        for(const button of document.querySelectorAll(".special-icon"))button.hidden=false;
         const image=el("img","sg-main");image.src=selected.image;image.alt=selected.name;
         gallery.replaceChildren(image);
         if(selected.priceCents===null)productStatus.textContent="Precio pendiente de confirmar. No se puede añadir al carrito todavía.";

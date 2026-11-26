@@ -14,6 +14,8 @@
   <link rel="stylesheet" href="css/cart.css">
   <script src="js/main.js" defer></script>
   <script type="module" src="js/cart.js"></script>
+  <link rel="stylesheet" href="css/catalog-tools.css">
+  <script type="module" src="js/catalog-tools.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
@@ -31,7 +33,7 @@
       <a href="coleccion.html">Collection <span aria-hidden="true">⌄</span></a>
     </nav>
     <div class="header-actions" aria-label="Acciones">
-      <button type="button" aria-label="Buscar" class="action-icon">
+      <button type="button" aria-label="Buscar" aria-haspopup="dialog" class="action-icon">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.4"/><path d="m16 16 4.2 4.2"/></svg>
       </button>
       <a href="carrito.html" aria-label="Carrito" class="action-icon">
@@ -71,10 +73,10 @@
           <h1 id="special-title">Flexible Sneakers for men</h1>
           <div class="special-meta">
             <p class="special-color">Color: Gray</p>
-            <button class="special-icon special-share" type="button" aria-label="Share">
+            <button class="special-icon special-share" type="button" aria-label="Compartir producto">
               <svg viewBox="0 0 24 26" aria-hidden="true" focusable="false"><path d="M12 16V2.5M7.6 6.8 12 2.4l4.4 4.4M7 10H3.5v14.5h17V10H17"/></svg>
             </button>
-            <button class="special-icon special-fav" type="button" aria-label="Add to favorites">
+            <button class="special-icon special-fav" type="button" aria-label="Añadir a favoritos" aria-pressed="false">
               <svg viewBox="0 0 26 24" aria-hidden="true" focusable="false"><path d="M13 22.2 3.6 12.6C1 10 1.2 6 3.8 3.9c2.6-2 6-1.2 9.2 2.6 3.2-3.800 6.600-4.600 9.200-2.600 2.600 2.100 2.800 6.100.2 8.700z"/></svg>
             </button>
           </div>

@@ -64,6 +64,16 @@ try {
         const valid=await evaluate("(()=>{const f=document.querySelector('[data-auth-form]');f.requestSubmit();return !!f.querySelector('[aria-invalid=true]')})()");
         assert.equal(valid,true,page+" empty-form validation");
       }
+      if(page==="index.html"){
+        const searchWorks=await evaluate("(()=>{document.querySelector('[aria-label=Buscar]').click();const input=document.querySelector('#catalog-query');if(!input)return false;input.value='tenis gris';input.dispatchEvent(new Event('input'));const found=document.querySelectorAll('.catalog-result').length===1&&document.querySelector('.catalog-result').href.includes('flexible-sneakers-gray');document.querySelector('.catalog-close').click();return found&&!document.querySelector('.catalog-dialog').open})()");
+        assert.equal(searchWorks,true,"catalog search and modal");
+        const footerWorks=await evaluate("(()=>{document.querySelector('[data-info=guide]').click();const ok=document.querySelector('.catalog-dialog').open&&document.querySelector('.catalog-info').textContent.includes('carrito');document.querySelector('.catalog-close').click();return ok})()");
+        assert.equal(footerWorks,true,"footer guide");
+      }
+      if(page==="sorprendeme.html"){
+        const toolsWork=await evaluate("(()=>{const b=document.querySelector('.special-fav'),s=document.querySelector('.special-share');const before=b.getAttribute('aria-pressed');b.click();const changed=b.getAttribute('aria-pressed')!==before;b.click();s.click();const link=document.querySelector('#product-share-url')?.value;document.querySelector('.catalog-close').click();return changed&&b.getAttribute('aria-pressed')===before&&link.includes('producto=flexible-sneakers-gray')})()");
+        assert.equal(toolsWork,true,"favorite and share");
+      }
       if(page==="index.html"||page==="coleccion.html"){
         const linked=await evaluate("(()=>{const cards=[...document.querySelectorAll('.flash-card,.best-item,.product-card')];return cards.length>0&&cards.every(c=>c.querySelector('.product-select[href]'))})()");
         assert.equal(linked,true,page+" product selection links");

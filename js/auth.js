@@ -13,8 +13,8 @@
     confirmEmpty: "Confirm your password.",
     confirmMismatch: "Passwords do not match.",
     formInvalid: "Please fix the errors above and try again.",
-    loginUnavailable: "Your details look valid, but login is not available yet: this site has no server to check accounts. Nothing was sent or saved.",
-    registerUnavailable: "Your details look valid, but sign up is not available yet: this site has no server to create accounts. Nothing was sent or saved."
+    loginUnavailable: "Your details look valid, but login is not available yet: account verification is not connected yet. Nothing was sent or saved.",
+    registerUnavailable: "Your details look valid, but sign up is not available yet: account registration is not connected yet. Nothing was sent or saved."
   };
 
   

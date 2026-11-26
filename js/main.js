@@ -9,7 +9,7 @@
  }
  button.addEventListener("click",()=>setOpen(button.getAttribute("aria-expanded")!=="true"));
  nav.addEventListener("click",e=>{if(e.target.closest("a"))setOpen(false)});
- document.addEventListener("keydown",e=>{if(e.key==="Escape"){setOpen(false);button.focus()}});
+ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&button.getAttribute("aria-expanded")==="true"&&!document.querySelector("dialog[open]")){setOpen(false);button.focus()}});
  window.addEventListener("resize",()=>{if(window.innerWidth>650)setOpen(false)});
 })();
 
@@ -40,8 +40,3 @@
  update();
 })();
 
-(function(){
- document.querySelectorAll(".site-footer a[data-placeholder]").forEach(a=>{
-   a.addEventListener("click",e=>e.preventDefault());
- });
-})();

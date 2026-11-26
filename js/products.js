@@ -8,3 +8,14 @@ const products=[
 export const PRODUCTS=Object.freeze(Object.fromEntries(products.map(p=>[p.id,Object.freeze(p)])));
 export const PRODUCT=PRODUCTS["flexible-sneakers-gray"];
 export const getProduct=id=>typeof id==="string"&&Object.hasOwn(PRODUCTS,id)?PRODUCTS[id]:null;
+
+export function searchProducts(query, favorites=null){
+ const normalize=s=>s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();
+ const words=normalize(String(query??"")).split(/\s+/).filter(Boolean);
+ return Object.values(PRODUCTS).filter(p=>{
+   if(favorites&&!favorites.includes(p.id))return false;
+   const aliases=({"flexible-sneakers-gray":"tenis gris hombre","sport-orange-white":"tenis deportivos naranja blanco","martin-dingman-brown":"zapatos cafe cuero hombre","casual-boots-brown":"botas cafe casual"})[p.id]||"";
+   const text=normalize([p.name,p.color,p.category,aliases].join(" "));
+   return words.every(w=>text.includes(w));
+ });
+}
