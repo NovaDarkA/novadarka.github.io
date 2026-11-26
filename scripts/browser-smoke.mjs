@@ -9,10 +9,12 @@ import {rows as catalogRows} from "../tests/catalog-fixture.mjs";
 const root=resolve("dist");
 const mime={".html":"text/html",".css":"text/css",".js":"text/javascript",".svg":"image/svg+xml",".webp":"image/webp"};
 let checkoutFixture=false,attempts=[],profilePatch=null,orderPatch=null,adminFixture=false,adminChanges=[];
+let recoveryAttempts=[];
 let adminProducts=[{id_producto:1,id_proveedor:null,nom_prod:'Tenis prueba',marca:null,talla:null,precio:100,tipo_prod:'Tenis',img:null,slug:'tenis-prueba',activo:true,color:null}];
 const server=createServer(async(req,res)=>{
   try {
     const requestUrl=new URL(req.url,"http://localhost");const pathname=requestUrl.pathname;
+    if(pathname==="/api/recovery"&&req.method==="POST"){let raw="";for await(const chunk of req)raw+=chunk;const body=JSON.parse(raw);recoveryAttempts.push(body);res.setHeader("Content-Type","application/json");if(body.action==="request"){res.statusCode=202;res.end(JSON.stringify({status:"check_email"}));}else if(body.code!=="123456"){res.statusCode=400;res.end(JSON.stringify({error:"invalid_or_expired_code"}));}else{res.end(JSON.stringify({status:"password_updated"}));}return;}
     if(pathname==="/api/products"){res.setHeader("Content-Type","application/json");res.end(JSON.stringify({data:catalogRows.map((p,i)=>({...p,producto_variante:i===0?[{talla:26,existencias:3}]:[]})),page:1,hasMore:false}));return;}
     if(pathname==="/api/availability"){const p=catalogRows.find(p=>p.slug===requestUrl.searchParams.get("slug"));res.setHeader("Content-Type","application/json");res.end(JSON.stringify({data:{id_producto:p.id_producto,slug:p.slug,precio:p.precio,variantes:checkoutFixture?[{id_variante:7,talla:26,existencias:5,disponible:true}]:[]}}));return;}
     if(checkoutFixture&&pathname==="/api/profile"){if(req.method==="PATCH"){let raw="";for await(const chunk of req)raw+=chunk;profilePatch=JSON.parse(raw);}res.setHeader("Content-Type","application/json");res.end(JSON.stringify({data:{id_user:999,rolez:"cliente",nombre:"Cliente prueba",mail:"test@example.invalid",calle:"Calle A",numero:"1",cp:"01234",colonia:"Centro",...profilePatch}}));return;}
@@ -132,6 +134,14 @@ try {
     assert.ok(missingReady,"custom 404 loaded");
     assert.equal(await evaluate("document.querySelector('.info-error-card a[href=\\\"/index.html\\\"]')!==null&&document.documentElement.scrollWidth<=innerWidth+2"),true,"404 recovery link and layout");
   }
+  // Recovery flow against a simulated server; no real email or password changes.
+  await call("Emulation.setDeviceMetricsOverride",{width:390,height:844,deviceScaleFactor:1,mobile:true});
+  await call("Page.navigate",{url:origin+"/recuperar.html"});
+  let recoveryReady=false;for(let i=0;i<100;i++){try{recoveryReady=await evaluate("location.pathname==='/recuperar.html' && document.readyState==='complete' && !document.querySelector('#recovery-form button[type=submit]')?.disabled");if(recoveryReady)break;}catch{}await delay(100);}
+  assert.ok(recoveryReady,"recovery form loaded");
+  assert.equal(await evaluate("(async()=>{const form=document.querySelector('#recovery-form'),step=document.querySelector('#recovery-step'),status=document.querySelector('#recovery-status'),f=form.elements,wait=async predicate=>{for(let i=0;i<100;i++){if(predicate())return true;await new Promise(r=>setTimeout(r,50));}return false;};f.email.value='demo@example.invalid';form.requestSubmit();if(!await wait(()=>!step.hidden&&status.textContent.includes('recibirás')))return false;f.code.value='000000';f.password.value='sample-pass';f.confirmation.value='different-pass';form.requestSubmit();if(!status.textContent.includes('no coinciden'))return false;f.confirmation.value=f.password.value;form.requestSubmit();if(!await wait(()=>status.textContent.includes('inválido')))return false;f.code.value='123456';form.requestSubmit();if(!await wait(()=>status.textContent.includes('Contraseña actualizada')))return false;return step.hidden&&f.password.value===''&&f.code.value===''&&f.email.value===''&&!f.email.readOnly})()"),true,"recovery request, password mismatch, invalid code and successful reset");
+  assert.equal(recoveryAttempts.length,3);assert.deepEqual(recoveryAttempts.map(x=>x.action),["request","reset","reset"]);assert.equal(recoveryAttempts[1].code,"000000");assert.equal(recoveryAttempts[2].code,"123456");
+  console.log("PASS recovery form with simulated API; no real email sent");
   // Independent authenticated checkout simulation (not a live Supabase account).
   checkoutFixture=true;
   await call("Emulation.setDeviceMetricsOverride",{width:390,height:844,deviceScaleFactor:1,mobile:true});
