@@ -9,7 +9,7 @@ export function mapProduct(row){
  if(price!==null&&(typeof price!=="number"||!Number.isFinite(price)||price<0))throw Error("invalid_price");
  const image=typeof row.img==="string"&&/^img\/[a-zA-Z0-9_./-]+$/.test(row.img)&&!row.img.split("/").some(v=>v===".."||v===".")?row.img:"";
  const sizes=Object.freeze([...new Set(price===null||!Array.isArray(row.producto_variante)?[]:row.producto_variante.filter(v=>v&&typeof v.talla==="number"&&Number.isFinite(v.talla)&&v.talla>0&&Number.isInteger(v.existencias)&&v.existencias>0).map(v=>String(v.talla)))].sort((a,b)=>Number(a)-Number(b)));
- return Object.freeze({sizes,id:row.slug,dbId:row.id_producto,name:catalogLabel(row.nom_prod),color:catalogLabel(row.color)||"Por confirmar",image,priceCents:price===null?null:Math.round(price*100),category:catalogLabel(row.tipo_prod)||"Sin tipo",brand:row.marca||"",type:catalogLabel(row.tipo_prod)||""});
+ return Object.freeze({sizes,id:row.slug,dbId:row.id_producto,name:catalogLabel(row.nom_prod),searchTerms:[row.nom_prod,row.color,row.tipo_prod].filter(Boolean).join(' '),color:catalogLabel(row.color)||"Por confirmar",image,priceCents:price===null?null:Math.round(price*100),category:catalogLabel(row.tipo_prod)||"Sin tipo",brand:row.marca||"",type:catalogLabel(row.tipo_prod)||""});
 }
 export async function fetchCatalog(fetcher=fetch){
  const result=[];
@@ -41,7 +41,7 @@ export function searchProducts(query,favorites=null){
  return Object.values(PRODUCTS).filter(p=>{
   if(favorites&&!favorites.includes(p.id))return false;
   const aliases=({"flexible-sneakers-gray":"tenis gris hombre","sport-orange-white":"tenis deportivos naranja blanco","martin-dingman-brown":"zapatos cafe cuero hombre","casual-boots-brown":"botas cafe casual"})[p.id]||"";
-  return words.every(w=>normalize([p.name,p.color,p.category,p.brand,aliases].join(" ")).includes(w));
+  return words.every(w=>normalize([p.name,p.color,p.category,p.brand,p.searchTerms,aliases].join(" ")).includes(w));
  });
 }
 export function setImage(img,p){img.removeAttribute("srcset");if(p.image){img.src=p.image;img.hidden=false;}else{img.removeAttribute("src");img.hidden=true;}img.alt=p.name;}

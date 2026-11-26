@@ -75,7 +75,7 @@ async function loadOrders(){
    const action=el("td");
    if(o.estado==="pendiente"){
     const cancel=el("button","account-secondary","Cancelar pedido");cancel.type="button";cancel.addEventListener("click",async()=>{
-     if(canceling||!window.confirm("¿Cancelar el pedido #"+o.id_pedido+"?"))return;
+     if(canceling||!window.confirm((window.shoefitT||String)("¿Cancelar el pedido #"+o.id_pedido+"?")))return;
      canceling=true;cancel.disabled=true;ordersStatus.textContent="Cancelando pedido…";
      try{await request("/api/orders",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:o.id_pedido,estado:"cancelado"})});await loadOrders();ordersStatus.textContent="Pedido cancelado.";}catch(e){ordersStatus.textContent=e.message;cancel.disabled=false;}finally{canceling=false;}
     });action.append(cancel);
@@ -88,7 +88,7 @@ async function loadOrders(){
 window.addEventListener("hashchange",()=>{if(location.hash==="#pedidos")loadOrders();});
 deleteForm.addEventListener("submit",async event=>{
  event.preventDefault();if(!current||deleting||!deleteForm.reportValidity())return;
- if(!window.confirm("¿Eliminar definitivamente tu cuenta de Shoefit? Esta acción no se puede deshacer."))return;
+ if(!window.confirm((window.shoefitT||String)("¿Eliminar definitivamente tu cuenta de Shoefit? Esta acción no se puede deshacer.")))return;
  deleting=true;toggle();deleteStatus.textContent="Eliminando cuenta…";
  try{
   const response=await fetch("/api/profile",{method:"DELETE",cache:"no-store",signal:AbortSignal.timeout(30000),headers:{"Content-Type":"application/json"},body:JSON.stringify({confirm:"ELIMINAR",password:deletePassword.value})});

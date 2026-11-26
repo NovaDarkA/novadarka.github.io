@@ -29,13 +29,13 @@ import {modules,mutationBody} from "./admin-client.js";
  }
  function render(){
   const panel=document.getElementById(selected),m=modules[selected],body=panel.querySelector("tbody"),query=panel.querySelector('input[type="search"]').value.toLowerCase(),sort=panel.querySelector(".admin-filters select").value;
-  const filtered=records.filter(r=>Object.values(r).some(v=>String(v??"").toLowerCase().includes(query)));
+  const filtered=records.filter(r=>[...Object.values(r),...Object.values(r.usuario||{})].some(v=>String(v??"").toLowerCase().includes(query)));
   if(sort)filtered.sort((a,b)=>typeof a[sort]==="number"&&typeof b[sort]==="number"?a[sort]-b[sort]:String(a[sort]??"").localeCompare(String(b[sort]??""),"es",{numeric:true}));
   body.replaceChildren();
-  if(!filtered.length){const tr=node("tr"),td=node("td","admin-empty",ready?"Sin registros disponibles.":"Consultando registros…");td.colSpan=m.fields.length+2;tr.append(td);body.append(tr);}
+  if(!filtered.length){const tr=node("tr"),td=node("td","admin-empty",ready?"Sin registros disponibles.":"Consultando registros…");td.colSpan=m.fields.length+2+(selected==="empleados"?3:selected==="usuarios"?1:0);tr.append(td);body.append(tr);}
   for(const row of filtered){
    const tr=node("tr"),td=node("td"),radio=node("input");radio.type="radio";radio.name="selected-"+selected;radio.checked=chosen?.[m.id]===row[m.id];radio.setAttribute("aria-label","Seleccionar registro "+row[m.id]);radio.addEventListener("change",()=>{chosen=row;controls();});td.append(radio);tr.append(td,node("td",null,String(row[m.id])));
-   for(const [key,,type] of m.fields){const val=row[key];tr.append(node("td",null,val==null?"—":type==="bool"?val?"Sí":"No":String(val)));}
+   for(const [key,,type] of m.fields){const val=row[key];tr.append(node("td",null,val==null?"—":type==="bool"?val?"Sí":"No":String(val)));if(selected==="empleados"&&key==="id_doe"){const u=row.usuario;tr.append(node("td",null,u?[u.nombre,u.ap,u.am].filter(Boolean).join(" ")||"—":"—"),node("td",null,u?.mail||"—"),node("td",null,u?.rolez||"—"));}if(selected==="usuarios"&&key==="am")tr.append(node("td",null,row.mail||"—"));}
    body.append(tr);
   }
   panel.querySelector(".admin-count").textContent=ready?filtered.length+" registro(s) en esta página":"Sin conexión";
@@ -57,7 +57,7 @@ import {modules,mutationBody} from "./admin-client.js";
  async function refs(key){
   const result=[];for(let i=1;i<=100;i++){const r=await request(path(key,null,i));result.push(...r.data.map(localizeCatalogRecord));if(!r.hasMore)return result;}throw Error("Demasiados registros relacionados.");
  }
- function labelRow(key,r){return "#"+r[modules[key].id]+" · "+(r.nom_prod||r.nombre||r.marca||r.puesto||r.calle||"Registro");}
+ function labelRow(key,r){return "#"+r[modules[key].id]+" · "+(r.nom_prod||r.nombre||r.usuario?.nombre||r.marca||r.puesto||r.calle||"Registro")+(r.mail||r.usuario?.mail?" · "+(r.mail||r.usuario.mail):"");}
  async function openOperation(action,button){
   if(!ready||busy)return;const key=selected,m=modules[key];opener=button;operation={key,action,row:chosen||records[0]||null,inputs:{}};
   const op=operation;content.replaceChildren();message.textContent="Preparando operación…";commit.disabled=true;
@@ -94,5 +94,5 @@ import {modules,mutationBody} from "./admin-client.js";
    dialog.close();if(selected===op.key){await load();notice.textContent="Operación guardada correctamente.";}
   }catch(e){message.textContent=e.message;}finally{busy=false;commit.disabled=false;controls();}
  });
- for(const b of orderActions.querySelectorAll("button"))b.addEventListener("click",async()=>{if(!chosen||busy||chosen.estado!=="pendiente"||!window.confirm("¿Cambiar el estado del pedido #"+chosen.id_pedido+"?"))return;busy=true;controls();try{await request("/api/orders",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:chosen.id_pedido,estado:b.dataset.orderState})});await load();notice.textContent="Estado del pedido actualizado.";}catch(e){notice.textContent=e.message;}finally{busy=false;controls();}});
+ for(const b of orderActions.querySelectorAll("button"))b.addEventListener("click",async()=>{if(!chosen||busy||chosen.estado!=="pendiente"||!window.confirm((window.shoefitT||String)("¿Cambiar el estado del pedido #"+chosen.id_pedido+"?")))return;busy=true;controls();try{await request("/api/orders",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:chosen.id_pedido,estado:b.dataset.orderState})});await load();notice.textContent="Estado del pedido actualizado.";}catch(e){notice.textContent=e.message;}finally{busy=false;controls();}});
  document.querySelector(".admin-close").addEventListener("click",()=>{if(!busy)dialog.close();});document.getElementById("admin-cancel").addEventListener("click",()=>{if(!busy)dialog.close();});dialog.addEventListener("cancel",e=>{if(busy)e.preventDefault();});dialog.addEventListener("close",()=>{operation=null;opener?.focus();});window.addEventListener("hashchange",activate);activate();

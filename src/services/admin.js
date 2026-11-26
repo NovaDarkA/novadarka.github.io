@@ -66,6 +66,8 @@ export async function manage(req,request=createSupabaseTransport()){
  const query=new URLSearchParams({select:[module.id,...Object.keys(module.fields)].join(",")});
  if(identifier!==null)query.set(module.id,"eq."+Number(identifier));
  if(req.method==="GET"){
+  if(key==="empleados")query.set("select",query.get("select")+",usuario!empleado_id_doe_fkey(nombre,ap,am,mail,rolez)");
+  if(key==="usuarios")query.set("select",query.get("select")+",mail");
   const page=params.get("page")||"1";if(!/^\d+$/.test(page)||Number(page)<1||Number(page)>10000)throw new HttpError(400,"invalid_page");
   query.set("order",module.id+".asc");query.set("limit",identifier===null?"51":"1");query.set("offset",identifier===null?String((Number(page)-1)*50):"0");
   const result=await rows(await request("/rest/v1/"+module.table+"?"+query,{},token));

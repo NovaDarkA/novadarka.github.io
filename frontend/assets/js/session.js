@@ -8,7 +8,7 @@
   const button=event.currentTarget;
   const label=button.textContent;
   button.disabled=true;button.textContent="Cerrando sesión…";button.setAttribute("aria-busy","true");
-  try{const response=await fetch("/api/logout",{method:"POST",headers:{"Content-Type":"application/json"},body:"{}"});if(!response.ok)throw Error();location.replace("/login");}catch{signingOut=false;button.disabled=false;button.textContent=label;button.removeAttribute("aria-busy");alert("No se pudo cerrar la sesión. Intenta nuevamente.");}
+  try{const response=await fetch("/api/logout",{method:"POST",headers:{"Content-Type":"application/json"},body:"{}"});if(!response.ok)throw Error();location.replace("/login");}catch{signingOut=false;button.disabled=false;button.textContent=label;button.removeAttribute("aria-busy");alert((window.shoefitT||String)("No se pudo cerrar la sesión. Intenta nuevamente."));}
  };
  // The administrative HTML is already protected and verified on the server.
  // It has no account dropdown or profile to hydrate, so avoid a redundant session request.

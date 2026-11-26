@@ -9,12 +9,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Pacifico&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=20261126-05">
-  <link rel="stylesheet" href="css/media_query.css?v=20261126-05">
-  <link rel="stylesheet" href="css/management.css?v=20261126-05">
-  <script type="module" src="js/administracion.js?v=20261126-05"></script>
-  <script src="js/session.js?v=20261126-05" defer></script>
-  <link rel="stylesheet" href="css/ui.css?v=20261126-05">
+  <link rel="stylesheet" href="css/styles.css?v=20261126-06">
+  <link rel="stylesheet" href="css/media_query.css?v=20261126-06">
+  <link rel="stylesheet" href="css/management.css?v=20261126-06">
+  <script type="module" src="js/administracion.js?v=20261126-06"></script>
+  <script src="js/session.js?v=20261126-06" defer></script>
+  <link rel="stylesheet" href="css/ui.css?v=20261126-06">
+<script type="module" src="/js/language.js?v=20261126-06"></script>
 </head>
 <body>
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
@@ -22,6 +23,7 @@
   <main id="contenido" class="management-layout">
     <aside id="admin-sidebar" class="management-sidebar" aria-label="Panel de gestión">
       <div class="admin-sidebar-brand"><span class="admin-sidebar-mark"><svg class="admin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span><div><strong>Shoefit</strong><small>ADMINISTRACIÓN</small></div></div>
+      <div class="language-control admin-language"><label for="admin-language">Idioma</label><select id="admin-language" data-language><option value="en">English</option><option value="es">Español</option></select></div>
       <p class="admin-sidebar-label">GESTIÓN DE TIENDA</p>
       <nav class="admin-nav" aria-label="Módulos administrativos">
         <a href="#productos" data-module="productos" aria-current="true"><svg class="admin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="M3 8v8l9 5 9-5V8M12 13v8"/></svg><span>Productos</span><svg class="admin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 18l6-6-6-6"/></svg></a>
@@ -74,7 +76,7 @@
 <section id="empleados" data-module-panel hidden aria-labelledby="empleados-title">
 <div class="admin-panel-heading"><div><h2 id="empleados-title">Empleados</h2><p>Administra los puestos y registros del equipo de trabajo.</p></div><span class="admin-count">Sin conexión</span></div>
 <div class="admin-filters"><label>Buscar registro<span class="admin-search-field"><svg class="admin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><input type="search" placeholder="Buscar en empleados" disabled></span></label><label>Ordenar por<select disabled><option>Identificador</option><option>Usuario asociado</option><option>Género</option><option>Puesto</option><option>Salario (MXN)</option></select></label><button type="button" class="admin-secondary" disabled>Limpiar</button></div>
-<div class="admin-table-wrap" role="region" aria-label="Tabla de empleados" tabindex="0"><table class="admin-table"><thead><tr><th scope="col">Seleccionar</th><th scope="col">ID</th><th scope="col">Usuario asociado</th><th scope="col">Género</th><th scope="col">Puesto</th><th scope="col">Salario (MXN)</th></tr></thead><tbody><tr><td colspan="6" class="admin-empty"><div class="admin-empty-content"><span class="admin-empty-icon"><svg class="admin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 6h16l2 12H2L4 6Z"/><path d="M2 13h6l2 3h4l2-3h6"/></svg></span><strong>Sin registros disponibles</strong><p>Consultando base de datos.</p></div></td></tr></tbody></table></div>
+<div class="admin-table-wrap" role="region" aria-label="Tabla de empleados" tabindex="0"><table class="admin-table"><thead><tr><th scope="col">Seleccionar</th><th scope="col">ID</th><th scope="col">Usuario asociado</th><th scope="col">Nombre completo</th><th scope="col">Correo electrónico</th><th scope="col">Rol</th><th scope="col">Género</th><th scope="col">Puesto</th><th scope="col">Salario (MXN)</th></tr></thead><tbody><tr><td colspan="9" class="admin-empty"><div class="admin-empty-content"><span class="admin-empty-icon"><svg class="admin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 6h16l2 12H2L4 6Z"/><path d="M2 13h6l2 3h4l2-3h6"/></svg></span><strong>Sin registros disponibles</strong><p>Consultando base de datos.</p></div></td></tr></tbody></table></div>
 <div class="admin-pagination"><button type="button" class="admin-secondary" disabled aria-label="Página anterior">←</button><span>Página 1 de 1</span><button type="button" class="admin-secondary" disabled aria-label="Página siguiente">→</button></div>
 </section>
 <section id="proveedores" data-module-panel hidden aria-labelledby="proveedores-title">
@@ -98,7 +100,7 @@
 <section id="usuarios" data-module-panel hidden aria-labelledby="usuarios-title">
 <div class="admin-panel-heading"><div><h2 id="usuarios-title">Usuarios</h2><p>Consulta y gestiona los registros de usuarios.</p></div><span class="admin-count">Sin conexión</span></div>
 <div class="admin-filters"><label>Buscar registro<span class="admin-search-field"><svg class="admin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><input type="search" placeholder="Buscar en usuarios" disabled></span></label><label>Ordenar por<select disabled><option>Identificador</option><option>Proveedor</option><option>Nombre del producto</option><option>Marca</option><option>Talla</option><option>Precio (MXN)</option><option>Tipo de producto</option><option>Ruta de imagen</option></select></label><button type="button" class="admin-secondary" disabled>Limpiar</button></div>
-<div class="admin-table-wrap" role="region" aria-label="Tabla de usuarios" tabindex="0"><table class="admin-table"><thead><tr><th scope="col">Seleccionar</th><th scope="col">ID</th><th scope="col">Nombre</th><th scope="col">Apellido paterno</th><th scope="col">Apellido materno</th><th scope="col">Rol</th></tr></thead><tbody><tr><td colspan="6" class="admin-empty"><div class="admin-empty-content"><span class="admin-empty-icon"><svg class="admin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 6h16l2 12H2L4 6Z"/><path d="M2 13h6l2 3h4l2-3h6"/></svg></span><strong>Sin registros disponibles</strong><p>Consultando base de datos.</p></div></td></tr></tbody></table></div>
+<div class="admin-table-wrap" role="region" aria-label="Tabla de usuarios" tabindex="0"><table class="admin-table"><thead><tr><th scope="col">Seleccionar</th><th scope="col">ID</th><th scope="col">Nombre</th><th scope="col">Apellido paterno</th><th scope="col">Apellido materno</th><th scope="col">Correo electrónico</th><th scope="col">Rol</th></tr></thead><tbody><tr><td colspan="7" class="admin-empty"><div class="admin-empty-content"><span class="admin-empty-icon"><svg class="admin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 6h16l2 12H2L4 6Z"/><path d="M2 13h6l2 3h4l2-3h6"/></svg></span><strong>Sin registros disponibles</strong><p>Consultando base de datos.</p></div></td></tr></tbody></table></div>
 <div class="admin-pagination"><button type="button" class="admin-secondary" disabled aria-label="Página anterior">←</button><span>Página 1 de 1</span><button type="button" class="admin-secondary" disabled aria-label="Página siguiente">→</button></div>
 </section>
         <noscript><p>Activa JavaScript para cambiar de módulo y revisar los formularios.</p></noscript>
