@@ -33,7 +33,7 @@ const fields=Object.fromEntries(profileFields.map(key=>[key,document.getElementB
 const save=document.getElementById("profile-save"),reset=document.getElementById("profile-reset"),profileStatus=document.getElementById("profile-status"),notice=document.querySelector(".account-notice"),ordersBody=document.getElementById("account-orders"),ordersStatus=document.getElementById("orders-status");
 let current=null,saving=false,loadingOrders=false,canceling=false,deleting=false;
 const deleteForm=document.getElementById("account-delete-form"),deletePassword=document.getElementById("account-delete-password"),deleteButton=document.getElementById("account-delete-button"),deleteStatus=document.getElementById("account-delete-status");
-function fill(p){for(const key of profileFields)fields[key].value=p[key]??"";document.getElementById("profile-mail").value=p.mail||"";document.querySelector(".account-name").textContent=p.nombre;document.querySelector(".account-sidebar .account-muted").textContent="Sesión iniciada · cliente";document.getElementById("account-session-state").textContent="Sesión iniciada.";notice.textContent="Tu cuenta está conectada. Puedes actualizar tus datos y consultar tus pedidos.";}
+function fill(p){for(const key of profileFields)fields[key].value=p[key]??"";document.getElementById("profile-mail").value=p.mail||"";document.querySelector(".account-name").textContent=p.nombre;document.querySelector(".account-sidebar .account-muted").textContent="Sesión iniciada · cliente";document.getElementById("account-session-state").textContent="Sesión iniciada.";notice.hidden=true;notice.textContent="";}
 function toggle(){for(const f of Object.values(fields))f.disabled=!current||saving;save.disabled=reset.disabled=!current||saving;deleteForm.hidden=!current;deleteButton.disabled=deletePassword.disabled=!current||deleting;}
 async function request(path,options={}){
  const r=await fetch(path,{cache:"no-store",signal:AbortSignal.timeout(15000),...options});
@@ -44,7 +44,7 @@ async function loadProfile(){
  try{
   const {data}=await request("/api/profile");if(data?.rolez!=="cliente")throw Error("Utiliza una cuenta de cliente.");
   current=data;fill(data);toggle();if(location.hash==="#pedidos")await loadOrders();
- }catch(e){notice.textContent=e.status===401?"Inicia sesión para ver tu información personal.":e.message;}
+ }catch(e){notice.hidden=false;notice.textContent=e.status===401?"Inicia sesión para ver tu información personal.":e.message;}
 }
 save.addEventListener("click",async()=>{
  if(!current||saving)return;
