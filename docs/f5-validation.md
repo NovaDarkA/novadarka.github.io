@@ -26,3 +26,10 @@ Desde una terminal local con Node.js 22, definir SHOEFIT_ADMIN_PASSWORD sin escr
 
 ## Ajuste de integración
 Filtro de tallas conectado a variantes activas con existencias positivas y precio confirmado. El catálogo paginado incluye las variantes mediante una sola consulta; el detalle y checkout conservan sus comprobaciones independientes de inventario. Validación automatizada en curso. La prueba HTTP administrativa sigue pendiente.
+
+## Revalidación 26 de noviembre de 2026
+- Vercel GET /api/health: HTTP 200, shoefit-api disponible.
+- GET /api/products?page=1: HTTP 200, cinco registros (incluido el producto de demostración), variantes incluidas y sin página adicional.
+- GET /api/availability?slug=prueba-escolar-tenis: HTTP 200, precio 100 MXN, talla 26, 20 existencias y disponible. Este es el inventario actual, posterior al ajuste administrativo documentado; no debe confundirse con las tres unidades iniciales.
+- La herramienta de consulta de Vercel devolvió 401 en la ruta administrativa sin sesión y no permite ejecutar el flujo POST/PATCH/DELETE autenticado. No se afirma que el CRUD real esté aprobado. No se crearon ni eliminaron registros en esta revisión.
+- Criterio restante de F5: evidencia HTTP autenticada de alta, consulta, modificación y eliminación de registros temporales en Productos y Proveedores. Mantener F6 bloqueada hasta validar. La demora de sesión sigue diferida.
