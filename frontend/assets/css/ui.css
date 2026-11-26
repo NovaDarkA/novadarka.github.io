@@ -36,7 +36,14 @@ a[aria-disabled="true"]{cursor:not-allowed}
 @media(max-width:650px){.header-language{width:38px;min-height:29px;padding:2px;font-size:11px}.site-header{gap:5px;padding-inline:8px}.header-actions{gap:4px}.brand{gap:3px}.brand img{width:30px}.brand span{font-size:15px}}
 
 /* Integrate white-background product photographs with the store's warm cards. */
-img[src*="producto-oxford-cafe"],img[src*="botas-cafe-casual"]{mix-blend-mode:multiply}
+/* Uniform photography surface: remove white CSS boxes and blend baked-in white
+   backgrounds into the existing warm palette without changing photo dimensions. */
+.flash-card,.best-item,.product-card,.detail-related-card,.account-favorite-card,.cart-item,.checkout-item,.catalog-result,.detail-image-stage,.detail-thumb{isolation:isolate}
+.flash-card img,.best-item img,.catalog-page .product-card img,.detail-related-card img,.account-favorite-card img,.cart-item img,.checkout-item img,.catalog-result img,.product-detail .detail-image-stage img,.product-detail .detail-thumb img{background:transparent;mix-blend-mode:multiply}
+.catalog-page .product-card img{border-color:transparent}
+.detail-image-stage{background:var(--cream)}
+.detail-thumb:not([aria-pressed=true]){background:var(--cream)}
+
 .coming-soon{display:inline-flex;align-items:center;width:max-content;max-width:100%;border:1px solid #d69d52;border-radius:6px;background:#fff3ce;color:#754715;font:500 clamp(11px,1.1cqw,16px)/1.4 var(--mono),monospace;padding:5px 10px;margin:12px 0 2px}
 
 .catalog-audiences{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px}.catalog-audiences a{border:1px solid #bfa56d;background:#fff3ce;color:var(--ink);border-radius:6px;padding:8px 14px;text-decoration:none;font-size:clamp(12px,1.1cqw,16px)}.catalog-audiences a[aria-current="page"]{background:#ffde9f;font-weight:500}
