@@ -88,3 +88,18 @@ test("published pages have unique IDs and a single main heading",async()=>{for(c
 test("admin is independent of storefront navigation and keeps an accessible sidebar toggle",async()=>{const html=await read("administracion.html");assert.doesNotMatch(html,/class="site-header"|id="primary-nav"|aria-label="Carrito"/);assert.match(html,/id="admin-sidebar" class="management-sidebar"/);assert.match(html,/id="admin-sidebar-toggle" aria-controls="admin-sidebar" aria-expanded="true"/);assert.match(html,/class="admin-store-link" href="index.html"/);assert.match(html,/href="#contenido"/);assert.match(html,/id="contenido"/);});
 
 test("recovery has an accessible form and password controls start disabled",async()=>{const html=await read("recuperar.html");assert.match(html,/id="recovery-form" method="post"/);assert.match(html,/id="recovery-step" hidden/);assert.match(html,/name="password" type="password"[^>]*disabled/);assert.match(html,/src="js\/recovery.js"/);});
+
+test("connected account notice stays hidden after a successful sign-in",async()=>{
+  const html=await read("cuenta.html"),script=await read("js/account.js");
+  assert.match(html,/class="account-notice" hidden/);
+  assert.match(script,/notice\.hidden=true/);
+  assert.match(script,/notice\.hidden=false/);
+});
+
+test("storefront product card names and actions are centered",async()=>{
+  const collection=await read("css/collection.css"),styles=await read("css/styles.css");
+  assert.match(collection,/\.catalog-page \.product-card\{[^}]*text-align:center/);
+  assert.match(collection,/\.catalog-page \.product-card h2\{[^}]*text-align:center/);
+  assert.match(styles,/\.flash-card h3\{[^}]*text-align:center/);
+  assert.match(styles,/\.best-item h3\{[^}]*text-align:center/);
+});
