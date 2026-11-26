@@ -5,11 +5,14 @@ import { tmpdir } from "node:os";
 import { join, resolve, extname, relative } from "node:path";
 import assert from "node:assert/strict";
 import {regularPages} from "./frontend-manifest.mjs";
+import {rows as catalogRows} from "../tests/catalog-fixture.mjs";
 const root=resolve("dist");
 const mime={".html":"text/html",".css":"text/css",".js":"text/javascript",".svg":"image/svg+xml",".webp":"image/webp"};
 const server=createServer(async(req,res)=>{
   try {
-    const pathname=new URL(req.url,"http://localhost").pathname;
+    const requestUrl=new URL(req.url,"http://localhost");const pathname=requestUrl.pathname;
+    if(pathname==="/api/products"){res.setHeader("Content-Type","application/json");res.end(JSON.stringify({data:catalogRows,page:1,hasMore:false}));return;}
+    if(pathname==="/api/availability"){const p=catalogRows.find(p=>p.slug===requestUrl.searchParams.get("slug"));res.setHeader("Content-Type","application/json");res.end(JSON.stringify({data:{id_producto:p.id_producto,slug:p.slug,precio:p.precio,variantes:[]}}));return;}
     const path=resolve(root,"."+ (pathname==="/"?"/index.html":pathname));
     if(relative(root,path).startsWith("..")) {res.writeHead(403).end();return;}
     res.setHeader("Content-Type",mime[extname(path)]||"application/octet-stream");
@@ -51,7 +54,8 @@ try {
       let ready=false;
       for(let i=0;i<100;i++){try{ready=await evaluate("location.href === "+JSON.stringify(url)+" && document.readyState === 'complete'");if(ready)break}catch{}await delay(100)}
       assert.ok(ready,"Page failed to load "+page);
-      const state=await evaluate("(async()=>{const imgs=[...document.images];imgs.forEach(i=>i.loading='eager');await Promise.allSettled(imgs.map(i=>i.decode()));return {width:innerWidth,scroll:document.documentElement.scrollWidth,images:imgs.length,broken:imgs.filter(i=>!i.naturalWidth).map(i=>i.getAttribute('src')),styles:[...document.querySelectorAll('link[rel=stylesheet]')].filter(l=>!l.href.includes('googleapis')).every(l=>!!l.sheet),title:document.title}})()");
+      if(page!=="administracion.html"){for(let i=0;i<100;i++){if(await evaluate("document.documentElement.dataset.catalogState==='ready' && !!document.querySelector('.catalog-dialog')"))break;await delay(50);}}
+      const state=await evaluate("(async()=>{const imgs=[...document.images].filter(i=>!i.hidden);imgs.forEach(i=>i.loading='eager');await Promise.allSettled(imgs.map(i=>i.decode()));return {width:innerWidth,scroll:document.documentElement.scrollWidth,images:imgs.length,broken:imgs.filter(i=>!i.naturalWidth).map(i=>i.getAttribute('src')),styles:[...document.querySelectorAll('link[rel=stylesheet]')].filter(l=>!l.href.includes('googleapis')).every(l=>!!l.sheet),title:document.title}})()");
       assert.equal(state.width,width,page+" viewport");
       assert.ok(state.title.includes("Shoefit"),page+" title");
       assert.equal(state.styles,true,page+" local CSS");

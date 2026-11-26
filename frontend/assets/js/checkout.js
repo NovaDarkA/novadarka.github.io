@@ -1,5 +1,5 @@
 import {CART_KEY,normalize,totals} from "./cart.js";
-import {getProduct} from "./products.js";
+import {getProduct,setImage} from "./products.js";
 const money=n=>new Intl.NumberFormat("es-MX",{style:"currency",currency:"MXN"}).format(n/100)+" MXN";
 const read=()=>{try{return normalize(JSON.parse(localStorage.getItem(CART_KEY)||"[]"));}catch{return [];}};
 const list=document.getElementById("checkout-items");
@@ -16,7 +16,7 @@ function render(){
  for(const row of rows){
    const product=getProduct(row.id);
    const card=node("article","checkout-item"),img=node("img");
-   img.src=product.image;img.alt=product.name;
+   setImage(img,product);
    const info=node("div");
    info.append(node("h3",null,product.name),node("p",null,"Talla "+row.size+" MX · Cantidad "+row.quantity),node("strong",null,money(row.quantity*product.priceCents)));
    card.append(img,info);list.append(card);

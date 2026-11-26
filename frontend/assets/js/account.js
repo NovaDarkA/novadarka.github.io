@@ -1,4 +1,4 @@
-import {getProduct} from "./products.js";
+import {getProduct,setImage} from "./products.js";
 const KEY="shoefit.favorites.v1";
 const tabs=[...document.querySelectorAll("[data-account-tab]")];
 const panels=[...document.querySelectorAll("[data-account-panel]")];
@@ -17,7 +17,7 @@ function render(){
  const ids=read();grid.replaceChildren();empty.hidden=ids.length>0;
  status.textContent=ids.length+" "+(ids.length===1?"producto guardado":"productos guardados");
  for(const id of ids){
-  const p=getProduct(id),card=el("article","account-favorite-card"),img=el("img");img.src=p.image;img.alt=p.name;
+  const p=getProduct(id),card=el("article","account-favorite-card"),img=el("img");setImage(img,p);
   const name=el("h3",null,p.name),price=el("p",null,money(p.priceCents));
   const link=el("a","account-primary","Ver producto");link.href="sorprendeme.html?producto="+encodeURIComponent(id);
   const remove=el("button","account-secondary","Quitar de favoritos");remove.type="button";

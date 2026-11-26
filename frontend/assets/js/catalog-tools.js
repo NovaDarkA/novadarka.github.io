@@ -1,4 +1,4 @@
-import {getProduct,PRODUCT,searchProducts} from "./products.js";
+import {getProduct,PRODUCT,searchProducts,setImage} from "./products.js";
 const KEY="shoefit.favorites.v1";
 const read=()=>{try{const v=JSON.parse(localStorage.getItem(KEY)||"[]");return Array.isArray(v)?[...new Set(v.filter(id=>getProduct(id)))]:[];}catch{return [];}};
 const selected=()=>{const id=new URLSearchParams(location.search).get("producto");return id===null?PRODUCT:getProduct(id);};
@@ -33,7 +33,7 @@ function openSearch(source,onlyFavorites=false){
    results.replaceChildren();
    for(const p of items){
      const li=el("li");const a=el("a","catalog-result");a.href="sorprendeme.html?producto="+encodeURIComponent(p.id);
-     const img=el("img");img.src=p.image;img.alt="";
+     const img=el("img");setImage(img,p);img.alt="";
      const details=el("span");details.append(el("strong",null,p.name),el("small",null,money(p.priceCents)));
      a.append(img,details);li.append(a);results.append(li);
    }

@@ -1,8 +1,8 @@
 // Temporary client-side draft. Server-side validation and persistence will replace it.
 export const CART_KEY="shoefit.cart.v1";
-import {PRODUCT,getProduct} from "./products.js";
+import {PRODUCT,DEFAULT_PRODUCT_ID,getProduct,setImage,catalogAvailable} from "./products.js";
 export {PRODUCT};
-const validSize=s=>typeof s==="string"&&/^(2[2-9]|30)$/.test(s);
+const validSize=s=>typeof s==="string"&&/^[1-9][0-9]{0,2}(?:\.[0-9])?$/.test(s);
 export function normalize(value){
   if(!Array.isArray(value))return [];
   const map=new Map();
@@ -14,7 +14,7 @@ export function normalize(value){
   }
   return [...map.values()];
 }
-export function changeCart(items,size,delta,id=PRODUCT.id){
+export function changeCart(items,size,delta,id=DEFAULT_PRODUCT_ID){
   const current=normalize(items);
   const product=getProduct(id);
   if(!product||product.priceCents===null||!validSize(size)||!Number.isInteger(delta))return current;
@@ -55,7 +55,7 @@ function boot(){
     for(const item of items){
       const product=getProduct(item.id);
       const card=el("article","cart-item");
-      const image=el("img");image.src=product.image;image.alt=product.name;
+      const image=el("img");setImage(image,product);
       const info=el("div");info.append(el("h2",null,product.name),el("p",null,"Color: "+product.color+" · Talla: "+item.size+" MX"),el("p",null,"Precio unitario: "+money(product.priceCents)));
       const actions=el("div","cart-item-actions");
       const controls=el("div","cart-quantity");
@@ -71,42 +71,52 @@ function boot(){
   }
   const add=document.getElementById("add-to-cart");
   let selected=PRODUCT;
+  let variants=new Map();
   if(add){
     const requested=new URLSearchParams(location.search).get("producto");
-    if(requested!==null){
-      selected=getProduct(requested);
-      const title=document.getElementById("special-title");
-      if(!selected){
-        title.textContent="Producto no disponible";
-        document.getElementById("detail-image").hidden=true;
-        document.getElementById("detail-thumbnails").hidden=true;
-        document.querySelector(".special-crumb").textContent="";
-        document.querySelector(".special-color").textContent="";
-        document.querySelector(".special-price").textContent="";
-        document.querySelector(".special-stars").hidden=true;
-        productStatus.textContent="Regresa a la colección para seleccionar un producto.";
-        for(const button of document.querySelectorAll(".special-icon"))button.hidden=true;
-      }else if(selected.id!==PRODUCT.id){
-        title.textContent=selected.name;
-        document.title="Shoefit | "+selected.name;
-        document.querySelector(".special-crumb").textContent=selected.category;
-        document.querySelector(".special-color").textContent="Color: "+selected.color;
-        document.querySelector(".special-price").textContent=selected.priceCents===null?"Precio por confirmar":money(selected.priceCents);
-        for(const button of document.querySelectorAll(".special-icon"))button.hidden=false;
-        const image=document.getElementById("detail-image");image.src=selected.image;image.alt=selected.name;
-        document.getElementById("detail-thumbnails").hidden=true;
-        if(selected.priceCents===null)productStatus.textContent="Precio pendiente de confirmar. No se puede añadir al carrito todavía.";
-      }
-      if(!selected||selected.priceCents===null){add.disabled=true;document.getElementById("cart-size").disabled=true;}
+    selected=requested===null?PRODUCT:getProduct(requested);
+    const title=document.getElementById("special-title"),size=document.getElementById("cart-size"),image=document.getElementById("detail-image");
+    add.disabled=true;size.disabled=true;size.replaceChildren(new Option("Elige una talla",""));
+    if(!selected){
+      title.textContent="Producto no disponible";image.hidden=true;
+      document.getElementById("detail-thumbnails").hidden=true;
+      for(const selector of [".special-crumb",".special-color",".special-price"])document.querySelector(selector).textContent="";
+      document.querySelector(".special-stars").hidden=true;
+      for(const button of document.querySelectorAll(".special-icon"))button.hidden=true;
+      productStatus.textContent="Regresa a la colección para seleccionar un producto.";
+    }else{
+      title.textContent=selected.name;document.title="Shoefit | "+selected.name;
+      document.querySelector(".special-crumb").textContent=selected.category;
+      document.querySelector(".special-color").textContent="Color: "+selected.color;
+      document.querySelector(".special-price").textContent=selected.priceCents===null?"Precio por confirmar":money(selected.priceCents);
+      setImage(image,selected);
+      if(selected.id!==DEFAULT_PRODUCT_ID||selected.image!=="img/optimized/tenis-gris-lateral-619.webp")document.getElementById("detail-thumbnails").hidden=true;
+      productStatus.textContent="Consultando existencias…";
+      (async()=>{
+       try{
+        const response=await fetch("/api/availability?slug="+encodeURIComponent(selected.id),{cache:"no-store",signal:AbortSignal.timeout(8000)});
+        if(!response.ok)throw Error();
+        const {data}=await response.json();if(data.slug!==selected.id||!Array.isArray(data.variantes))throw Error();
+        for(const v of data.variantes){
+         if(!Number.isInteger(v.id_variante)||!Number.isInteger(v.existencias)||v.existencias<0||!validSize(String(v.talla)))continue;
+         const option=new Option(v.talla+" MX"+(v.disponible?"":" — Agotado"),String(v.talla));option.disabled=!v.disponible;size.add(option);
+         if(v.disponible)variants.set(String(v.talla),v);
+        }
+        size.disabled=variants.size===0;add.disabled=variants.size===0||selected.priceCents===null;
+        document.getElementById("detail-availability").textContent=variants.size?"Disponible":data.variantes.length?"Agotado":"Por confirmar";
+        productStatus.textContent=variants.size?"Selecciona una talla disponible.":"No hay existencias confirmadas para este modelo.";
+       }catch{productStatus.textContent="No se pudo confirmar el inventario. Intenta nuevamente.";}
+      })();
     }
   }
   add?.addEventListener("click",()=>{
-    if(!selected||selected.priceCents===null)return;
+    if(!selected||selected.priceCents===null||add.disabled)return;
     const size=document.getElementById("cart-size");
     if(!validSize(size.value)){productStatus.textContent="Selecciona una talla antes de añadir el producto.";size.focus();return;}
     const quantity=Number(document.getElementById("detail-quantity").value);
     if(!Number.isInteger(quantity)||quantity<1||quantity>99){productStatus.textContent="Elige una cantidad entre 1 y 99.";document.getElementById("detail-quantity").focus();return;}
-    if((items.find(i=>i.id===selected.id&&i.size===size.value)?.quantity||0)+quantity>99){productStatus.textContent="Límite de 99 artículos por modelo y talla.";return;}
+    const variant=variants.get(size.value);const requested=(items.find(i=>i.id===selected.id&&i.size===size.value)?.quantity||0)+quantity;
+    if(!variant||requested>Math.min(99,variant.existencias)){productStatus.textContent="La cantidad supera las existencias disponibles.";return;}
     if(!save(changeCart(items,size.value,quantity,selected.id))){productStatus.textContent="No fue posible guardar el carrito en este navegador.";return;}
     location.href="carrito.html";
   });
