@@ -4,6 +4,7 @@
 .account-heading{margin:18px 0 24px}
 .account-heading h1{font-size:clamp(30px,4vw,48px);font-weight:500;margin-bottom:10px}
 .account-heading p,.account-muted{font-size:14px;color:#645238;line-height:1.6}
+.account-notice[hidden]{display:none!important}
 .account-notice{background:#ffedbd;border:1px solid #d7b679;border-radius:8px;padding:14px;font-size:13px;line-height:1.5;margin-bottom:22px}
 .account-layout{display:grid;grid-template-columns:minmax(200px,255px) minmax(0,1fr);gap:clamp(16px,3vw,34px);align-items:start}
 .account-sidebar,.account-panel,.account-recovery-card{background:var(--sand);border:1px solid #dfbd83;border-radius:12px;padding:clamp(16px,2.5vw,30px);min-width:0}
