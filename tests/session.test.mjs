@@ -1,4 +1,4 @@
-import test from "node:test";import assert from "node:assert/strict";import {login,sessionToken,sessionCookie,credentials,readSession} from "../src/services/session.js";
+import test from "node:test";import assert from "node:assert/strict";import {login,sessionToken,sessionCookie,credentials,readSession,register} from "../src/services/session.js";
 const req=()=>new Request("https://example.com/api/login",{method:"POST",headers:{"origin":"https://example.com","content-type":"application/json"},body:JSON.stringify({email:"a@example.com",password:"sample-pass"})});
 const uid="12345678-1234-1234-1234-123456789abc";
 for(const role of ["cliente","administrador"]){test("login routes "+role,async()=>{let requests=0;const response=await login(req(),async (path,opts,token)=>{requests++;if(path.includes("grant_type"))return Response.json({access_token:"abc.def.ghi",expires_in:3600,user:{id:uid}});assert.equal(token,"abc.def.ghi");assert.notEqual(path,"/auth/v1/user");assert.ok(path.includes("auth_id=eq."));return Response.json([{rolez:role}]);});assert.equal(requests,2);assert.equal((await response.json()).redirect,role==="administrador"?"/administracion.html":"/cuenta.html");assert.match(response.headers.get("set-cookie"),/HttpOnly; Secure; SameSite=Lax/);});}
@@ -7,3 +7,7 @@ test("invalid session rejected",async()=>{await assert.rejects(readSession("abc.
 test("logout expires cookie",()=>assert.match(sessionCookie("",0),/Max-Age=0/));
 
 test("login rejects missing verified user identity",async()=>{await assert.rejects(login(req(),async path=>{assert.ok(path.includes("grant_type"));return Response.json({access_token:"abc.def.ghi",expires_in:3600});}),{code:"auth_unavailable"});});
+
+test("signup without confirmation returns created and never leaks tokens",async()=>{const response=await register(req(),async path=>{assert.equal(path,"/auth/v1/signup");return Response.json({access_token:"abc.def.ghi",refresh_token:"secret",user:{id:uid}});});assert.equal(response.status,201);assert.deepEqual(await response.json(),{status:"account_created"});assert.equal(response.headers.get("set-cookie"),null);});
+test("signup requiring confirmation keeps check_email status",async()=>{const response=await register(req(),async()=>Response.json({id:uid}));assert.equal(response.status,202);assert.deepEqual(await response.json(),{status:"check_email"});});
+test("signup rejects malformed domain without upstream call",async()=>{const request=new Request("https://example.com/api/register",{method:"POST",headers:{origin:"https://example.com","content-type":"application/json"},body:JSON.stringify({email:"a@.gmail.com",password:"sample-pass"})});await assert.rejects(register(request,async()=>{assert.fail("must not contact Supabase");}),{code:"invalid_email"});});
