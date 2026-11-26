@@ -26,7 +26,8 @@ export async function credentials(req,registration=false){
  let data;try{data=JSON.parse(raw);}catch{throw new HttpError(400,"invalid_credentials");}
  const email=typeof data?.email==="string"?data.email.trim().toLowerCase():"";
  const password=typeof data?.password==="string"?data.password:"";
- if(email.length>254||!/^\S+@[^\s@]+\.[^\s@]+$/.test(email)||password.length<(registration?8:1)||password.length>128)throw new HttpError(400,"invalid_credentials");
+ if(email.length>254||!/^[^\s@.]+(?:\.[^\s@.]+)*@[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)+$/i.test(email))throw new HttpError(400,registration?"invalid_email":"invalid_credentials");
+ if(password.length<(registration?8:1)||password.length>128)throw new HttpError(400,"invalid_credentials");
  return {email,password};
 }
 /** @param {string} token @param {ReturnType<typeof createSupabaseTransport>} [request] */
