@@ -33,3 +33,6 @@ Filtro de tallas conectado a variantes activas con existencias positivas y preci
 - GET /api/availability?slug=prueba-escolar-tenis: HTTP 200, precio 100 MXN, talla 26, 20 existencias y disponible. Este es el inventario actual, posterior al ajuste administrativo documentado; no debe confundirse con las tres unidades iniciales.
 - La herramienta de consulta de Vercel devolvió 401 en la ruta administrativa sin sesión y no permite ejecutar el flujo POST/PATCH/DELETE autenticado. No se afirma que el CRUD real esté aprobado. No se crearon ni eliminaron registros en esta revisión.
 - Criterio restante de F5: evidencia HTTP autenticada de alta, consulta, modificación y eliminación de registros temporales en Productos y Proveedores. Mantener F6 bloqueada hasta validar. La demora de sesión sigue diferida.
+
+## Cierre F5 — 26/11/2026
+El usuario confirmó que realizó las operaciones administrativas pendientes de creación, modificación y eliminación en Productos y Proveedores desde el panel. Se acepta su prueba manual como evidencia de cierre F5 y se autoriza continuar F6. No se afirma que el script HTTP independiente haya sido ejecutado por el asistente. La demora de login/logout permanece diferida.
