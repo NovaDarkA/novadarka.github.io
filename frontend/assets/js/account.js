@@ -31,9 +31,10 @@ window.addEventListener("storage",e=>{if(e.key===KEY||e.key===null)render();});w
 
 const fields=Object.fromEntries(profileFields.map(key=>[key,document.getElementById("profile-"+key)]));
 const save=document.getElementById("profile-save"),reset=document.getElementById("profile-reset"),profileStatus=document.getElementById("profile-status"),notice=document.querySelector(".account-notice"),ordersBody=document.getElementById("account-orders"),ordersStatus=document.getElementById("orders-status");
-let current=null,saving=false,loadingOrders=false,canceling=false;
-function fill(p){for(const key of profileFields)fields[key].value=p[key]??"";document.getElementById("profile-mail").value=p.mail||"";document.querySelector(".account-name").textContent=p.nombre;document.querySelector(".account-sidebar .account-muted").textContent="Sesión iniciada · cliente";document.querySelector("#seguridad .account-security-row:last-child p").textContent="Sesión iniciada.";notice.textContent="Tu cuenta está conectada. Puedes actualizar tus datos y consultar tus pedidos.";}
-function toggle(){for(const f of Object.values(fields))f.disabled=!current||saving;save.disabled=reset.disabled=!current||saving;}
+let current=null,saving=false,loadingOrders=false,canceling=false,deleting=false;
+const deleteForm=document.getElementById("account-delete-form"),deletePassword=document.getElementById("account-delete-password"),deleteButton=document.getElementById("account-delete-button"),deleteStatus=document.getElementById("account-delete-status");
+function fill(p){for(const key of profileFields)fields[key].value=p[key]??"";document.getElementById("profile-mail").value=p.mail||"";document.querySelector(".account-name").textContent=p.nombre;document.querySelector(".account-sidebar .account-muted").textContent="Sesión iniciada · cliente";document.getElementById("account-session-state").textContent="Sesión iniciada.";notice.textContent="Tu cuenta está conectada. Puedes actualizar tus datos y consultar tus pedidos.";}
+function toggle(){for(const f of Object.values(fields))f.disabled=!current||saving;save.disabled=reset.disabled=!current||saving;deleteForm.hidden=!current;deleteButton.disabled=deletePassword.disabled=!current||deleting;}
 async function request(path,options={}){
  const r=await fetch(path,{cache:"no-store",signal:AbortSignal.timeout(15000),...options});
  if(!r.ok){const e=Error(r.status===401?"Inicia sesión nuevamente.":r.status===403?"Esta cuenta no tiene acceso a esta sección.":r.status===409?"El pedido cambió. Actualiza el historial.":"No se pudo completar la operación.");e.status=r.status;throw e;}
@@ -85,4 +86,16 @@ async function loadOrders(){
  }catch(e){orderMessage(e.message);ordersStatus.textContent="No se pudo actualizar el historial.";}finally{loadingOrders=false;}
 }
 window.addEventListener("hashchange",()=>{if(location.hash==="#pedidos")loadOrders();});
+deleteForm.addEventListener("submit",async event=>{
+ event.preventDefault();if(!current||deleting||!deleteForm.reportValidity())return;
+ if(!window.confirm("¿Eliminar definitivamente tu cuenta de Shoefit? Esta acción no se puede deshacer."))return;
+ deleting=true;toggle();deleteStatus.textContent="Eliminando cuenta…";
+ try{
+  const response=await fetch("/api/profile",{method:"DELETE",cache:"no-store",signal:AbortSignal.timeout(30000),headers:{"Content-Type":"application/json"},body:JSON.stringify({confirm:"ELIMINAR",password:deletePassword.value})});
+  const data=await response.json();
+  if(response.ok&&data.status==="account_deleted"){current=null;try{localStorage.removeItem(KEY);}catch{}location.replace("index.html");return;}
+  deleteStatus.textContent=data.error==="pending_orders"?"Cancela o completa tus pedidos pendientes antes de eliminar tu cuenta.":data.error==="invalid_password"?"La contraseña es incorrecta.":data.error==="unauthenticated"?"Inicia sesión nuevamente.":data.error==="try_later"?"Demasiados intentos. Intenta más tarde.":"No se pudo eliminar la cuenta. Comprueba tu sesión antes de volver a intentarlo.";
+ }catch{deleteStatus.textContent="No se pudo confirmar la eliminación. Comprueba tu sesión antes de volver a intentarlo.";}
+ finally{deletePassword.value="";deleting=false;toggle();}
+});
 loadProfile();
