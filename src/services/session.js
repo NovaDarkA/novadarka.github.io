@@ -35,7 +35,11 @@ export async function readSession(token,request=createSupabaseTransport()){
  if(!userResponse.ok)throw new HttpError(503,"auth_unavailable");
  const user=await userResponse.json();
  if(typeof user?.id!=="string"||!/^[0-9a-f-]{36}$/i.test(user.id))throw new HttpError(401,"unauthenticated");
- const params=new URLSearchParams({select:"id_user,nombre,ap,am,mail,rolez",auth_id:"eq."+user.id,limit:"1"});
+ return readProfile(user.id,token,request);
+}
+/** @param {string} userId @param {string} token @param {ReturnType<typeof createSupabaseTransport>} request */
+async function readProfile(userId,token,request){
+ const params=new URLSearchParams({select:"id_user,nombre,ap,am,mail,rolez",auth_id:"eq."+userId,limit:"1"});
  const response=await request("/rest/v1/usuario?"+params.toString(),{},token);
  if(!response.ok)throw new HttpError(503,"profile_unavailable");
  const rows=await response.json();
@@ -52,7 +56,11 @@ export async function login(req,request=createSupabaseTransport()){
  if(!response.ok)throw new HttpError(503,"auth_unavailable");
  const result=await response.json();
  if(typeof result?.access_token!=="string"||!/^[-\w]+\.[-\w]+\.[-\w]+$/.test(result.access_token)||result.access_token.length>=3800)throw new HttpError(503,"auth_unavailable");
- const profile=await readSession(result.access_token,request);
+ // The successful password grant already returns the verified user.
+ // Do not repeat /auth/v1/user on this request; all subsequent private requests still verify it.
+ const userId=result.user?.id;
+ if(typeof userId!=="string"||!/^[0-9a-f-]{36}$/i.test(userId))throw new HttpError(503,"auth_unavailable");
+ const profile=await readProfile(userId,result.access_token,request);
  const age=Number.isFinite(result.expires_in)?result.expires_in:3600;
  return json({role:profile.rolez,redirect:profile.rolez==="administrador"?"/administracion.html":"/cuenta.html"},200,{"Set-Cookie":sessionCookie(result.access_token,age)});
 }

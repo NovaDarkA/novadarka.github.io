@@ -90,7 +90,11 @@
         return;
       }
       var button=form.querySelector('button[type="submit"]');
+      if(button.disabled)return;
+      var originalLabel=button.textContent;
       button.disabled=true;
+      button.textContent=kind==='register'?'Creando cuenta…':'Iniciando sesión…';
+      form.setAttribute('aria-busy','true');
       try {
         var response=await fetch(kind==="register"?"/api/register":"/api/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:form.elements.email.value,password:form.elements.password.value})});
         var data=await response.json();
@@ -99,7 +103,7 @@
         else if(data.redirect==="/administracion.html"||data.redirect==="/cuenta.html"){location.assign(data.redirect);}
         else say("No se pudo iniciar sesión.",true);
       }catch{say("No se pudo conectar con el servicio.",true);}
-      finally{button.disabled=false;}
+      finally{button.disabled=false;button.textContent=originalLabel;form.removeAttribute("aria-busy");}
     });
   }
 
