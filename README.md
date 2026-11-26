@@ -39,3 +39,6 @@ Conserva carrito inspirado en Erick's Caps; nueva ruta pedido.html con etapas vi
 
 ## FE.05 — Cuenta y perfil
 cuenta.html incorpora diseño de perfil, información personal, pedidos, favoritos locales, seguridad y cierre de sesión; recuperar.html incluye recuperación visual. Campos personales y acciones de cuenta deshabilitados hasta conectar autenticación; sin datos personales ni envíos. Acceso de vista previa en el menú de cuenta y enlace de recuperación en login.
+
+## FE.06 — Administración
+Cuatro módulos (PRODUCTO, CLIENTE, VENTA, EMPLEADO) con campos del SQL original, tablas vacías, búsqueda, ordenamiento, paginación y vistas previas de agregar/modificar/eliminar. Todos los campos de edición y confirmaciones de escritura deshabilitados. Sin datos ni autenticación real. No se modifica SQL.

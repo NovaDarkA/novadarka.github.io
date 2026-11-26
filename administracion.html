@@ -88,31 +88,46 @@
       <a href="#empleados" data-module="empleados">Empleados</a>
     </nav>
     <section class="management-content" aria-label="Contenido administrativo">
+      <div class="admin-heading"><div><h2>Administración</h2><p>Panel de gestión de Shoefit</p></div><span class="admin-preview-label">Vista previa</span></div>
+      <p class="management-status" role="status">Diseño administrativo. No hay conexión a la base de datos ni permisos de administrador activos. No introduzcas datos reales.</p>
       <div class="management-actions" aria-label="Operaciones de administración">
-        <button type="button" disabled>Agregar</button>
-        <button type="button" disabled>Eliminar</button>
-        <button type="button" disabled>Modificar</button>
+        <button type="button" data-admin-action="add">Agregar</button>
+        <button type="button" data-admin-action="delete">Eliminar</button>
+        <button type="button" data-admin-action="edit">Modificar</button>
       </div>
       <div class="management-panel">
-        <p class="management-status" role="status">Vista previa de diseño. Las operaciones estarán disponibles después de conectar la base de datos y los permisos de administrador.</p>
-        <section id="productos" data-module-panel aria-labelledby="productos-title">
-          <h2 id="productos-title">Productos</h2>
-          <p>Sin datos disponibles todavía.</p>
-        </section>
-        <section id="clientes" data-module-panel hidden aria-labelledby="clientes-title">
-          <h2 id="clientes-title">Clientes</h2>
-          <p>Sin datos disponibles todavía.</p>
-        </section>
-        <section id="ventas" data-module-panel hidden aria-labelledby="ventas-title">
-          <h2 id="ventas-title">Ventas</h2>
-          <p>Sin datos disponibles todavía.</p>
-        </section>
-        <section id="empleados" data-module-panel hidden aria-labelledby="empleados-title">
-          <h2 id="empleados-title">Empleados</h2>
-          <p>Sin datos disponibles todavía.</p>
-        </section>
-        <noscript><p>Activa JavaScript para cambiar de módulo.</p></noscript>
+<section id="productos" data-module-panel aria-labelledby="productos-title">
+<div class="admin-panel-heading"><div><h2 id="productos-title">Productos</h2><p>Consulta y administra los registros de este módulo.</p></div><span>0 registros</span></div>
+<div class="admin-filters"><label>Buscar registro<input type="search" placeholder="Buscar en productos" disabled></label><label>Ordenar por<select disabled><option>Identificador</option><option>Proveedor</option><option>Nombre del producto</option><option>Marca</option><option>Talla</option><option>Precio (MXN)</option><option>Tipo de producto</option><option>Ruta de imagen</option></select></label><button type="button" class="admin-secondary" disabled>Limpiar</button></div>
+<div class="admin-table-wrap" role="region" aria-label="Tabla de productos" tabindex="0"><table class="admin-table"><thead><tr><th scope="col">Seleccionar</th><th scope="col">ID</th><th scope="col">Proveedor</th><th scope="col">Nombre del producto</th><th scope="col">Marca</th><th scope="col">Talla</th><th scope="col">Precio (MXN)</th><th scope="col">Tipo de producto</th><th scope="col">Ruta de imagen</th></tr></thead><tbody><tr><td colspan="9" class="admin-empty">Sin registros para mostrar. La tabla se llenará al conectar la base de datos.</td></tr></tbody></table></div>
+<div class="admin-pagination"><button type="button" class="admin-secondary" disabled aria-label="Página anterior">←</button><span>Página 1 de 1</span><button type="button" class="admin-secondary" disabled aria-label="Página siguiente">→</button></div>
+</section>
+<section id="clientes" data-module-panel hidden aria-labelledby="clientes-title">
+<div class="admin-panel-heading"><div><h2 id="clientes-title">Clientes</h2><p>Consulta y administra los registros de este módulo.</p></div><span>0 registros</span></div>
+<div class="admin-filters"><label>Buscar registro<input type="search" placeholder="Buscar en clientes" disabled></label><label>Ordenar por<select disabled><option>Identificador</option><option>Usuario asociado</option><option>Calle</option><option>Número</option><option>Colonia</option><option>Código postal</option><option>Talla</option></select></label><button type="button" class="admin-secondary" disabled>Limpiar</button></div>
+<div class="admin-table-wrap" role="region" aria-label="Tabla de clientes" tabindex="0"><table class="admin-table"><thead><tr><th scope="col">Seleccionar</th><th scope="col">ID</th><th scope="col">Usuario asociado</th><th scope="col">Calle</th><th scope="col">Número</th><th scope="col">Colonia</th><th scope="col">Código postal</th><th scope="col">Talla</th></tr></thead><tbody><tr><td colspan="8" class="admin-empty">Sin registros para mostrar. La tabla se llenará al conectar la base de datos.</td></tr></tbody></table></div>
+<div class="admin-pagination"><button type="button" class="admin-secondary" disabled aria-label="Página anterior">←</button><span>Página 1 de 1</span><button type="button" class="admin-secondary" disabled aria-label="Página siguiente">→</button></div>
+</section>
+<section id="ventas" data-module-panel hidden aria-labelledby="ventas-title">
+<div class="admin-panel-heading"><div><h2 id="ventas-title">Ventas</h2><p>Consulta y administra los registros de este módulo.</p></div><span>0 registros</span></div>
+<div class="admin-filters"><label>Buscar registro<input type="search" placeholder="Buscar en ventas" disabled></label><label>Ordenar por<select disabled><option>Identificador</option><option>Cliente</option><option>Empleado</option><option>Producto</option><option>Cantidad de pares</option><option>Costo de venta (MXN)</option></select></label><button type="button" class="admin-secondary" disabled>Limpiar</button></div>
+<div class="admin-table-wrap" role="region" aria-label="Tabla de ventas" tabindex="0"><table class="admin-table"><thead><tr><th scope="col">Seleccionar</th><th scope="col">ID</th><th scope="col">Cliente</th><th scope="col">Empleado</th><th scope="col">Producto</th><th scope="col">Cantidad de pares</th><th scope="col">Costo de venta (MXN)</th></tr></thead><tbody><tr><td colspan="7" class="admin-empty">Sin registros para mostrar. La tabla se llenará al conectar la base de datos.</td></tr></tbody></table></div>
+<div class="admin-pagination"><button type="button" class="admin-secondary" disabled aria-label="Página anterior">←</button><span>Página 1 de 1</span><button type="button" class="admin-secondary" disabled aria-label="Página siguiente">→</button></div>
+</section>
+<section id="empleados" data-module-panel hidden aria-labelledby="empleados-title">
+<div class="admin-panel-heading"><div><h2 id="empleados-title">Empleados</h2><p>Consulta y administra los registros de este módulo.</p></div><span>0 registros</span></div>
+<div class="admin-filters"><label>Buscar registro<input type="search" placeholder="Buscar en empleados" disabled></label><label>Ordenar por<select disabled><option>Identificador</option><option>Usuario asociado</option><option>Género</option><option>Puesto</option><option>Salario (MXN)</option></select></label><button type="button" class="admin-secondary" disabled>Limpiar</button></div>
+<div class="admin-table-wrap" role="region" aria-label="Tabla de empleados" tabindex="0"><table class="admin-table"><thead><tr><th scope="col">Seleccionar</th><th scope="col">ID</th><th scope="col">Usuario asociado</th><th scope="col">Género</th><th scope="col">Puesto</th><th scope="col">Salario (MXN)</th></tr></thead><tbody><tr><td colspan="6" class="admin-empty">Sin registros para mostrar. La tabla se llenará al conectar la base de datos.</td></tr></tbody></table></div>
+<div class="admin-pagination"><button type="button" class="admin-secondary" disabled aria-label="Página anterior">←</button><span>Página 1 de 1</span><button type="button" class="admin-secondary" disabled aria-label="Página siguiente">→</button></div>
+</section>
+        <noscript><p>Activa JavaScript para cambiar de módulo y revisar los formularios.</p></noscript>
       </div>
+      <dialog class="admin-dialog" id="admin-dialog" aria-labelledby="admin-dialog-title">
+        <div class="admin-dialog-heading"><h2 id="admin-dialog-title">Operación</h2><button class="admin-close" type="button" aria-label="Cerrar">×</button></div>
+        <p class="admin-dialog-note">Vista previa de diseño. No se guardará ni eliminará información.</p>
+        <div id="admin-dialog-content"></div>
+        <div class="admin-dialog-actions"><button type="button" class="admin-secondary" id="admin-cancel">Cancelar</button><button type="button" class="admin-commit" id="admin-commit" disabled>Guardar</button></div>
+      </dialog>
     </section>
   </main>
   <script>document.documentElement.classList.add("js");</script>

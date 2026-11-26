@@ -25,3 +25,45 @@
  .management-actions button{font-size:12px;padding:10px 12px}
 
 }
+
+/* FE.06: preserve the Figma sidebar, red actions and gray work area. */
+.management-sidebar{padding:32px clamp(12px,2vw,30px);gap:8px}
+.management-sidebar a{display:block;width:100%;padding:12px;border-radius:7px;font-size:15px}
+.management-sidebar a[aria-current=true]{background:var(--cream);text-decoration:none}
+.management-content{padding:clamp(20px,4vw,55px) clamp(12px,3vw,40px) 40px}
+.admin-heading,.admin-panel-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.admin-heading h2{font-size:clamp(24px,3vw,36px);font-weight:500;margin-bottom:8px}
+.admin-heading p{font-size:14px;color:#645238}
+.admin-preview-label{font-size:12px;background:var(--sand);border:1px solid #d7b679;border-radius:20px;padding:8px 12px}
+.management-status{background:#ffedbd;border:1px solid #d7b679;border-radius:8px;padding:12px;font-size:13px;line-height:1.5;margin-bottom:18px}
+.management-actions{gap:10px;margin-bottom:16px}
+.management-actions button{background:#a92e2e;color:white;border:1px solid #8c2222;border-radius:6px;font-size:14px;cursor:pointer}
+.management-actions button:hover{background:#872020}
+.management-panel{background:#e4e4e4;border:1px solid #b9b9b9;border-radius:9px;padding:clamp(12px,2.5vw,26px);min-height:340px}
+.management-panel [hidden]{display:none}
+.admin-panel-heading h2{margin-bottom:6px;font-size:25px}
+.admin-panel-heading p,.admin-panel-heading span{font-size:13px}
+.admin-filters{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;gap:10px;align-items:end;margin-bottom:16px}
+.admin-filters label,.admin-field{display:grid;gap:6px;font-size:13px;min-width:0}
+.admin-filters input,.admin-filters select,.admin-field input,.admin-field select{width:100%;min-width:0;background:var(--cream);border:1px solid #a99466;border-radius:6px;padding:10px;color:var(--ink);font:13px var(--mono);min-height:42px}
+.admin-filters :disabled,.admin-field :disabled{opacity:.8;cursor:not-allowed}
+.admin-secondary,.admin-commit{padding:10px 14px;border:1px solid #a99466;border-radius:6px;background:var(--cream);color:var(--ink);font:500 13px var(--mono);min-height:42px;cursor:pointer}
+.admin-commit{background:#fdffb7}
+.admin-danger{background:#a92e2e;color:white;border-color:#872020}
+.admin-secondary:disabled,.admin-commit:disabled{opacity:.55;cursor:not-allowed}
+.admin-table-wrap{max-width:100%;overflow-x:auto;border:1px solid #b9b9b9;border-radius:7px;background:#fff}
+.admin-table{border-collapse:collapse;width:100%;font-size:12px;white-space:nowrap;text-align:left}
+.admin-table th,.admin-table td{padding:13px 12px;border-bottom:1px solid #d1c8b6}
+.admin-table th{background:var(--sand);font-weight:500}
+.admin-table .admin-empty{padding:32px 16px;white-space:normal;text-align:center;color:#51442c;line-height:1.6}
+.admin-pagination{display:flex;align-items:center;justify-content:center;gap:10px;font-size:12px;margin-top:18px}
+.admin-dialog{position:fixed;inset:0;margin:auto;width:min(650px,calc(100% - 24px));max-height:90dvh;overflow:auto;padding:clamp(16px,3vw,28px);background:var(--cream);border:1px solid #a99466;border-radius:12px;color:var(--ink)}
+.admin-dialog::backdrop{background:#17130e88}
+.admin-dialog-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
+.admin-dialog-heading h2{font-size:clamp(18px,3vw,25px);font-weight:500}
+.admin-close{width:38px;height:38px;border:1px solid #a99466;border-radius:6px;background:var(--sand);font:22px var(--mono);cursor:pointer;flex:none}
+.admin-dialog-note,.admin-delete-note{font-size:13px;line-height:1.6;margin-bottom:16px}
+.admin-delete-note{background:#ffedbd;border:1px solid #d7b679;padding:12px;border-radius:6px;margin-top:16px}
+.admin-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:12px}
+.admin-dialog-actions{display:flex;justify-content:flex-end;gap:12px;margin-top:22px;flex-wrap:wrap}
+@media(max-width:650px){.management-sidebar{padding:10px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.management-sidebar a{font-size:13px;padding:10px}.management-content{padding:16px 12px 32px}.admin-filters,.admin-fields{grid-template-columns:1fr}.admin-table th,.admin-table td{padding:10px}.management-panel{min-height:0}}

@@ -49,7 +49,10 @@ test("cart links are navigable and admin preview does not enable mutations", asy
   for (const section of ["productos","clientes","ventas","empleados"]) {
     assert.ok(admin.includes('id="'+section+'"'));
   }
-  assert.equal([...admin.matchAll(/<button type="button" disabled>/g)].length,3);
+  assert.equal([...admin.matchAll(/data-admin-action="/g)].length,3);
+  assert.match(admin,/id="admin-commit" disabled/);
+  assert.equal([...admin.matchAll(/class="admin-table"/g)].length,4);
+  assert.doesNotMatch(admin,/<form\b/);
 });
 
 test("all visible product cards have a selection link with a known product", async()=>{
