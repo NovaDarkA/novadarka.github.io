@@ -15,8 +15,8 @@ test("all local HTML links, fragments and responsive image sources exist", async
   const html = Object.fromEntries(await Promise.all(pages.map(async p => [p, await read(p)])));
   let count = 0;
   for (const [page, source] of Object.entries(html)) {
-    const refs = [...source.matchAll(/\b(?:href|src|action)="([^"]+)"/g)].map(m=>m[1]);
-    for (const m of source.matchAll(/\bsrcset="([^"]+)"/g)) {
+    const refs = [...source.matchAll(/\s(?:href|src|action)="([^"]+)"/g)].map(m=>m[1]);
+    for (const m of source.matchAll(/\ssrcset="([^"]+)"/g)) {
       refs.push(...m[1].split(",").map(s=>s.trim().split(/\s+/)[0]));
     }
     for (const m of source.matchAll(/http-equiv="refresh"[^>]*content="[^"]*url=([^"]+)"/gi)) refs.push(m[1]);
