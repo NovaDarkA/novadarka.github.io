@@ -13,3 +13,11 @@ Fecha: 26/11/2026. F5 cerrada por confirmación manual del usuario.
 Referencias: https://supabase.com/docs/guides/auth/auth-email-templates ; https://supabase.com/docs/guides/auth/auth-smtp ; https://resend.com/docs/api-reference/emails/send-email
 ## Cierre
 Código incorporado en rama de desarrollo. CI y recepción de correo real pendientes de evidencia. F7 no debe comenzar hasta cerrar F6. No se cambió la rama main, datos de producción, cuentas demo ni configuración de Supabase. Demora de sesión diferida.
+
+## Revalidación de despliegue y configuración
+- Commit 880c108aaf38b2385ced877db6329a1e7242f3e3: Vercel READY y estado GitHub Vercel success. GET /recuperar.html, /js/recovery.js y /api/health HTTP 200; formulario y controlador presentes.
+- Variables Preview verificadas por nombre: SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY; faltan RESEND_API_KEY y SHOEFIT_EMAIL_FROM. Supabase Shoefit activo. El conector no expone edición de SMTP/plantillas y no se encontró conector Resend.
+- Commit 24f57983d889c7e03b80b43ac70eed01f20766a4 agrega prueba de navegador de flujo de recuperación con servidor simulado: solicitud, confirmación desigual, código inválido, cambio aceptado y limpieza de campos. Ejecución CI no confirmada.
+- Para demostración limitada a un buzón propio, evaluar el remitente de pruebas onboarding@resend.dev; comprobar las restricciones de destinatario antes de configurar. No comprar dominio. La alternativa general exige un remitente verificado.
+- Configuración manual: https://supabase.com/dashboard/project/lmgtiekmgghrnzscwmuz/auth/templates ; https://supabase.com/dashboard/project/lmgtiekmgghrnzscwmuz/auth/smtp ; https://vercel.com/shoefit1/shoefit/settings/environment-variables ; https://resend.com/api-keys . El propietario debe introducir las credenciales directamente en los paneles. No compartir claves por chat.
+- No se enviaron mensajes reales ni cambiaron cuentas. F6 no cerrada.
