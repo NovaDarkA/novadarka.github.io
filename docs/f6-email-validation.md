@@ -21,3 +21,9 @@ Código incorporado en rama de desarrollo. CI y recepción de correo real pendie
 - Para demostración limitada a un buzón propio, evaluar el remitente de pruebas onboarding@resend.dev; comprobar las restricciones de destinatario antes de configurar. No comprar dominio. La alternativa general exige un remitente verificado.
 - Configuración manual: https://supabase.com/dashboard/project/lmgtiekmgghrnzscwmuz/auth/templates ; https://supabase.com/dashboard/project/lmgtiekmgghrnzscwmuz/auth/smtp ; https://vercel.com/shoefit1/shoefit/settings/environment-variables ; https://resend.com/api-keys . El propietario debe introducir las credenciales directamente en los paneles. No compartir claves por chat.
 - No se enviaron mensajes reales ni cambiaron cuentas. F6 no cerrada.
+
+## Pruebas unitarias ejecutadas localmente — 26/11/2026
+- Se recuperaron seis archivos de servicios y tres archivos de pruebas de la rama de desarrollo; se verificaron los nueve hashes Git de los blobs contra GitHub antes de ejecutar.
+- Node.js v22.16.0: `node --test tests/*.mjs` en una copia local parcial y aislada de esos nueve archivos: 13 pruebas aprobadas, 0 fallidas, 0 omitidas (6 sesión, 4 recuperación, 3 notificación). Transporte simulado; no se enviaron correos ni se modificaron usuarios.
+- Commit 09a62fb4506da4c4eba7e36886d79a97eee67036: Vercel READY, GitHub estado Vercel success. La consulta disponible de workflows no devolvió ejecuciones; no se acredita aprobación del navegador ni del CI completo por esta prueba local.
+- La configuración Preview sigue sin RESEND_API_KEY y SHOEFIT_EMAIL_FROM. Se mantiene pendiente alta/configuración del proveedor, SMTP/plantilla de Supabase y recepción efectiva en buzón de prueba. No iniciar F7 hasta cerrar F6.
