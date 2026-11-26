@@ -27,7 +27,7 @@ function boot(){
   const card=template.cloneNode(true);card.dataset.product=p.id;setImage(card.querySelector("img"),p);
   card.querySelector(".catalog-card-meta").textContent=[p.color,p.category].join(" · ");
   card.querySelector("h2").textContent=p.name;card.querySelector(".product-price").textContent=money(p.priceCents);
-  card.querySelector(".product-select").href="sorprendeme.html?producto="+encodeURIComponent(p.id);cards.set(p.id,card);grid.append(card);
+  card.querySelector(".product-select").href="/sorprendeme?producto="+encodeURIComponent(p.id);cards.set(p.id,card);grid.append(card);
  }
  for(const [key,label] of [["brand","Marca"],["type","Tipo"]]){
   const select=document.getElementById("collection-"+key);

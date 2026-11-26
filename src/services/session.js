@@ -65,7 +65,7 @@ export async function login(req,request=createSupabaseTransport(),notify=notifyL
  const profile=await readProfile(userId,result.access_token,request);
  const age=Number.isFinite(result.expires_in)?result.expires_in:3600;
  try{if(await notify(result.user?.email)==="failed")console.warn("shoefit_login_notification_failed");}catch{console.warn("shoefit_login_notification_failed");}
- return json({role:profile.rolez,redirect:profile.rolez==="administrador"?"/administracion.html":"/cuenta.html"},200,{"Set-Cookie":sessionCookie(result.access_token,age)});
+ return json({role:profile.rolez,redirect:profile.rolez==="administrador"?"/administracion":"/cuenta"},200,{"Set-Cookie":sessionCookie(result.access_token,age)});
 }
 /** @param {Request} req @param {ReturnType<typeof createSupabaseTransport>} [request] */
 export async function register(req,request=createSupabaseTransport()){

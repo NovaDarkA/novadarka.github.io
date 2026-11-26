@@ -20,7 +20,7 @@ function render(){
  for(const id of ids){
   const p=getProduct(id),card=el("article","account-favorite-card"),img=el("img");setImage(img,p);
   const name=el("h3",null,p.name),price=el("p",null,money(p.priceCents));
-  const link=el("a","account-primary","Ver producto");link.href="sorprendeme.html?producto="+encodeURIComponent(id);
+  const link=el("a","account-primary","Ver producto");link.href="/sorprendeme?producto="+encodeURIComponent(id);
   const remove=el("button","account-secondary","Quitar de favoritos");remove.type="button";
   remove.addEventListener("click",()=>{try{localStorage.setItem(KEY,JSON.stringify(read().filter(v=>v!==id)));render();status.focus();}catch{status.textContent="No se pudo actualizar la lista."; }});
   card.append(img,name,price,link,remove);grid.append(card);

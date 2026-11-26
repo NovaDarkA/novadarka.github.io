@@ -38,6 +38,6 @@ for(const p of Object.values(PRODUCTS).filter(p=>p.id!==product?.id).slice(0,3))
  const img=document.createElement("img");setImage(img,p);img.loading="lazy";
  const name=document.createElement("h3");name.textContent=p.name;
  const price=document.createElement("p");price.textContent=p.priceCents===null?"Precio por confirmar":money(p.priceCents);
- const link=document.createElement("a");link.className="product-select";link.href="sorprendeme.html?producto="+encodeURIComponent(p.id);link.textContent="Ver producto";
+ const link=document.createElement("a");link.className="product-select";link.href="/sorprendeme?producto="+encodeURIComponent(p.id);link.textContent="Ver producto";
  card.append(img,name,price,link);grid.append(card);
 }

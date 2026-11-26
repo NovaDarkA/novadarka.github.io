@@ -18,7 +18,7 @@ for(const path of ["/api/session","/api/profile","/api/orders","/api/admin?modul
  assert.equal(r.status,401,path+" must reject anonymous access");
  assert.deepEqual(await r.json(),{error:"unauthenticated"});
 }
-const admin=await fetch(origin+"/administracion.html",{redirect:"manual",cache:"no-store",signal:AbortSignal.timeout(15000)});
+const admin=await fetch(origin+"/administracion",{redirect:"manual",cache:"no-store",signal:AbortSignal.timeout(15000)});
 assert.equal(admin.status,303);
-assert.equal(admin.headers.get("location"),"/login.html");
+assert.equal(admin.headers.get("location"),"/login");
 console.log("PASS anonymous access denied for private APIs and admin page.");

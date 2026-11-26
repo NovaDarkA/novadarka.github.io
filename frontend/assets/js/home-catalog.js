@@ -6,7 +6,7 @@ function render(grid,selector,items){
  if(!template)return;
  for(const p of items){
   const card=template.cloneNode(true);setImage(card.querySelector("img"),p);
-  card.querySelector("h3").textContent=p.name;card.querySelector(".product-select").href="sorprendeme.html?producto="+encodeURIComponent(p.id);
+  card.querySelector("h3").textContent=p.name;card.querySelector(".product-select").href="/sorprendeme?producto="+encodeURIComponent(p.id);
   card.querySelector(".price-old")?.remove();
   const price=card.querySelector(".price-new");if(price)price.textContent=money(p.priceCents);
   grid.append(card);
@@ -20,5 +20,5 @@ best.dataset.renderedProducts=String(products.length);
 document.querySelector(".best-stars")?.remove();
 document.querySelector("#best-title").textContent="Explore our products";
 const buy=document.querySelector(".best-actions .best-btn");
-if(buy)buy.href="coleccion.html";
+if(buy)buy.href="/coleccion";
 window.dispatchEvent(new Event("resize"));

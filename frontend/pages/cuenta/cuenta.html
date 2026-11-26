@@ -26,7 +26,7 @@
   <!-- SHARED_HEADER -->
 
   <main id="contenido" class="account-page">
-    <nav class="account-crumb" aria-label="Ruta de navegación"><a href="index.html">Inicio</a> / <span aria-current="page">Mi cuenta</span></nav>
+    <nav class="account-crumb" aria-label="Ruta de navegación"><a href="/">Inicio</a> / <span aria-current="page">Mi cuenta</span></nav>
     <div class="account-heading"><h1>Mi cuenta</h1><p>Tu perfil, pedidos y productos favoritos.</p></div>
     <p class="account-notice" hidden>Inicia sesión para ver tu información personal.</p>
     <div class="account-layout">
@@ -39,7 +39,7 @@
           <a href="#favoritos" data-account-tab="favoritos">Mis favoritos</a>
           <a href="#seguridad" data-account-tab="seguridad">Seguridad</a>
         </nav>
-        <a class="account-primary" href="login.html">Iniciar sesión</a>
+        <a class="account-primary" href="/login">Iniciar sesión</a>
         <button type="button" class="account-secondary" disabled>Cerrar sesión</button>
       </aside>
       <div class="account-content">
@@ -63,17 +63,17 @@
         <section class="account-panel" id="pedidos" data-account-panel hidden aria-labelledby="orders-title">
           <h2 id="orders-title">Mis pedidos</h2><p class="account-muted">Consulta el historial y estado de tus pedidos. Puedes cancelar los pendientes.</p>
           <div class="account-table-wrap"><table class="account-table"><thead><tr><th scope="col">Pedido</th><th scope="col">Fecha</th><th scope="col">Estado</th><th scope="col">Total</th><th scope="col">Acciones</th></tr></thead><tbody id="account-orders"><tr><td colspan="5">Inicia sesión para consultar tus pedidos.</td></tr></tbody></table></div>
-          <p id="orders-status" class="account-muted" role="status"></p><a class="account-primary" href="coleccion.html">Explorar colección</a>
+          <p id="orders-status" class="account-muted" role="status"></p><a class="account-primary" href="/coleccion">Explorar colección</a>
         </section>
         <section class="account-panel" id="favoritos" data-account-panel hidden aria-labelledby="favorites-title">
           <h2 id="favorites-title">Mis favoritos</h2><p class="account-muted">Productos guardados en este navegador; no se sincronizan con la cuenta.</p>
           <p id="account-favorites-status" role="status"></p>
           <div id="account-favorites" class="account-favorites"></div>
-          <div id="account-favorites-empty" class="account-empty"><p>Aún no tienes favoritos guardados.</p><a href="coleccion.html" class="account-primary">Ver productos</a></div>
+          <div id="account-favorites-empty" class="account-empty"><p>Aún no tienes favoritos guardados.</p><a href="/coleccion" class="account-primary">Ver productos</a></div>
         </section>
         <section class="account-panel" id="seguridad" data-account-panel hidden aria-labelledby="security-title">
           <h2 id="security-title">Seguridad de la cuenta</h2><p class="account-muted">Administra el acceso a tu cuenta.</p>
-          <div class="account-security-row"><div><h3>Contraseña</h3><p>Recuperación mediante correo electrónico.</p></div><a href="recuperar.html" class="account-secondary">Recuperar contraseña</a></div>
+          <div class="account-security-row"><div><h3>Contraseña</h3><p>Recuperación mediante correo electrónico.</p></div><a href="/recuperar" class="account-secondary">Recuperar contraseña</a></div>
           <div class="account-security-row"><div><h3>Sesión actual</h3><p id="account-session-state">No hay una sesión iniciada.</p></div><button type="button" class="account-secondary" disabled>Cerrar sesión</button></div>
           <div class="account-security-row"><div><h3>Eliminar mi cuenta</h3><p>Esta acción es irreversible. Los pedidos y ventas históricos se conservan sin tus datos de perfil. Cancela los pedidos pendientes antes de continuar.</p></div></div>
           <form id="account-delete-form" class="account-fields" hidden><label class="account-wide">Contraseña actual<input id="account-delete-password" type="password" maxlength="128" autocomplete="current-password" required disabled></label><div class="account-actions account-wide"><button type="submit" id="account-delete-button" class="account-danger" disabled>Eliminar mi cuenta</button></div></form>

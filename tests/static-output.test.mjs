@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFile, stat, readdir } from "node:fs/promises";
-import { join, relative, resolve } from "node:path";
+import { join, relative, resolve, extname } from "node:path";
 const root = resolve("dist");
 import {pages as manifest,regularPages,headerPages,assets} from "../scripts/frontend-manifest.mjs";
 const pages=manifest.map(p=>p.name);
@@ -24,7 +24,9 @@ test("all local HTML links, fragments and responsive image sources exist", async
     for (const ref of refs) {
       if (ref === "#" || /^(?:https?:|mailto:|tel:|data:|\/\/)/i.test(ref)) continue;
       const [pathWithQuery, hash] = ref.split("#");
-      const path = pathWithQuery==="/"?"index.html":pathWithQuery.split("?")[0].replace(/^\//,"");
+      const route = pathWithQuery.split("?")[0];
+      const cleanPath = route.replace(/^\//,"");
+      const path = route==="/"?"index.html":cleanPath&&!extname(cleanPath)?cleanPath+".html":cleanPath;
       const dest = resolve(root, path || page);
       assert.ok(!relative(root,dest).startsWith(".."), page+": "+ref);
       assert.ok((await stat(dest)).isFile(), page+": "+ref);
@@ -37,14 +39,14 @@ test("all local HTML links, fragments and responsive image sources exist", async
 });
 
 test("legacy pages redirect to the current pages", async () => {
-  for (const [old,current] of Object.entries({"page_collection.html":"coleccion.html","page_login.html":"login.html","page_surprise.html":"sorprendeme.html"})) {
+  for (const [old,current] of Object.entries({"page_collection.html":"/coleccion","page_login.html":"/login","page_surprise.html":"/sorprendeme"})) {
     assert.ok((await read(old)).includes('content="0;url='+current+'"'));
   }
 });
 
 test("cart links are navigable and admin preview does not enable mutations", async () => {
   for (const page of headerPages) {
-    assert.match(await read(page), /<a href="carrito.html" aria-label="Carrito"/);
+    assert.match(await read(page), /<a href="\/carrito" aria-label="Carrito"/);
   }
   const admin=await read("administracion.html");
   for (const section of ["productos","clientes","ventas","empleados"]) {
@@ -62,7 +64,7 @@ test("all visible product cards have a selection link with a known product", asy
     const html=await read(page);
     const cards=[...html.matchAll(/<(article|li) class="(?:flash-card|best-item|product-card)"[^>]*>([\s\S]*?)<\/\1>/g)];
     assert.equal(cards.length,page==="index.html"?10:4);
-    for(const card of cards){const match=card[2].match(/href="sorprendeme.html\?producto=([^"]+)"/);assert.ok(match);assert.ok(getProduct(match[1]));}
+    for(const card of cards){const match=card[2].match(/href="\/sorprendeme\?producto=([^"]+)"/);assert.ok(match);assert.ok(getProduct(match[1]));}
   }
 });
 
@@ -74,13 +76,13 @@ test("catalog has complete visual controls and no fabricated inventory",async()=
 
 test("detail has four gallery controls, quantity and related products slots",async()=>{const html=await read("sorprendeme.html");assert.equal([...html.matchAll(/class="detail-thumb"/g)].length,4);for(const id of ["detail-image","detail-quantity","detail-minus","detail-plus","detail-subtotal","detail-related-grid","detail-availability"])assert.ok(html.includes('id="'+id+'"'));});
 
-test("checkout requires verified client session before enabling confirmation",async()=>{const cart=await read("carrito.html"),html=await read("pedido.html");assert.match(cart,/id="cart-checkout" href="pedido.html"/);assert.match(html,/class="cart-primary checkout-confirm" id="checkout-confirm" disabled/);assert.match(html,/id="checkout-dialog"/);assert.doesNotMatch(html,/<form\b/);assert.ok([...html.matchAll(/<(?:input|textarea)\b[^>]*>/g)].every(m=>m[0].includes("disabled")));});
+test("checkout requires verified client session before enabling confirmation",async()=>{const cart=await read("carrito.html"),html=await read("pedido.html");assert.match(cart,/id="cart-checkout" href="\/pedido"/);assert.match(html,/class="cart-primary checkout-confirm" id="checkout-confirm" disabled/);assert.match(html,/id="checkout-dialog"/);assert.doesNotMatch(html,/<form\b/);assert.ok([...html.matchAll(/<(?:input|textarea)\b[^>]*>/g)].every(m=>m[0].includes("disabled")));});
 
-test("account preview never submits personal information",async()=>{for(const page of ["cuenta.html"]){const html=await read(page);assert.match(html,/id="account-delete-form"[^>]*hidden/);assert.ok([...html.matchAll(/<input\b[^>]*>/g)].every(m=>m[0].includes("disabled")));}const profile=await read("cuenta.html");for(const id of ["perfil","pedidos","favoritos","seguridad"])assert.ok(profile.includes('id="'+id+'"'));assert.match(await read("login.html"),/href="recuperar.html"/);});
+test("account preview never submits personal information",async()=>{for(const page of ["cuenta.html"]){const html=await read(page);assert.match(html,/id="account-delete-form"[^>]*hidden/);assert.ok([...html.matchAll(/<input\b[^>]*>/g)].every(m=>m[0].includes("disabled")));}const profile=await read("cuenta.html");for(const id of ["perfil","pedidos","favoritos","seguridad"])assert.ok(profile.includes('id="'+id+'"'));assert.match(await read("login.html"),/href="\/recuperar"/);});
 
 test("admin has eight sidebar modules without duplicate overview cards",async()=>{const html=await read("administracion.html");assert.equal([...html.matchAll(/data-module="/g)].length,8);assert.doesNotMatch(html,/admin-overview|data-admin-shortcut/);assert.match(html,/id="admin-current-module"/);assert.match(html,/id="admin-workspace-title"/);assert.match(html,/Consultando base de datos/);});
 
-test("information and error pages expose safe, complete navigation",async()=>{const info=await read("informacion.html"),home=await read("index.html"),error=await read("404.html");for(const id of ["history","technology","jobs","values","contact","faq","guide"]){assert.ok(info.includes('id="'+id+'"'));assert.ok(home.includes('informacion.html#'+id));}assert.doesNotMatch(home,/href="(?:tel:123456789|mailto:shoefit@mail.com)"/);assert.match(error,/href="\/"/);assert.match(error,/href="\/coleccion.html"/);assert.match(error,/content="noindex"/);});
+test("information and error pages expose safe, complete navigation",async()=>{const info=await read("informacion.html"),home=await read("index.html"),error=await read("404.html");for(const id of ["history","technology","jobs","values","contact","faq","guide"]){assert.ok(info.includes('id="'+id+'"'));assert.ok(home.includes('/informacion#'+id));}assert.doesNotMatch(home,/href="(?:tel:123456789|mailto:shoefit@mail.com)"/);assert.match(error,/href="\/"/);assert.match(error,/href="\/coleccion"/);assert.match(error,/content="noindex"/);});
 
 test("frontend sources are grouped and every regular page uses the shared header",async()=>{const rootEntries=await readdir(".");assert.ok(!rootEntries.some(e=>e.endsWith(".html")));assert.equal(regularPages.length,11);assert.equal(headerPages.length,10);for(const page of manifest){const source=await readFile(page.source,"utf8");assert.equal(source.includes("<!-- SHARED_HEADER -->"),page.sharedHeader,page.name);if(page.sharedHeader){assert.doesNotMatch(source,/<header class="site-header">/);const published=await read(page.name);assert.equal([...published.matchAll(/<header class="site-header">/g)].length,1);assert.match(published,/href="css\/ui\.css(?:\?[^"]+)?"/);assert.match(published,/href="#contenido"/);assert.match(published,/id="contenido"/);}}});
 test("published pages have unique IDs and a single main heading",async()=>{for(const page of [...regularPages,"404.html"]){const html=await read(page);const ids=[...html.matchAll(/\sid="([^"]+)"/g)].map(m=>m[1]);assert.equal(new Set(ids).size,ids.length,page+" duplicate IDs");assert.equal([...html.matchAll(/<h1(?:\s|>)/g)].length,1,page+" heading");assert.doesNotMatch(html,/<!-- SHARED_HEADER -->/);}});
@@ -114,8 +116,10 @@ test("storefront home links use the canonical root and all catalog products are 
 
 test("home canonical fallback handles the legacy index path and cache-busted UI",async()=>{
  const html=await read("index.html"),css=await read("css/ui.css");
- assert.match(html,/location\.pathname==='\/index\.html'/);
- assert.match(html,/href="css\/ui\.css\?v=20261126-03"/);
+ assert.match(html,/'\/index\.html'/);
+ assert.match(html,/href="css\/ui\.css\?v=20261126-04"/);
  assert.match(css,/\.best-item\{display:grid;grid-template-rows:auto 1fr auto/);
  assert.match(css,/\.flash-card\{display:grid;grid-template-rows:auto 1fr auto auto/);
 });
+
+test("all published links use extensionless routes",async()=>{for(const page of [...regularPages,"404.html"]){const html=await read(page);assert.doesNotMatch(html,/(?:href|action)="[^"]*\.html(?:[?#"])/i,page);}});

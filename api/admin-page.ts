@@ -6,10 +6,10 @@ import {readFile} from "node:fs/promises";
 const node=globalThis as unknown as {process:{cwd:()=>string}};
 export default {fetch:route({GET:async req=>{
  const token=sessionToken(req);
- if(!token)return new Response(null,{status:303,headers:{Location:"/login.html","Cache-Control":"no-store"}});
+ if(!token)return new Response(null,{status:303,headers:{Location:"/login","Cache-Control":"no-store"}});
  let profile;
  try{profile=await readSession(token);}catch(error){
-  if(error instanceof Error&&"status" in error&&error.status===401)return new Response(null,{status:303,headers:{Location:"/login.html","Cache-Control":"no-store"}});
+  if(error instanceof Error&&"status" in error&&error.status===401)return new Response(null,{status:303,headers:{Location:"/login","Cache-Control":"no-store"}});
   throw error;
  }
  if(profile.rolez!=="administrador")return json({error:"forbidden"},403);

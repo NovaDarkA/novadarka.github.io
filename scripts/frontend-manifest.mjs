@@ -82,11 +82,11 @@ export const regularPages = pages.filter(page=>page.sharedHeader||page.name==="a
 export function renderHeader(template,page){
   let result=template.trim();
   const active={
-    "coleccion.html":['href="coleccion.html">Colección Martin Dingman','href="coleccion.html" aria-current="page">Colección Martin Dingman'],
-    "login.html":['href="login.html">Iniciar sesión','href="login.html" aria-current="page">Iniciar sesión'],
-    "registro.html":['href="registro.html">Crear cuenta','href="registro.html" aria-current="page">Crear cuenta'],
-    "carrito.html":['href="carrito.html" aria-label="Carrito" class="action-icon"','href="carrito.html" aria-label="Carrito" class="action-icon" aria-current="page"'],
-    "cuenta.html":['href="cuenta.html">Mi perfil','href="cuenta.html" aria-current="page">Mi perfil']
+    "coleccion.html":['href="/coleccion">Colección Martin Dingman','href="/coleccion" aria-current="page">Colección Martin Dingman'],
+    "login.html":['href="/login">Iniciar sesión','href="/login" aria-current="page">Iniciar sesión'],
+    "registro.html":['href="/registro">Crear cuenta','href="/registro" aria-current="page">Crear cuenta'],
+    "carrito.html":['href="/carrito" aria-label="Carrito" class="action-icon"','href="/carrito" aria-label="Carrito" class="action-icon" aria-current="page"'],
+    "cuenta.html":['href="/cuenta">Mi perfil','href="/cuenta" aria-current="page">Mi perfil']
   }[page];
   if(active)result=result.replace(...active);
   return result;

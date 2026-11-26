@@ -19,13 +19,13 @@ async function login(prefix,role,redirect){
 }
 let admin,client;
 try{
- admin=await login("ADMIN","administrador","/administracion.html");
- client=await login("CLIENT","cliente","/cuenta.html");
+ admin=await login("ADMIN","administrador","/administracion");
+ client=await login("CLIENT","cliente","/cuenta");
  for(const [cookie,role] of [[admin,"administrador"],[client,"cliente"]]){
   const r=await request("/api/session",{cookie});assert.equal(r.status,200);assert.equal((await r.json()).profile.rolez,role);
  }
- const adminPage=await request("/administracion.html",{cookie:admin});assert.equal(adminPage.status,200);assert.match(await adminPage.text(),/<h1>Panel administrativo<\/h1>/);
- assert.equal((await request("/administracion.html",{cookie:client})).status,403);
+ const adminPage=await request("/administracion",{cookie:admin});assert.equal(adminPage.status,200);assert.match(await adminPage.text(),/<h1>Panel administrativo<\/h1>/);
+ assert.equal((await request("/administracion",{cookie:client})).status,403);
  assert.equal((await request("/api/admin?module=productos",{cookie:client})).status,403);
  for(const module of ["productos","clientes","empleados","ventas","proveedores","variantes","pedidos","usuarios"]){
   const r=await request("/api/admin?module="+module,{cookie:admin});assert.equal(r.status,200,module+" read");assert.ok(Array.isArray((await r.json()).data));

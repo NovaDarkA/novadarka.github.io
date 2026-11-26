@@ -9,19 +9,32 @@
   },
   "rewrites": [
     {
-      "source": "/administracion.html",
-      "destination": "/api/admin-page"
-    },
-    {
       "source": "/administracion",
       "destination": "/api/admin-page"
     }
   ],
   "redirects": [
     {
-      "source": "/index.html",
+      "source": "/index",
       "destination": "/",
       "permanent": true
+    },
+    {
+      "source": "/page_collection",
+      "destination": "/coleccion",
+      "permanent": true
+    },
+    {
+      "source": "/page_login",
+      "destination": "/login",
+      "permanent": true
+    },
+    {
+      "source": "/page_surprise",
+      "destination": "/sorprendeme",
+      "permanent": true
     }
-  ]
+  ],
+  "cleanUrls": true,
+  "trailingSlash": false
 }

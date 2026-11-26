@@ -7,8 +7,11 @@ await stat(resolve(root,"index.html"));
 createServer(async(req,res)=>{
  if(!["GET","HEAD"].includes(req.method)){res.writeHead(405,{Allow:"GET, HEAD"}).end();return;}
  try{
-   const pathname=decodeURIComponent(new URL(req.url,"http://localhost").pathname);
-   const path=resolve(root,"."+ (pathname==="/" ? "/index.html":pathname));
+   const url=new URL(req.url,"http://localhost");
+   const pathname=decodeURIComponent(url.pathname);
+   const legacy=({"/index.html":"/","/index":"/","/page_collection":"/coleccion","/page_login":"/login","/page_surprise":"/sorprendeme"})[pathname]??(/\.html$/.test(pathname)?pathname.slice(0,-5):null);
+   if(legacy){res.writeHead(308,{Location:legacy+url.search}).end();return;}
+   const path=resolve(root,"."+ (pathname==="/" ? "/index.html":!extname(pathname)?pathname+".html":pathname));
    const rel=relative(root,path);
    if(rel.startsWith("..")||isAbsolute(rel)){res.writeHead(403).end();return;}
    const body=await readFile(path);

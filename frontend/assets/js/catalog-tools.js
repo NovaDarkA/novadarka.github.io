@@ -32,7 +32,7 @@ function openSearch(source,onlyFavorites=false){
    count.textContent=items.length+" "+(items.length===1?"producto":"productos");
    results.replaceChildren();
    for(const p of items){
-     const li=el("li");const a=el("a","catalog-result");a.href="sorprendeme.html?producto="+encodeURIComponent(p.id);
+     const li=el("li");const a=el("a","catalog-result");a.href="/sorprendeme?producto="+encodeURIComponent(p.id);
      const img=el("img");setImage(img,p);img.alt="";
      const details=el("span");details.append(el("strong",null,p.name),el("small",null,money(p.priceCents)));
      a.append(img,details);li.append(a);results.append(li);
@@ -58,7 +58,7 @@ if(favorite){
 const share=document.querySelector(".special-share");
 share?.addEventListener("click",()=>{
  const product=selected();if(!product)return;
- const url=new URL("sorprendeme.html",location.href);url.searchParams.set("producto",product.id);
+ const url=new URL("/sorprendeme",location.href);url.searchParams.set("producto",product.id);
  open("Compartir producto",share);
  const label=el("label",null,product.name);label.htmlFor="product-share-url";
  const input=el("input","catalog-query");input.id="product-share-url";input.value=url.href;input.readOnly=true;

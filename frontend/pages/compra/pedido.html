@@ -25,8 +25,8 @@
   <!-- SHARED_HEADER -->
 
   <main id="contenido" class="shopping-cart checkout-page">
-    <nav class="order-steps" aria-label="Etapas del pedido"><a href="carrito.html"><span>1</span> Carrito</a><span aria-current="step"><span>2</span> Revisar pedido</span><span><span>3</span> Confirmación</span></nav>
-    <a class="checkout-back" href="carrito.html">← Regresar al carrito</a>
+    <nav class="order-steps" aria-label="Etapas del pedido"><a href="/carrito"><span>1</span> Carrito</a><span aria-current="step"><span>2</span> Revisar pedido</span><span><span>3</span> Confirmación</span></nav>
+    <a class="checkout-back" href="/carrito">← Regresar al carrito</a>
     <div class="cart-heading"><div><h1>Revisar pedido</h1><p>Comprueba tus artículos y la información de entrega.</p></div></div>
     <p class="checkout-banner" role="note">Revisa tu pedido. La confirmación registra los artículos y reserva existencias; no realiza un cobro.</p>
     <div class="cart-columns">
@@ -57,21 +57,21 @@
           <button type="button" class="cart-primary checkout-confirm" id="checkout-confirm" disabled>Confirmar pedido</button>
           <button type="button" class="checkout-preview" id="checkout-preview" disabled>Revisar resumen</button>
           <button type="button" class="checkout-preview" id="checkout-retry" hidden>Reintentar pedido pendiente</button>
-          <p id="checkout-status" role="status">Consultando tu cuenta…</p><a id="checkout-login" href="login.html">Iniciar sesión</a>
+          <p id="checkout-status" role="status">Consultando tu cuenta…</p><a id="checkout-login" href="/login">Iniciar sesión</a>
         </section>
       </div>
       <aside class="cart-summary" aria-labelledby="checkout-summary-title">
         <h2 id="checkout-summary-title">Tu pedido</h2>
         <p class="cart-note" id="checkout-count" role="status">0 artículos</p>
         <div class="checkout-items" id="checkout-items"></div>
-        <div class="checkout-empty" id="checkout-empty"><p>Tu carrito está vacío.</p><a href="coleccion.html">Ver colección</a></div>
+        <div class="checkout-empty" id="checkout-empty"><p>Tu carrito está vacío.</p><a href="/coleccion">Ver colección</a></div>
         <dl>
           <div><dt>Subtotal</dt><dd id="checkout-subtotal">$0.00 MXN</dd></div>
           <div><dt>Envío</dt><dd>Por calcular</dd></div>
           <div class="cart-total"><dt>Total de productos</dt><dd id="checkout-total">$0.00 MXN</dd></div>
         </dl>
         <p class="cart-note">Total estimado de productos. El servidor confirma el importe al registrar el pedido.</p>
-        <a class="cart-back" href="carrito.html">Modificar carrito</a>
+        <a class="cart-back" href="/carrito">Modificar carrito</a>
       </aside>
     </div>
     <dialog class="checkout-dialog" id="checkout-dialog" aria-labelledby="checkout-dialog-title">

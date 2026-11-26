@@ -4,9 +4,9 @@
   <script>
     (function normalizeHome(){
       function clean(){
-        if(location.pathname!=='/'&&location.pathname!=='/index.html')return;
+        if(!['/','/index.html','/index'].includes(location.pathname))return;
         const hash=location.hash==='#inicio'?'':location.hash;
-        if(location.pathname==='/index.html'||hash!==location.hash){
+        if(location.pathname!=='/'||hash!==location.hash){
           history.replaceState(history.state,'','/'+location.search+hash);
         }
       }
@@ -48,7 +48,7 @@
       <div class="hero-copy">
         <p>Check our Newest</p>
         <h1 id="hero-title">Martin Dingman Collection</h1>
-        <a class="hero-link" href="coleccion.html">See more <span aria-hidden="true">»</span></a>
+        <a class="hero-link" href="/coleccion">See more <span aria-hidden="true">»</span></a>
       </div>
     </section>
     <section class="flash-sale" id="coleccion" lang="en" aria-labelledby="flash-title">
@@ -70,7 +70,7 @@
             <h3>Sport Shoes special brand orange and white</h3>
             <p class="price-old"><span class="visually-hidden">Precio anterior: </span><del>4,000 MX</del></p>
             <p class="price-new"><span class="visually-hidden">Precio de oferta: </span>3,450 MX</p>
-            <a class="product-select" href="sorprendeme.html?producto=sport-orange-white">Ver producto</a>
+            <a class="product-select" href="/sorprendeme?producto=sport-orange-white">Ver producto</a>
           </article>
           <article class="flash-card">
             <img src="img/optimized/producto-tenis-naranja-360.webp"
@@ -80,7 +80,7 @@
             <h3>Sport Shoes special brand orange and white</h3>
             <p class="price-old"><span class="visually-hidden">Precio anterior: </span><del>4,000 MX</del></p>
             <p class="price-new"><span class="visually-hidden">Precio de oferta: </span>3,450 MX</p>
-            <a class="product-select" href="sorprendeme.html?producto=sport-orange-white">Ver producto</a>
+            <a class="product-select" href="/sorprendeme?producto=sport-orange-white">Ver producto</a>
           </article>
           <article class="flash-card">
             <img src="img/optimized/producto-tenis-naranja-360.webp"
@@ -90,7 +90,7 @@
             <h3>Sport Shoes special brand orange and white</h3>
             <p class="price-old"><span class="visually-hidden">Precio anterior: </span><del>4,000 MX</del></p>
             <p class="price-new"><span class="visually-hidden">Precio de oferta: </span>3,450 MX</p>
-            <a class="product-select" href="sorprendeme.html?producto=sport-orange-white">Ver producto</a>
+            <a class="product-select" href="/sorprendeme?producto=sport-orange-white">Ver producto</a>
           </article>
           <article class="flash-card">
             <img src="img/optimized/producto-tenis-naranja-360.webp"
@@ -100,7 +100,7 @@
             <h3>Sport Shoes special brand orange and white</h3>
             <p class="price-old"><span class="visually-hidden">Precio anterior: </span><del>4,000 MX</del></p>
             <p class="price-new"><span class="visually-hidden">Precio de oferta: </span>3,450 MX</p>
-            <a class="product-select" href="sorprendeme.html?producto=sport-orange-white">Ver producto</a>
+            <a class="product-select" href="/sorprendeme?producto=sport-orange-white">Ver producto</a>
           </article>
         </div>
         <button class="carousel-arrow carousel-next" type="button" aria-label="Ver productos siguientes" data-scroll="1">
@@ -128,7 +128,7 @@
                    sizes="(min-width:1025px) 9vw, 110px" width="147" height="115" loading="lazy"
                    alt="Botas casuales de cuero café">
               <h3>Casual Boots Martin O'Neil Brown</h3>
-              <a class="product-select" href="sorprendeme.html?producto=casual-boots-brown">Ver producto</a>
+              <a class="product-select" href="/sorprendeme?producto=casual-boots-brown">Ver producto</a>
             </li>
             <li class="best-item">
               <img src="img/optimized/botas-cafe-casual-147.webp"
@@ -136,7 +136,7 @@
                    sizes="(min-width:1025px) 9vw, 110px" width="147" height="115" loading="lazy"
                    alt="Botas casuales de cuero café">
               <h3>Casual Boots Martin O'Neil Brown</h3>
-              <a class="product-select" href="sorprendeme.html?producto=casual-boots-brown">Ver producto</a>
+              <a class="product-select" href="/sorprendeme?producto=casual-boots-brown">Ver producto</a>
             </li>
             <li class="best-item">
               <img src="img/optimized/botas-cafe-casual-147.webp"
@@ -144,7 +144,7 @@
                    sizes="(min-width:1025px) 9vw, 110px" width="147" height="115" loading="lazy"
                    alt="Botas casuales de cuero café">
               <h3>Casual Boots Martin O'Neil Brown</h3>
-              <a class="product-select" href="sorprendeme.html?producto=casual-boots-brown">Ver producto</a>
+              <a class="product-select" href="/sorprendeme?producto=casual-boots-brown">Ver producto</a>
             </li>
             <li class="best-item">
               <img src="img/optimized/botas-cafe-casual-147.webp"
@@ -152,7 +152,7 @@
                    sizes="(min-width:1025px) 9vw, 110px" width="147" height="115" loading="lazy"
                    alt="Botas casuales de cuero café">
               <h3>Casual Boots Martin O'Neil Brown</h3>
-              <a class="product-select" href="sorprendeme.html?producto=casual-boots-brown">Ver producto</a>
+              <a class="product-select" href="/sorprendeme?producto=casual-boots-brown">Ver producto</a>
             </li>
             <li class="best-item">
               <img src="img/optimized/botas-cafe-casual-147.webp"
@@ -160,7 +160,7 @@
                    sizes="(min-width:1025px) 9vw, 110px" width="147" height="115" loading="lazy"
                    alt="Botas casuales de cuero café">
               <h3>Casual Boots Martin O'Neil Brown</h3>
-              <a class="product-select" href="sorprendeme.html?producto=casual-boots-brown">Ver producto</a>
+              <a class="product-select" href="/sorprendeme?producto=casual-boots-brown">Ver producto</a>
             </li>
             <li class="best-item">
               <img src="img/optimized/botas-cafe-casual-147.webp"
@@ -168,12 +168,12 @@
                    sizes="(min-width:1025px) 9vw, 110px" width="147" height="115" loading="lazy"
                    alt="Botas casuales de cuero café">
               <h3>Casual Boots Martin O'Neil Brown</h3>
-              <a class="product-select" href="sorprendeme.html?producto=casual-boots-brown">Ver producto</a>
+              <a class="product-select" href="/sorprendeme?producto=casual-boots-brown">Ver producto</a>
             </li>
             </ul>
             <div class="best-actions">
-              <a class="best-btn" href="sorprendeme.html?producto=casual-boots-brown">Buy Pair</a>
-              <a class="best-btn" href="sorprendeme.html">Surprise me</a>
+              <a class="best-btn" href="/sorprendeme?producto=casual-boots-brown">Buy Pair</a>
+              <a class="best-btn" href="/sorprendeme">Surprise me</a>
             </div>
           </div>
         </div>
@@ -183,8 +183,8 @@
       <div class="contact-inner">
         <h2 id="contact-title">Any problems? Contact us</h2>
         <address class="contact-list">
-          <a class="contact-item" href="informacion.html#contact">Phone Number: Pending confirmation</a>
-          <a class="contact-item" href="informacion.html#contact">Mail: Pending confirmation</a>
+          <a class="contact-item" href="/informacion#contact">Phone Number: Pending confirmation</a>
+          <a class="contact-item" href="/informacion#contact">Mail: Pending confirmation</a>
         </address>
       </div>
     </section>
@@ -209,18 +209,18 @@
       <section class="footer-col" aria-labelledby="footer-about-title">
         <h2 id="footer-about-title">About us</h2>
         <ul class="footer-links">
-          <li><a href="informacion.html#history">History, Vision and Mission</a></li>
-          <li><a href="informacion.html#technology">Technology</a></li>
-          <li><a href="informacion.html#jobs">Job Offers</a></li>
-          <li><a href="informacion.html#values">Values</a></li>
+          <li><a href="/informacion#history">History, Vision and Mission</a></li>
+          <li><a href="/informacion#technology">Technology</a></li>
+          <li><a href="/informacion#jobs">Job Offers</a></li>
+          <li><a href="/informacion#values">Values</a></li>
         </ul>
       </section>
       <section class="footer-col" aria-labelledby="footer-help-title">
         <h2 id="footer-help-title">Help</h2>
         <ul class="footer-links">
-          <li><a href="informacion.html#contact">Contacts</a></li>
-          <li><a href="informacion.html#faq">FAQ</a></li>
-          <li><a href="informacion.html#guide">Guide</a></li>
+          <li><a href="/informacion#contact">Contacts</a></li>
+          <li><a href="/informacion#faq">FAQ</a></li>
+          <li><a href="/informacion#guide">Guide</a></li>
         </ul>
       </section>
     </div>

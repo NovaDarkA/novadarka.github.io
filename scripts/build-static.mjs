@@ -16,8 +16,10 @@ for(const page of pages){
    html=html.replace("<!-- SHARED_HEADER -->",renderHeader(header,page.name));
  }
  html=html.replace(/href="\/?index\.html(?:#inicio)?"/g,'href="/"').replace(/href="\/?index\.html#/g,'href="/#');
+ // Canonical public routes. Keep HTML file names as internal build artifacts.
+ html=html.replace(/(href|action)="\/?(coleccion|sorprendeme|carrito|pedido|login|registro|cuenta|recuperar|administracion|informacion|404)\.html(?=["?#])/g,'$1="/$2').replace(/(url=)\/?(coleccion|login|sorprendeme)\.html(?=")/g,'$1/$2');
  // Version local styles and scripts so existing browsers fetch the corrected assets.
- html=html.replace(/(href|src)="((?:css|js)\/[^"?]+\.(?:css|js))"/g,'$1="$2?v=20261126-03"');
+ html=html.replace(/(href|src)="((?:css|js)\/[^"?]+\.(?:css|js))"/g,'$1="$2?v=20261126-04"');
  await writeFile(join(output,page.name),html,"utf8");
 }
 for(const asset of assets)await cp(join(root,"frontend/assets",asset),join(output,asset),{recursive:true});

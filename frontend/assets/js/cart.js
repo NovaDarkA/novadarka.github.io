@@ -118,7 +118,7 @@ function boot(){
     const variant=variants.get(size.value);const requested=(items.find(i=>i.id===selected.id&&i.size===size.value)?.quantity||0)+quantity;
     if(!variant||requested>Math.min(99,variant.existencias)){productStatus.textContent="La cantidad supera las existencias disponibles.";return;}
     if(!save(changeCart(items,size.value,quantity,selected.id))){productStatus.textContent="No fue posible guardar el carrito en este navegador.";return;}
-    location.href="carrito.html";
+    location.href="/carrito";
   });
   window.addEventListener("storage",e=>{if(e.key===CART_KEY||e.key===null){items=read();render();}});
   window.addEventListener("pageshow",()=>{items=read();render();});

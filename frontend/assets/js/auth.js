@@ -99,8 +99,8 @@
         var response=await fetch(kind==="register"?"/api/register":"/api/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:form.elements.email.value,password:form.elements.password.value})});
         var data=await response.json();
         if(!response.ok){say(data.error==="invalid_email"?"Introduce un correo válido, por ejemplo nombre@gmail.com.":data.error==="registration_unavailable"?"No se pudo crear la cuenta. Comprueba el correo e inténtalo más tarde.":response.status===401?"Correo o contraseña incorrectos.":response.status===429?"Demasiados intentos. Intenta más tarde.":"No se pudo completar la operación.",true);return;}
-        if(kind==="register"){form.reset();if(data.status==="account_created"){say("Cuenta creada correctamente. Ya puedes iniciar sesión.",false);location.assign("login.html");}else say("Revisa tu correo para confirmar tu cuenta.",false);}
-        else if(data.redirect==="/administracion.html"||data.redirect==="/cuenta.html"){location.assign(data.redirect);}
+        if(kind==="register"){form.reset();if(data.status==="account_created"){say("Cuenta creada correctamente. Ya puedes iniciar sesión.",false);location.assign("/login");}else say("Revisa tu correo para confirmar tu cuenta.",false);}
+        else if(data.redirect==="/administracion"||data.redirect==="/cuenta"){location.assign(data.redirect);}
         else say("No se pudo iniciar sesión.",true);
       }catch{say("No se pudo conectar con el servicio.",true);}
       finally{button.disabled=false;button.textContent=originalLabel;form.removeAttribute("aria-busy");}
