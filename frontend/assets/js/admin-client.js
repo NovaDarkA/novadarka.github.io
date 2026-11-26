@@ -21,11 +21,6 @@ export const modules={
         "text"
       ],
       [
-        "talla",
-        "Talla",
-        "size"
-      ],
-      [
         "precio",
         "Precio (MXN)",
         "money"

@@ -27,7 +27,7 @@ import {modules,mutationBody} from "./admin-client.js";
   const m=modules[selected];for(const b of buttons)b.disabled=!ready||busy||m.readOnly===true||(b.dataset.adminAction!=="add"&&!records.length);
   orderActions.hidden=selected!=="pedidos";for(const b of orderActions.querySelectorAll("button"))b.disabled=!ready||busy||chosen?.estado!=="pendiente";
  }
- const displayValue=(row,key)=>key==="id_producto"&&row.producto?.nom_prod?catalogLabel(row.producto.nom_prod):row[key];
+ const displayValue=(row,key)=>key==="id_producto"?(catalogLabel(row.producto?.nom_prod)||"Producto no disponible"):row[key];
  function render(){
   const panel=document.getElementById(selected),m=modules[selected],body=panel.querySelector("tbody"),query=panel.querySelector('input[type="search"]').value.toLowerCase(),sort=panel.querySelector(".admin-filters select").value;
   const filtered=records.filter(r=>[...Object.values(r),...Object.values(r.usuario||{}),r.producto?.nom_prod, catalogLabel(r.producto?.nom_prod)].some(v=>String(v??"").toLowerCase().includes(query)));
@@ -76,7 +76,7 @@ import {modules,mutationBody} from "./admin-client.js";
    if(operation!==op||!dialog.open)return;
    for(const f of m.fields){const [k,label,type,ref,requiredRef]=f;const wrap=node("label","admin-field"),input=node(type==="ref"||k==="publico"?"select":"input");wrap.append(node("span","admin-field-label",label));input.dataset.column=k;
     if(k==="publico"){for(const [label,value] of [["Sin asignar",""],["Hombres","hombre"],["Mujeres","mujer"],["Unisex","unisex"]])input.add(new Option(label,value));}
-    else if(type==="ref"){input.add(new Option(requiredRef?"Selecciona un registro":"Sin asignar",""));for(const r of related[ref])input.add(new Option(labelRow(ref,r),String(r[modules[ref].id])));}
+    else if(type==="ref"){input.add(new Option(requiredRef?"Selecciona un registro":"Sin asignar",""));for(const r of related[ref])input.add(new Option(ref==="productos"?r.nom_prod:labelRow(ref,r),String(r[modules[ref].id])));}
     else{input.type=type==="bool"?"checkbox":type==="text"?"text":"number";if(input.type==="number")input.step=type==="size"?"0.1":type==="money"?"0.01":"1";}
     if(k==="id_doe"&&action==="edit")input.disabled=true;
     op.inputs[k]=input;wrap.append(input);fields.append(wrap);
