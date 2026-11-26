@@ -77,6 +77,7 @@
   </header>
 
   <main id="contenido" class="shopping-cart">
+    <nav class="order-steps" aria-label="Etapas del pedido"><a href="carrito.html" aria-current="step"><span>1</span> Carrito</a><span><span>2</span> Revisar pedido</span><span><span>3</span> Confirmación</span></nav>
     <div class="cart-heading">
       <div><h1>Carrito</h1><p>Revisa los productos de tu pedido.</p></div>
       <p id="cart-count" aria-live="polite">0 artículos</p>
@@ -99,8 +100,8 @@
           <div class="cart-total"><dt>Total de productos</dt><dd id="cart-total">$0.00 MXN</dd></div>
         </dl>
         <p class="cart-note">Los precios, tallas, disponibilidad y envío se confirmarán con el servidor antes de registrar un pedido.</p>
-        <button class="cart-primary" type="button" disabled>Continuar con el pedido</button>
-        <p class="cart-note">El registro de pedidos estará disponible al conectar la base de datos.</p>
+        <a class="cart-primary" id="cart-checkout" href="pedido.html" aria-disabled="true" tabindex="-1">Continuar con el pedido</a>
+        <p class="cart-note">Puedes revisar el pedido antes de enviarlo. El registro real estará disponible al conectar el servidor.</p>
         <a class="cart-back" href="coleccion.html">Seguir comprando</a>
         <p id="cart-status" role="status"></p>
       </aside>

@@ -33,3 +33,6 @@ Filtros, ordenamiento, paginación, estado vacío, tarjetas y diseño adaptable.
 
 ## FE.03 — Detalle de producto
 Galería seleccionable de cuatro vistas para tenis grises, una foto para los demás modelos; descripción basada en imágenes, tipo y disponibilidad por confirmar, talla ilustrativa y cantidad, subtotal local, productos relacionados, favoritos y compartir. No se inventan reseñas, inventario ni precio faltante. Agregar al carrito utiliza la cantidad elegida.
+
+## FE.04 — Carrito y revisión del pedido
+Conserva carrito inspirado en Erick's Caps; nueva ruta pedido.html con etapas visuales, campos de contacto y entrega deshabilitados, resumen real del borrador local y diálogo de confirmación de diseño. Sin enviar datos, cobrar o registrar pedidos. El enlace desde carrito se habilita al contener productos. El costo de envío no se inventa.

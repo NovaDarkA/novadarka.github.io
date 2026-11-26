@@ -39,6 +39,7 @@ function boot(){
   if(cartLink){badge=document.createElement("span");badge.className="cart-badge";badge.setAttribute("aria-hidden","true");cartLink.append(badge);}
   const refreshBadge=()=>{if(badge){const count=totals(items).count;badge.textContent=String(count);badge.hidden=count===0;}};
   const list=document.getElementById("cart-items");
+  document.getElementById("cart-checkout")?.addEventListener("click",e=>{if(totals(items).count===0)e.preventDefault();});
   function el(tag,cls,text){const node=document.createElement(tag);if(cls)node.className=cls;if(text!==undefined)node.textContent=text;return node;}
   function render(){
     refreshBadge();
@@ -48,6 +49,8 @@ function boot(){
     document.getElementById("cart-subtotal").textContent=money(cents);
     document.getElementById("cart-total").textContent=money(cents);
     document.getElementById("cart-empty").hidden=count>0;
+    const checkout=document.getElementById("cart-checkout");
+    if(checkout){checkout.setAttribute("aria-disabled",String(count===0));checkout.tabIndex=count===0?-1:0;}
     list.replaceChildren();
     for(const item of items){
       const product=getProduct(item.id);
