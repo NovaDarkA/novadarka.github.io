@@ -5,16 +5,16 @@
   var EMAIL_RE = /^[^\s@.]+(?:\.[^\s@.]+)*@[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)+$/i;
 
   var MESSAGES = {
-    emailEmpty: "Enter your email address.",
-    emailInvalid: "Enter a valid email address, like name@example.com.",
-    passwordEmpty: "Enter your password.",
-    newPasswordEmpty: "Create a password.",
-    newPasswordShort: "Use at least 8 characters.",
-    confirmEmpty: "Confirm your password.",
-    confirmMismatch: "Passwords do not match.",
-    formInvalid: "Please fix the errors above and try again.",
-    loginUnavailable: "Your details look valid, but login is not available yet: account verification is not connected yet. Nothing was sent or saved.",
-    registerUnavailable: "Your details look valid, but sign up is not available yet: account registration is not connected yet. Nothing was sent or saved."
+    emailEmpty: "Introduce tu correo electrónico.",
+    emailInvalid: "Introduce un correo válido, por ejemplo nombre@ejemplo.com.",
+    passwordEmpty: "Introduce tu contraseña.",
+    newPasswordEmpty: "Crea una contraseña.",
+    newPasswordShort: "Usa al menos 8 caracteres.",
+    confirmEmpty: "Confirma tu contraseña.",
+    confirmMismatch: "Las contraseñas no coinciden.",
+    formInvalid: "Corrige los errores e inténtalo nuevamente.",
+    loginUnavailable: "No se pudo iniciar sesión.",
+    registerUnavailable: "No se pudo crear la cuenta."
   };
 
   

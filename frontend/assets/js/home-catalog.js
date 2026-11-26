@@ -18,7 +18,7 @@ flash.dataset.renderedProducts=String(products.length);
 render(best,".best-item",products);
 best.dataset.renderedProducts=String(products.length);
 document.querySelector(".best-stars")?.remove();
-document.querySelector("#best-title").textContent="Explore our products";
+document.querySelector("#best-title").textContent="Explora nuestros productos";
 const buy=document.querySelector(".best-actions .best-btn");
 if(buy)buy.href="/coleccion";
 window.dispatchEvent(new Event("resize"));

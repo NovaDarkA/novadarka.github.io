@@ -1,3 +1,4 @@
+import {localizeCatalogRecord} from "./catalog-labels.js";
 import {modules,mutationBody} from "./admin-client.js";
  const links=[...document.querySelectorAll("[data-module]")],panels=[...document.querySelectorAll("[data-module-panel]")];
  const dialog=document.getElementById("admin-dialog"),content=document.getElementById("admin-dialog-content"),commit=document.getElementById("admin-commit"),message=document.getElementById("admin-dialog-message"),heading=document.querySelector(".management-status strong"),notice=document.querySelector(".management-status p");
@@ -43,7 +44,7 @@ import {modules,mutationBody} from "./admin-client.js";
  }
  async function load(){
   const seq=++version,key=selected;ready=false;chosen=null;records=[];render();heading.textContent="Consultando base de datos";notice.textContent="Cargando "+modules[key].title.toLowerCase()+"…";
-  try{const r=await request(path(key,null,page));if(seq!==version)return;if(!Array.isArray(r.data))throw Error("Respuesta inválida.");records=r.data;hasMore=r.hasMore===true;ready=true;heading.textContent="Base de datos conectada";notice.textContent="Operaciones reales protegidas por la cuenta administrativa.";}
+  try{const r=await request(path(key,null,page));if(seq!==version)return;if(!Array.isArray(r.data))throw Error("Respuesta inválida.");records=r.data.map(localizeCatalogRecord);hasMore=r.hasMore===true;ready=true;heading.textContent="Base de datos conectada";notice.textContent="Operaciones reales protegidas por la cuenta administrativa.";}
   catch(e){if(seq!==version)return;heading.textContent="Sin acceso a los datos";notice.textContent=e.message;}
   if(seq===version){const panel=document.getElementById(key);for(const e of panel.querySelectorAll(".admin-filters input,.admin-filters select,.admin-filters button"))e.disabled=!ready;render();}
  }
@@ -54,7 +55,7 @@ import {modules,mutationBody} from "./admin-client.js";
   const [prev,next]=panel.querySelectorAll(".admin-pagination button");prev.addEventListener("click",()=>{if(ready&&page>1){page--;load();}});next.addEventListener("click",()=>{if(ready&&hasMore){page++;load();}});
  }
  async function refs(key){
-  const result=[];for(let i=1;i<=100;i++){const r=await request(path(key,null,i));result.push(...r.data);if(!r.hasMore)return result;}throw Error("Demasiados registros relacionados.");
+  const result=[];for(let i=1;i<=100;i++){const r=await request(path(key,null,i));result.push(...r.data.map(localizeCatalogRecord));if(!r.hasMore)return result;}throw Error("Demasiados registros relacionados.");
  }
  function labelRow(key,r){return "#"+r[modules[key].id]+" · "+(r.nom_prod||r.nombre||r.marca||r.puesto||r.calle||"Registro");}
  async function openOperation(action,button){

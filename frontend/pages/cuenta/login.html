@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="es">
+<html lang="es-MX">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Inicia sesión en Shoefit con tu correo electrónico.">
-  <title>Shoefit | Login</title>
+  <title>Shoefit | Iniciar sesión</title>
   <link rel="icon" href="img/optimized/logo-marca.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,33 +25,33 @@
   <!-- SHARED_HEADER -->
 
   <main id="contenido">
-    <section class="auth" lang="en" aria-labelledby="auth-title">
+    <section class="auth" lang="es-MX" aria-labelledby="auth-title">
       <div class="auth-card">
-        <h1 id="auth-title">Login</h1>
-        <p class="auth-note" id="login-note">All fields are required.</p>
-        <noscript><p class="auth-error auth-noscript">JavaScript is required to sign in.</p></noscript>
+        <h1 id="auth-title">Iniciar sesión</h1>
+        <p class="auth-note" id="login-note">Todos los campos son obligatorios.</p>
+        <noscript><p class="auth-error auth-noscript">Activa JavaScript para iniciar sesión.</p></noscript>
         <form class="auth-form" id="login-form" method="post" novalidate data-auth-form="login" aria-describedby="login-note">
           <div class="auth-field">
-            <label for="login-email">Email</label>
+            <label for="login-email">Correo electrónico</label>
             <input id="login-email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="254" required aria-required="true" aria-describedby="login-email-error" data-rule="email">
             <p class="auth-error" id="login-email-error"></p>
           </div>
           <div class="auth-field">
-            <label for="login-password">Password</label>
+            <label for="login-password">Contraseña</label>
             <input id="login-password" name="password" type="password" autocomplete="current-password" maxlength="128" required aria-required="true" aria-describedby="login-password-error" data-rule="password">
             <p class="auth-error" id="login-password-error"></p>
           </div>
           <div class="auth-submit">
-            <button class="auth-btn" type="submit">Log In</button>
+            <button class="auth-btn" type="submit">Iniciar sesión</button>
           </div>
           <p class="auth-status" id="login-status" role="status"></p>
           <div class="auth-row">
-            <a class="auth-link" href="/registro">Sign Up</a>
-            <span class="auth-hint">Secure session</span>
+            <a class="auth-link" href="/registro">Crear cuenta</a>
+            <span class="auth-hint">Sesión segura</span>
           </div>
         </form>
-        <p class="auth-note" lang="es"><a href="/recuperar">¿Olvidaste tu contraseña?</a></p>
-        <p class="auth-note" lang="es">El acceso de cliente o administrador se determina automáticamente al iniciar sesión.</p>
+        <p class="auth-note" lang="es-MX"><a href="/recuperar">¿Olvidaste tu contraseña?</a></p>
+        <p class="auth-note" lang="es-MX">El acceso de cliente o administrador se determina automáticamente al iniciar sesión.</p>
       </div>
     </section>
   </main>

@@ -3,3 +3,5 @@ test("database product mapping uses current price, real name and safe image",()=
 test("fetch catalog follows pagination and rejects failures instead of falling back",async()=>{let n=0;const data=await fetchCatalog(async path=>{n++;assert.equal(path,"/api/products?page="+n);return Response.json({data:[rows[n-1]],hasMore:n===1});});assert.equal(data.length,2);await assert.rejects(fetchCatalog(async()=>new Response(null,{status:503})),/catalog_unavailable/);});
 
 test("only positive stock from priced products exposes available sizes",()=>{const row={...rows[0],producto_variante:[{talla:26,existencias:3},{talla:25,existencias:0},{talla:26,existencias:1},{talla:26.5,existencias:2}]};assert.deepEqual(mapProduct(row).sizes,["26","26.5"]);assert.deepEqual(mapProduct({...row,precio:null}).sizes,[]);});
+
+test("known catalog names, types and colors are localized without overriding custom labels",()=>{const p=mapProduct(rows[0]);assert.equal(p.name,"Tenis flexibles para hombre");assert.equal(p.color,"Gris");assert.equal(p.type,"Tenis");assert.equal(mapProduct({...rows[0],nom_prod:"Modelo nuevo"}).name,"Modelo nuevo");});
