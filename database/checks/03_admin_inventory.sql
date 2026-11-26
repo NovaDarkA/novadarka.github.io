@@ -7,16 +7,16 @@ declare
 begin
  begin
   insert into auth.users(id,email) values(a,a::text||'@test.invalid'),(b,b::text||'@test.invalid'),(e,e::text||'@test.invalid'),(adm,adm::text||'@test.invalid');
-  insert into public.usuario(auth_id,nombre,mail) values(a,'Test A',a::text||'@test.invalid') returning id_user into ua;
-  insert into public.usuario(auth_id,nombre,mail) values(b,'Test B',b::text||'@test.invalid') returning id_user into ub;
-  insert into public.usuario(auth_id,nombre,mail,rolez) values(e,'Test Employee',e::text||'@test.invalid','empleado') returning id_user into ue;
-  insert into public.usuario(auth_id,nombre,mail,rolez) values(adm,'Test Admin',adm::text||'@test.invalid','administrador') returning id_user into uadm;
+  update public.usuario set nombre='Test a',rolez='cliente' where auth_id=a returning id_user into ua;
+  update public.usuario set nombre='Test b',rolez='cliente' where auth_id=b returning id_user into ub;
+  update public.usuario set nombre='Test e',rolez='empleado' where auth_id=e returning id_user into ue;
+  update public.usuario set nombre='Test adm',rolez='administrador' where auth_id=adm returning id_user into uadm;
   select id_producto into strict prod from public.producto where slug='flexible-sneakers-gray';
   perform set_config('request.jwt.claim.sub',adm::text,true);
   perform set_config('request.jwt.claims',json_build_object('sub',adm,'role','authenticated')::text,true);
   execute 'set local role authenticated';
-  insert into public.cliente(id_doe,calle,cp) values(ua,'Test','00000') returning id_cliente into ca;
-  insert into public.cliente(id_doe) values(ub) returning id_cliente into cb;
+  select id_cliente into strict ca from public.cliente where id_doe=ua;
+  select id_cliente into strict cb from public.cliente where id_doe=ub;
   insert into public.empleado(id_doe,puesto,salario) values(ue,'Test',100) returning id_empleado into emp;
   insert into public.venta(id_cliente,id_empleado,id_producto,cantidad_pares,costo_de_venta) values(ca,emp,prod,1,2490) returning id_venta into sale;
   insert into public.producto_variante(id_producto,talla,existencias) values(prod,25,3) returning id_variante into variant;

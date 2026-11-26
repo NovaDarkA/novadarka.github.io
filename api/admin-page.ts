@@ -3,7 +3,7 @@ import { readSession,sessionToken } from "../src/services/session.js";
 // Node runtime file access; no public copy of the protected page is deployed.
 // @ts-ignore Node built-in provided by Vercel's Node.js runtime.
 import {readFile} from "node:fs/promises";
-const node=/** @type {{process:{cwd:()=>string}}} */(/** @type {unknown} */(globalThis));
+const node=globalThis as unknown as {process:{cwd:()=>string}};
 export default {fetch:route({GET:async req=>{
  const token=sessionToken(req);
  if(!token)return new Response(null,{status:303,headers:{Location:"/login.html","Cache-Control":"no-store"}});
