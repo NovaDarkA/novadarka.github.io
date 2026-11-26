@@ -1,5 +1,6 @@
 import {createSupabaseTransport} from "./supabase-transport.js";
 import {HttpError,json} from "../lib/http.js";
+import {notifyLogin} from "./login-notification.js";
 const cookieName="__Host-shoefit_session";
 /** @param {Request} req */
 export function requireSameOrigin(req){
@@ -47,8 +48,8 @@ async function readProfile(userId,token,request){
  if(!profile||!["cliente","administrador","empleado"].includes(profile.rolez))throw new HttpError(403,"profile_unavailable");
  return profile;
 }
-/** @param {Request} req @param {ReturnType<typeof createSupabaseTransport>} [request] */
-export async function login(req,request=createSupabaseTransport()){
+/** @param {Request} req @param {ReturnType<typeof createSupabaseTransport>} [request] @param {typeof notifyLogin} [notify] */
+export async function login(req,request=createSupabaseTransport(),notify=notifyLogin){
  const body=await credentials(req);
  const response=await request("/auth/v1/token?grant_type=password",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
  if(response.status===429)throw new HttpError(429,"try_later");
@@ -62,6 +63,7 @@ export async function login(req,request=createSupabaseTransport()){
  if(typeof userId!=="string"||!/^[0-9a-f-]{36}$/i.test(userId))throw new HttpError(503,"auth_unavailable");
  const profile=await readProfile(userId,result.access_token,request);
  const age=Number.isFinite(result.expires_in)?result.expires_in:3600;
+ try{if(await notify(result.user?.email)==="failed")console.warn("shoefit_login_notification_failed");}catch{console.warn("shoefit_login_notification_failed");}
  return json({role:profile.rolez,redirect:profile.rolez==="administrador"?"/administracion.html":"/cuenta.html"},200,{"Set-Cookie":sessionCookie(result.access_token,age)});
 }
 /** @param {Request} req @param {ReturnType<typeof createSupabaseTransport>} [request] */
