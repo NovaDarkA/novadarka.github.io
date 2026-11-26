@@ -1,5 +1,5 @@
 import {createSupabaseTransport} from "./supabase-transport.js";
-import {readSession,sessionToken,requireSameOrigin} from "./session.js";
+import {readSession,sessionToken,requireSameOrigin,sessionCookie} from "./session.js";
 import {HttpError,json} from "../lib/http.js";
 /** @param {Request} req @param {ReturnType<typeof createSupabaseTransport>} [request] */
 export async function getProfile(req,request=createSupabaseTransport()){
@@ -36,4 +36,35 @@ export async function updateProfile(req,request=createSupabaseTransport()){
  if(!response.ok)throw new HttpError(503,"profile_unavailable");
  const result=await response.json();if(!result||result.id_user!==profile.id_user||result.rolez!=="cliente")throw new HttpError(503,"profile_unavailable");
  return json({data:result});
+}
+
+/** @param {Request} req @param {ReturnType<typeof createSupabaseTransport>} [request] */
+export async function deleteProfile(req,request=createSupabaseTransport()){
+ const token=sessionToken(req);if(!token)throw new HttpError(401,"unauthenticated");
+ requireSameOrigin(req);
+ if(!req.headers.get("content-type")?.toLowerCase().startsWith("application/json"))throw new HttpError(415,"invalid_content_type");
+ const raw=await req.text();if(raw.length>2048)throw new HttpError(400,"invalid_request");
+ let data;try{data=JSON.parse(raw);}catch{throw new HttpError(400,"invalid_request");}
+ if(data?.confirm!=="ELIMINAR"||typeof data.password!=="string"||data.password.length<1||data.password.length>128||Object.keys(data).length!==2)throw new HttpError(400,"invalid_request");
+ const profile=await readSession(token,request);if(profile.rolez!=="cliente")throw new HttpError(403,"forbidden");
+ const headers={"Content-Type":"application/json"};
+ const verified=await request("/auth/v1/token?grant_type=password",{method:"POST",headers,body:JSON.stringify({email:profile.mail,password:data.password})});
+ if(verified.status===429)throw new HttpError(429,"try_later");
+ if(!verified.ok)throw new HttpError(verified.status>=500?503:401,"invalid_password");
+ const result=await verified.json();const fresh=result?.access_token;
+ if(typeof fresh!=="string"||!/^[-\w]+\.[-\w]+\.[-\w]+$/.test(fresh)||fresh.length>=3800)throw new HttpError(503,"deletion_unavailable");
+ let deleted=false;
+ try{
+  const freshProfile=await readSession(fresh,request);
+  if(freshProfile.id_user!==profile.id_user||freshProfile.rolez!=="cliente")throw new HttpError(403,"forbidden");
+  const response=await request("/rest/v1/rpc/shoefit_eliminar_cuenta",{method:"POST",headers,body:"{}"},fresh);
+  if(response.status===401||response.status===403)throw new HttpError(403,"reauth_required");
+  if(!response.ok)throw new HttpError(503,"deletion_unavailable");
+  const outcome=await response.json();
+  if(outcome?.status==="pending_orders")throw new HttpError(409,"pending_orders");
+  if(outcome?.status!=="account_deleted")throw new HttpError(503,"deletion_unavailable");
+  deleted=true;return json({status:"account_deleted"},200,{"Set-Cookie":sessionCookie("",0)});
+ }finally{
+  if(!deleted){try{await request("/auth/v1/logout?scope=local",{method:"POST"},fresh);}catch{/* fresh session is never exposed */}}
+ }
 }
