@@ -17,3 +17,9 @@ Usar exclusivamente el entorno de desarrollo y las cuentas de demostración ya c
 6. Probar el guardado de un dato del perfil de cliente de prueba y restaurar el valor anterior. No editar correo ni rol.
 
 No iniciar F6 hasta confirmar los resultados pendientes. La demora de login/logout sigue diferida por decisión del usuario. Despublicar el producto de demostración tras las pruebas cuando ya no sea necesario; no eliminar registros relacionados con pedidos.
+
+## Validación real ya observada
+Pedido #13, tres unidades, 300 MXN; compra y cancelación reales confirmadas, actualización de perfil HTTP 200, PATCH de inventario HTTP 200 posterior a cancelación (20 existencias actuales). Falta evidencia de altas, bajas y modificación de segunda tabla por HTTP.
+
+## Prueba automatizada pendiente
+Desde una terminal local con Node.js 22, definir SHOEFIT_ADMIN_PASSWORD sin escribir la contraseña en el historial y ejecutar `node scripts/live-admin-crud.mjs`. El script usa exclusivamente el preview, crea un proveedor y un producto no publicado con identificadores únicos, consulta, modifica, elimina y verifica ausencia en las dos tablas. Intenta limpiar únicamente esos registros temporales incluso ante una respuesta perdida. No utiliza credenciales en el código ni altera registros preexistentes. Resultado real pendiente de ejecución desde un entorno con acceso HTTP POST/PATCH/DELETE.
