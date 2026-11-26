@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { readFile, stat, readdir } from "node:fs/promises";
 import { join, relative, resolve } from "node:path";
 const root = resolve("dist");
-const pages = ["index.html", "coleccion.html", "sorprendeme.html", "login.html", "registro.html", "administracion.html", "carrito.html", "pedido.html", "cuenta.html", "recuperar.html", "page_collection.html", "page_login.html", "page_surprise.html"];
+const pages = ["index.html", "coleccion.html", "sorprendeme.html", "login.html", "registro.html", "administracion.html", "carrito.html", "pedido.html", "cuenta.html", "recuperar.html", "informacion.html", "404.html", "page_collection.html", "page_login.html", "page_surprise.html"];
 const read = path => readFile(join(root,path),"utf8");
 
 test("published output exposes only the intended frontend", async () => {
@@ -23,7 +23,7 @@ test("all local HTML links, fragments and responsive image sources exist", async
     for (const ref of refs) {
       if (ref === "#" || /^(?:https?:|mailto:|tel:|data:|\/\/)/i.test(ref)) continue;
       const [pathWithQuery, hash] = ref.split("#");
-      const path = pathWithQuery.split("?")[0];
+      const path = pathWithQuery.split("?")[0].replace(/^\//,"");
       const dest = resolve(root, path || page);
       assert.ok(!relative(root,dest).startsWith(".."), page+": "+ref);
       assert.ok((await stat(dest)).isFile(), page+": "+ref);
@@ -42,7 +42,7 @@ test("legacy pages redirect to the current pages", async () => {
 });
 
 test("cart links are navigable and admin preview does not enable mutations", async () => {
-  for (const page of pages.filter(p=>!p.startsWith("page_"))) {
+  for (const page of pages.filter(p=>!p.startsWith("page_")&&p!=="404.html")) {
     assert.match(await read(page), /<a href="carrito.html" aria-label="Carrito"/);
   }
   const admin=await read("administracion.html");
@@ -65,8 +65,8 @@ test("all visible product cards have a selection link with a known product", asy
   }
 });
 
-test("all ten screens share the same header disclosures",async()=>{
- for(const page of pages.filter(p=>!p.startsWith("page_"))){const html=await read(page);assert.equal([...html.matchAll(/class="nav-disclosure"/g)].length,3,page);assert.match(html,/class="account-disclosure nav-disclosure"/);assert.match(html,/data-open-favorites/);assert.match(html,/href="css\/header.css"/);}
+test("all eleven regular screens share the same header disclosures",async()=>{
+ for(const page of pages.filter(p=>!p.startsWith("page_")&&p!=="404.html")){const html=await read(page);assert.equal([...html.matchAll(/class="nav-disclosure"/g)].length,3,page);assert.match(html,/class="account-disclosure nav-disclosure"/);assert.match(html,/data-open-favorites/);assert.match(html,/href="css\/header.css"/);}
 });
 
 test("catalog has complete visual controls and no fabricated inventory",async()=>{const html=await read("coleccion.html");for(const id of ["collection-query","collection-brand","collection-type","collection-size","collection-price","collection-sort","collection-prev","collection-next","collection-empty"])assert.ok(html.includes('id="'+id+'"'));assert.match(html,/id="collection-size" disabled/);assert.doesNotMatch(html,/98 Products/);});
@@ -78,3 +78,5 @@ test("checkout is a safe preview with no real submission",async()=>{const cart=a
 test("account preview never submits personal information",async()=>{for(const page of ["cuenta.html","recuperar.html"]){const html=await read(page);assert.doesNotMatch(html,/<form\b/);assert.ok([...html.matchAll(/<input\b[^>]*>/g)].every(m=>m[0].includes("disabled")));}const profile=await read("cuenta.html");for(const id of ["perfil","pedidos","favoritos","seguridad"])assert.ok(profile.includes('id="'+id+'"'));assert.match(await read("login.html"),/href="recuperar.html"/);});
 
 test("admin dashboard has four shortcuts and honest disconnected metrics",async()=>{const html=await read("administracion.html");assert.equal([...html.matchAll(/data-admin-shortcut="/g)].length,4);assert.equal([...html.matchAll(/Sin datos conectados/g)].length,4);assert.match(html,/id="admin-current-module"/);assert.match(html,/id="admin-workspace-title"/);});
+
+test("information and error pages expose safe, complete navigation",async()=>{const info=await read("informacion.html"),home=await read("index.html"),error=await read("404.html");for(const id of ["history","technology","jobs","values","contact","faq","guide"]){assert.ok(info.includes('id="'+id+'"'));assert.ok(home.includes('informacion.html#'+id));}assert.doesNotMatch(home,/href="(?:tel:123456789|mailto:shoefit@mail.com)"/);assert.match(error,/href="\/index.html"/);assert.match(error,/href="\/coleccion.html"/);assert.match(error,/content="noindex"/);});

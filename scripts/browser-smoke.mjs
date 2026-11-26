@@ -13,7 +13,7 @@ const server=createServer(async(req,res)=>{
     if(relative(root,path).startsWith("..")) {res.writeHead(403).end();return;}
     res.setHeader("Content-Type",mime[extname(path)]||"application/octet-stream");
     res.end(await readFile(path));
-  } catch {res.writeHead(404).end();}
+  } catch {res.writeHead(404,{"Content-Type":"text/html"}).end(await readFile(join(root,"404.html")));}
 });
 const delay=ms=>new Promise(r=>setTimeout(r,ms));
 const profile=await mkdtemp(join(tmpdir(),"shoefit-chrome-"));
@@ -41,7 +41,7 @@ try {
   await call("Page.enable");await call("Network.enable");
   // External fonts are intentionally excluded; check the local application without network dependencies.
   await call("Network.setBlockedURLs",{urls:["*fonts.googleapis.com/*","*fonts.gstatic.com/*"]});
-  const pages=["index.html","coleccion.html","sorprendeme.html","login.html","registro.html","administracion.html","carrito.html","pedido.html","cuenta.html","recuperar.html"];
+  const pages=["index.html","coleccion.html","sorprendeme.html","login.html","registro.html","administracion.html","carrito.html","pedido.html","cuenta.html","recuperar.html","informacion.html"];
   for(const width of [1366,820,390]){
     await call("Emulation.setDeviceMetricsOverride",{width,height:844,deviceScaleFactor:1,mobile:width===390});
     for(const page of pages){
@@ -69,8 +69,7 @@ try {
       if(page==="index.html"){
         const searchWorks=await evaluate("(()=>{document.querySelector('[aria-label=Buscar]').click();const input=document.querySelector('#catalog-query');if(!input)return false;input.value='tenis gris';input.dispatchEvent(new Event('input'));const found=document.querySelectorAll('.catalog-result').length===1&&document.querySelector('.catalog-result').href.includes('flexible-sneakers-gray');document.querySelector('.catalog-close').click();return found&&!document.querySelector('.catalog-dialog').open})()");
         assert.equal(searchWorks,true,"catalog search and modal");
-        const footerWorks=await evaluate("(()=>{document.querySelector('[data-info=guide]').click();const ok=document.querySelector('.catalog-dialog').open&&document.querySelector('.catalog-info').textContent.includes('carrito');document.querySelector('.catalog-close').click();return ok})()");
-        assert.equal(footerWorks,true,"footer guide");
+        assert.equal(await evaluate("document.querySelector('a[href=\\\"informacion.html#guide\\\"]')!==null"),true,"footer guide navigation");
       }
       if(page==="sorprendeme.html"){
         const toolsWork=await evaluate("(()=>{const b=document.querySelector('.special-fav'),s=document.querySelector('.special-share');const before=b.getAttribute('aria-pressed');b.click();const changed=b.getAttribute('aria-pressed')!==before;b.click();s.click();const link=document.querySelector('#product-share-url')?.value;document.querySelector('.catalog-close').click();return changed&&b.getAttribute('aria-pressed')===before&&link.includes('producto=flexible-sneakers-gray')})()");
@@ -92,11 +91,18 @@ try {
       if(page==="pedido.html")assert.equal(await evaluate("(async()=>{const key='shoefit.cart.v1',old=localStorage.getItem(key);try{localStorage.setItem(key,JSON.stringify([{id:'flexible-sneakers-gray',size:'26',quantity:2},{id:'martin-dingman-brown',size:'27',quantity:1}]));dispatchEvent(new StorageEvent('storage',{key}));const preview=document.querySelector('#checkout-preview');const summary=document.querySelector('#checkout-items').children.length===2&&document.querySelector('#checkout-total').textContent.includes('8,980')&&document.querySelector('#checkout-count').textContent==='3 artículos';preview.click();const opened=document.querySelector('#checkout-dialog').open;document.querySelector('#checkout-close').click();localStorage.removeItem(key);dispatchEvent(new StorageEvent('storage',{key}));return summary&&opened&&!document.querySelector('#checkout-dialog').open&&!document.querySelector('#checkout-empty').hidden&&preview.disabled&&document.querySelector('.checkout-confirm').disabled&&[...document.querySelectorAll('.checkout-fields input,.checkout-fields textarea')].every(e=>e.disabled)&&document.documentElement.scrollWidth<=innerWidth+2;}finally{if(old===null)localStorage.removeItem(key);else localStorage.setItem(key,old);dispatchEvent(new StorageEvent('storage',{key}));}})()"),true,"checkout preview, summary and empty state");
       if(page==="cuenta.html")assert.equal(await evaluate("(async()=>{const key='shoefit.favorites.v1',old=localStorage.getItem(key);try{localStorage.setItem(key,JSON.stringify(['flexible-sneakers-gray']));dispatchEvent(new StorageEvent('storage',{key}));document.querySelector('[data-account-tab=favoritos]').click();await new Promise(r=>setTimeout(r,80));const shown=!document.querySelector('#favoritos').hidden&&document.querySelector('#perfil').hidden&&document.querySelectorAll('.account-favorite-card').length===1;document.querySelector('.account-favorite-card button').click();const removed=!document.querySelector('#account-favorites-empty').hidden;document.querySelector('[data-account-tab=pedidos]').click();await new Promise(r=>setTimeout(r,80));const orders=!document.querySelector('#pedidos').hidden;return shown&&removed&&orders&&[...document.querySelectorAll('.account-fields input')].every(e=>e.disabled)&&document.documentElement.scrollWidth<=innerWidth+2;}finally{if(old===null)localStorage.removeItem(key);else localStorage.setItem(key,old);dispatchEvent(new StorageEvent('storage',{key}));}})()"),true,"account tabs, local favorites and preview safety");
       if(page==="recuperar.html")assert.equal(await evaluate("document.querySelector('.account-fields input').disabled&&document.querySelector('.account-recovery-card button').disabled"),true,"recovery preview safety");
+      if(page==="informacion.html")assert.equal(await evaluate("(()=>{const guide=document.querySelector('#guide');const q=document.querySelector('#faq details');q.querySelector('summary').click();const opened=q.open;q.querySelector('summary').click();return !!guide&&guide.querySelectorAll('li').length===4&&opened&&!q.open&&document.documentElement.scrollWidth<=innerWidth+2})()"),true,"information guide and FAQ");
       if(page==="administracion.html")assert.equal(await evaluate("(async()=>{for(const key of ['productos','clientes','ventas','empleados']){document.querySelector('[data-module='+key+']').click();await new Promise(r=>setTimeout(r,70));if(document.querySelector('#'+key).hidden||!document.querySelector('#'+key+' .admin-table'))return false;for(const action of ['add','edit','delete']){document.querySelector('[data-admin-action='+action+']').click();const d=document.querySelector('#admin-dialog');if(!d.open||!document.querySelector('#admin-commit').disabled||![...d.querySelectorAll('input,select')].every(e=>e.disabled))return false;if(action==='delete'&&!d.querySelector('.admin-delete-note'))return false;document.querySelector('#admin-cancel').click();}}return document.documentElement.scrollWidth<=innerWidth+2})()"),true,"four admin modules and 12 operation previews");
       if(page==="administracion.html")assert.equal(await evaluate("(async()=>{const shortcut=document.querySelector('[data-admin-shortcut=ventas]');shortcut.click();await new Promise(r=>setTimeout(r,80));return !document.querySelector('#ventas').hidden&&shortcut.getAttribute('aria-current')==='true'&&document.querySelector('#admin-current-module').textContent==='Ventas'&&document.querySelector('#admin-workspace-title').textContent==='Ventas'&&document.querySelectorAll('.admin-overview-card').length===4&&document.documentElement.scrollWidth<=innerWidth+2})()"),true,"dashboard overview navigation and workspace");
       assert.equal(await evaluate("document.querySelector('[aria-label=Carrito]').getAttribute('href')"),"carrito.html",page+" cart navigation");
       console.log(width+"px "+page+" OK ("+state.images+" images)");
     }
+    const missing=origin+"/no-existe/prueba-404";
+    assert.equal((await fetch(missing)).status,404);
+    await call("Page.navigate",{url:missing});
+    let missingReady=false;for(let i=0;i<100;i++){try{missingReady=await evaluate("location.href === "+JSON.stringify(missing)+" && document.readyState === 'complete' && document.title.includes('Página no encontrada')");if(missingReady)break;}catch{}await delay(100);}
+    assert.ok(missingReady,"custom 404 loaded");
+    assert.equal(await evaluate("document.querySelector('.info-error-card a[href=\\\"/index.html\\\"]')!==null&&document.documentElement.scrollWidth<=innerWidth+2"),true,"404 recovery link and layout");
   }
 } finally {
   socket?.close();chrome?.kill();server.close();await delay(300);await rm(profile,{recursive:true,force:true,maxRetries:5,retryDelay:200});

@@ -65,12 +65,3 @@ share?.addEventListener("click",()=>{
  const copy=button("Copiar enlace","catalog-button");const status=el("p","catalog-count");status.setAttribute("role","status");
  copy.addEventListener("click",async()=>{try{await navigator.clipboard.writeText(url.href);status.textContent="Enlace copiado.";}catch{input.focus();input.select();status.textContent="Selecciona y copia el enlace manualmente.";}});body.append(label,input,copy,status);
 });
-const info={
- history:["History, Vision and Mission","La información institucional todavía no ha sido proporcionada por el equipo."],
- technology:["Technology","Esta interfaz utiliza HTML, CSS y JavaScript. El catálogo actual es provisional."],
- jobs:["Job Offers","No se han publicado vacantes en esta versión académica."],
- values:["Values","Los valores oficiales de la zapatería están pendientes de definición por el equipo."],
- faq:["FAQ","Puedes elegir un producto, seleccionar una talla ilustrativa y añadirlo al carrito. El registro de pedidos y las existencias reales aún no están disponibles."],
- guide:["Guide","Abre la colección o usa la búsqueda. Elige un producto y su talla, pulsa Add to Cart y revisa las cantidades y el subtotal en el carrito."]
-};
-for(const b of document.querySelectorAll("[data-info]"))b.addEventListener("click",()=>{const entry=info[b.dataset.info];if(!entry)return;open(entry[0],b);body.append(el("p","catalog-info",entry[1]));});

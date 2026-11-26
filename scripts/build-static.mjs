@@ -5,7 +5,7 @@ import { join } from "node:path";
 const root = fileURLToPath(new URL("../", import.meta.url));
 const output = join(root, "dist");
 const assets = [
-  "index.html", "coleccion.html", "sorprendeme.html", "login.html", "registro.html", "administracion.html", "carrito.html", "pedido.html", "cuenta.html", "recuperar.html",
+  "index.html", "coleccion.html", "sorprendeme.html", "login.html", "registro.html", "administracion.html", "carrito.html", "pedido.html", "cuenta.html", "recuperar.html", "informacion.html", "404.html",
   "page_collection.html", "page_login.html", "page_surprise.html", "css", "js", "img"
 ];
 await rm(output, { recursive: true, force: true });

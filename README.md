@@ -45,3 +45,6 @@ Cuatro módulos (PRODUCTO, CLIENTE, VENTA, EMPLEADO) con campos del SQL original
 
 ### FE.06 — Refinamiento visual autorizado
 Dashboard administrativo con identidad Shoefit, iconos, accesos rápidos, navegación sincronizada, tabla en panel crema, estados vacíos y formularios refinados. Indicadores sin datos conectados, sin métricas inventadas. Se conserva la interfaz y los campos de los cuatro módulos, sin operaciones reales.
+
+## FE.07 — Información y ayuda
+Centro de información con siete secciones enlazadas desde el pie de página, FAQ desplegables, guía de compra, contacto pendiente de confirmación y página 404 personalizada con enlaces de recuperación absolutos. No se inventan datos institucionales ni se habilitan contactos de ejemplo. Se conserva el diseño de las páginas anteriores.
