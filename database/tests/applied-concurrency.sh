@@ -16,8 +16,8 @@ insert into public.producto(nom_prod,slug,precio,activo) values('Concurrency fix
 insert into public.producto_variante(id_producto,talla,existencias) select id_producto,25,1 from public.producto where slug='ci-concurrent-stock';
 insert into public.producto_variante(id_producto,talla,existencias) select id_producto,26,2 from public.producto where slug='ci-concurrent-stock';
 SQL
-v1=$(db -Atc "select v.id_variante from public.producto_variante v join public.producto p using(id_producto) where p.slug='ci-concurrent-stock' and talla=25")
-v2=$(db -Atc "select v.id_variante from public.producto_variante v join public.producto p using(id_producto) where p.slug='ci-concurrent-stock' and talla=26")
+v1=$(db -Atc "select v.id_variante from public.producto_variante v join public.producto p using(id_producto) where p.slug='ci-concurrent-stock' and v.talla=25")
+v2=$(db -Atc "select v.id_variante from public.producto_variante v join public.producto p using(id_producto) where p.slug='ci-concurrent-stock' and v.talla=26")
 # A holds its reservation open; B runs in another connection while the lock is held.
 checkout() {
  local uid=$1 key=$2 variant=$3 hold=$4 app=$5
