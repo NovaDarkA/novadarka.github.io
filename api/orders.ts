@@ -1,1 +1,1 @@
-import {route} from "../src/lib/http.js";import {myOrders} from "../src/services/orders.js";export default {fetch:route({GET:r=>myOrders(r)})};
+import {route} from "../src/lib/http.js";import {myOrders,createOrder,changeOrder} from "../src/services/orders.js";export default {fetch:route({GET:r=>myOrders(r),POST:r=>createOrder(r),PATCH:r=>changeOrder(r)})};

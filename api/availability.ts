@@ -1,0 +1,1 @@
+import {route,json} from "../src/lib/http.js";import {readAvailability} from "../src/services/catalog.js";import {createSupabaseTransport} from "../src/services/supabase-transport.js";export default {fetch:route({GET:async r=>json({data:await readAvailability(r,createSupabaseTransport())})})};

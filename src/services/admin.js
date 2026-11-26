@@ -12,6 +12,7 @@ const modules={
  ventas:{table:"venta",id:"id_venta",fields:{id_cliente:{type:"id",required:true},id_empleado:{type:"id",required:true},id_producto:{type:"id",required:true},cantidad_pares:{type:"int",required:true},costo_de_venta:{type:"money",required:true}}},
  proveedores:{table:"proveedor",id:"id_proveedor",fields:{marca:{type:"text",max:100,required:true},tipo_producto:{type:"text",max:100}}},
  variantes:{table:"producto_variante",id:"id_variante",fields:{id_producto:{type:"id",required:true},talla:{type:"size",required:true},existencias:{type:"int"},activo:{type:"bool"}}},
+ pedidos:{table:"pedido",id:"id_pedido",readOnly:true,fields:{id_cliente:{type:"id"},estado:{type:"text"},costo:{type:"money"},creado_en:{type:"text"}}},
  usuarios:{table:"usuario",id:"id_user",readOnly:true,fields:{nombre:{type:"text"},ap:{type:"text"},am:{type:"text"},rolez:{type:"text"}}}
 };
 /** @param {unknown} value */
