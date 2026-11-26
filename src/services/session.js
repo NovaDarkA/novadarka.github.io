@@ -73,6 +73,9 @@ export async function register(req,request=createSupabaseTransport()){
  const response=await request("/auth/v1/signup",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
  if(response.status===429)throw new HttpError(429,"try_later");
  if(!response.ok)throw new HttpError(response.status>=500?503:400,"registration_unavailable");
+ const result=await response.json();
+ // When email confirmation is disabled, Supabase returns a session. Never expose its tokens.
+ if(typeof result?.access_token==="string"&&result.access_token.length>0)return json({status:"account_created"},201);
  return json({status:"check_email"},202);
 }
 /** @param {Request} req */
