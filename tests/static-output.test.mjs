@@ -3,12 +3,13 @@ import assert from "node:assert/strict";
 import { readFile, stat, readdir } from "node:fs/promises";
 import { join, relative, resolve } from "node:path";
 const root = resolve("dist");
-const pages = ["index.html", "coleccion.html", "sorprendeme.html", "login.html", "registro.html", "administracion.html", "carrito.html", "pedido.html", "cuenta.html", "recuperar.html", "informacion.html", "404.html", "page_collection.html", "page_login.html", "page_surprise.html"];
+import {pages as manifest,regularPages,assets} from "../scripts/frontend-manifest.mjs";
+const pages=manifest.map(p=>p.name);
 const read = path => readFile(join(root,path),"utf8");
 
 test("published output exposes only the intended frontend", async () => {
   const entries = (await readdir(root)).sort();
-  assert.deepEqual(entries, [...pages,"css","js","img"].sort());
+  assert.deepEqual(entries, [...pages,...assets].sort());
 });
 
 test("all local HTML links, fragments and responsive image sources exist", async () => {
@@ -56,7 +57,7 @@ test("cart links are navigable and admin preview does not enable mutations", asy
 });
 
 test("all visible product cards have a selection link with a known product", async()=>{
-  const {getProduct}=await import("../js/products.js");
+  const {getProduct}=await import("../frontend/assets/js/products.js");
   for(const page of ["index.html","coleccion.html"]){
     const html=await read(page);
     const cards=[...html.matchAll(/<(article|li) class="(?:flash-card|best-item|product-card)"[^>]*>([\s\S]*?)<\/\1>/g)];
@@ -80,3 +81,6 @@ test("account preview never submits personal information",async()=>{for(const pa
 test("admin dashboard has four shortcuts and honest disconnected metrics",async()=>{const html=await read("administracion.html");assert.equal([...html.matchAll(/data-admin-shortcut="/g)].length,4);assert.equal([...html.matchAll(/Sin datos conectados/g)].length,4);assert.match(html,/id="admin-current-module"/);assert.match(html,/id="admin-workspace-title"/);});
 
 test("information and error pages expose safe, complete navigation",async()=>{const info=await read("informacion.html"),home=await read("index.html"),error=await read("404.html");for(const id of ["history","technology","jobs","values","contact","faq","guide"]){assert.ok(info.includes('id="'+id+'"'));assert.ok(home.includes('informacion.html#'+id));}assert.doesNotMatch(home,/href="(?:tel:123456789|mailto:shoefit@mail.com)"/);assert.match(error,/href="\/index.html"/);assert.match(error,/href="\/coleccion.html"/);assert.match(error,/content="noindex"/);});
+
+test("frontend sources are grouped and every regular page uses the shared header",async()=>{const rootEntries=await readdir(".");assert.ok(!rootEntries.some(e=>e.endsWith(".html")));assert.equal(regularPages.length,11);for(const page of manifest){const source=await readFile(page.source,"utf8");assert.equal(source.includes("<!-- SHARED_HEADER -->"),page.sharedHeader,page.name);if(page.sharedHeader){assert.doesNotMatch(source,/<header class="site-header">/);const published=await read(page.name);assert.equal([...published.matchAll(/<header class="site-header">/g)].length,1);assert.match(published,/href="css\/ui.css"/);assert.match(published,/href="#contenido"/);assert.match(published,/id="contenido"/);}}});
+test("published pages have unique IDs and a single main heading",async()=>{for(const page of [...regularPages,"404.html"]){const html=await read(page);const ids=[...html.matchAll(/\sid="([^"]+)"/g)].map(m=>m[1]);assert.equal(new Set(ids).size,ids.length,page+" duplicate IDs");assert.equal([...html.matchAll(/<h1(?:\s|>)/g)].length,1,page+" heading");assert.doesNotMatch(html,/<!-- SHARED_HEADER -->/);}});

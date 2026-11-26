@@ -3,7 +3,7 @@
 Proyecto académico, entrega 30 de noviembre de 2026. El diseño existente se conserva.
 
 ## Capas
-- Frontend HTML, CSS y JavaScript existente; los recursos públicos se copian a dist por lista permitida.
+- Frontend HTML, CSS y JavaScript en frontend/; se compila con un manifiesto explícito de rutas y encabezado compartido hacia dist/.
 - Backend: funciones Node.js/TypeScript de Vercel en api/; separar validaciones, servicios y acceso a datos cuando se implementen.
 - Datos: PostgreSQL en un proyecto Supabase dedicado exclusivamente a Shoefit; Auth para sesiones y RLS para autorización. Las credenciales privadas nunca llegan al navegador.
 - Correo: proveedor transaccional pendiente; enviar aviso al autenticar correctamente, sin contraseñas ni tokens.
@@ -29,9 +29,9 @@ Trabajar únicamente en develop/shoefit-fullstack. No fusionar con main sin apro
 5. Desplegar vista previa y probar la rúbrica.
 
 ## Ejecución
-`node scripts/build-static.mjs` genera dist sin mover archivos originales.
+`node scripts/build-static.mjs` genera dist desde frontend/pages y frontend/assets, con encabezado compartido. `npm run dev` inicia la vista local.
 Configurar Vercel con la rama de desarrollo y las variables de entorno cuando corresponda.
-No hay despliegue ni conexión de datos todavía.
+Vista previa desplegada en Vercel; la conexión real de datos está pendiente.
 
 ## Ampliación de alcance (25/11/2026)
 Añadir las dos pantallas restantes del diseño Figma: administración (Productos, Clientes, Ventas y Empleados; Agregar, Eliminar y Modificar) y carrito. F3 debe contemplar entidades de clientes, empleados, ventas y detalles, carritos y detalles, además de catálogo e inventario. Los empleados requieren perfiles/roles autorizados; no duplicar credenciales. Las pantallas actuales son vistas previas sin operaciones ni datos sensibles. F4–F6 implementarán API, persistencia, validación y permisos; no confiar en controles HTML para autorización. El diseño de contenidos del panel gris no está especificado por Figma; se preparó un estado informativo hasta definir datos reales.
@@ -46,3 +46,6 @@ Se añaden enlaces de selección a todas las tarjetas actuales de inicio y colec
 
 ## Continuación de frontend antes de F3
 Búsqueda y favoritos operan sobre cuatro referencias únicas provisionales; no duplicar los registros por tarjetas repetidas. Compartir genera URL canónica de detalle sin UTM. Pie de página: ayuda y guía basadas en funcionamiento actual; información institucional no proporcionada se señala como pendiente. No inventar historia, vacantes, valores, clasificación por género, existencias ni información empresarial. Autenticación y CRUD servidor siguen pendientes.
+
+## FE.08 — Organización del frontend
+Las páginas fuente se agrupan por tienda, compra, cuenta, administración, ayuda y compatibilidad. Los recursos CSS, JS e imágenes se ubican en frontend/assets. El encabezado común se inserta en build; se conservan rutas públicas originales, incluyendo redirecciones y 404. api/ permanece en raíz por la convención Vercel y src/ contiene servicios backend. No se cambian contratos del backend ni SQL.

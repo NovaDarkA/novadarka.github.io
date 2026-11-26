@@ -12,7 +12,9 @@
     "test": "node --experimental-strip-types --test tests/foundation.test.mjs tests/cart.test.mjs tests/catalog.test.mjs tests/collection.test.mjs",
     "check": "npm run typecheck && npm test && npm run build && npm run test:static",
     "test:static": "node --test tests/static-output.test.mjs",
-    "test:browser": "node scripts/browser-smoke.mjs"
+    "test:browser": "node scripts/browser-smoke.mjs",
+    "preview": "node scripts/serve-static.mjs",
+    "dev": "npm run build && npm run preview"
   },
   "devDependencies": {
     "typescript": "5.8.3"

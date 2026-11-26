@@ -1,4 +1,4 @@
-import test from "node:test";import assert from "node:assert/strict";import {filterCollection,paginate} from "../js/collection.js";
+import test from "node:test";import assert from "node:assert/strict";import {filterCollection,paginate} from "../frontend/assets/js/collection.js";
 test("four distinct known models",()=>assert.equal(filterCollection().length,4));
 test("brand, type and query combine",()=>{assert.equal(filterCollection({brand:"martin-dingman",type:"casual"})[0].id,"martin-dingman-brown");assert.equal(filterCollection({query:"gris",type:"boots"}).length,0)});
 test("price filters and sort leave unknown prices last",()=>{assert.equal(filterCollection({price:"low"}).length,1);assert.equal(filterCollection({price:"mid"}).length,2);assert.equal(filterCollection({price:"unknown"})[0].id,"casual-boots-brown");assert.equal(filterCollection({sort:"desc"})[0].id,"martin-dingman-brown");assert.equal(filterCollection({sort:"asc"}).at(-1).priceCents,null)});

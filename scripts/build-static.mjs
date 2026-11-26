@@ -1,16 +1,20 @@
-import { cp, mkdir, rm } from "node:fs/promises";
-import { fileURLToPath } from "node:url";
-import { join } from "node:path";
-
-const root = fileURLToPath(new URL("../", import.meta.url));
-const output = join(root, "dist");
-const assets = [
-  "index.html", "coleccion.html", "sorprendeme.html", "login.html", "registro.html", "administracion.html", "carrito.html", "pedido.html", "cuenta.html", "recuperar.html", "informacion.html", "404.html",
-  "page_collection.html", "page_login.html", "page_surprise.html", "css", "js", "img"
-];
-await rm(output, { recursive: true, force: true });
-await mkdir(output, { recursive: true });
-for (const item of assets) {
-  await cp(join(root, item), join(output, item), { recursive: true });
+import {cp,mkdir,rm,readFile,writeFile} from "node:fs/promises";
+import {fileURLToPath} from "node:url";
+import {join} from "node:path";
+import {pages,assets,renderHeader} from "./frontend-manifest.mjs";
+const root=fileURLToPath(new URL("../",import.meta.url));
+const output=join(root,"dist");
+const header=await readFile(join(root,"frontend/components/header.html"),"utf8");
+if(new Set(pages.map(p=>p.name)).size!==pages.length)throw Error("Duplicate public route");
+await rm(output,{recursive:true,force:true});
+await mkdir(output,{recursive:true});
+for(const page of pages){
+ let html=await readFile(join(root,page.source),"utf8");
+ if(page.sharedHeader){
+   if(html.split("<!-- SHARED_HEADER -->").length!==2)throw Error("Missing or duplicate header: "+page.source);
+   html=html.replace("<!-- SHARED_HEADER -->",renderHeader(header,page.name));
+ }
+ await writeFile(join(output,page.name),html,"utf8");
 }
-console.log("Shoefit: static assets copied to dist.");
+for(const asset of assets)await cp(join(root,"frontend/assets",asset),join(output,asset),{recursive:true});
+console.log("Shoefit: "+pages.length+" public routes built; source organized in frontend/.");

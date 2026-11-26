@@ -19,65 +19,11 @@
   <link rel="stylesheet" href="css/collection.css">
   <script type="module" src="js/collection.js"></script>
   <script type="module" src="js/catalog-tools.js"></script>
+  <link rel="stylesheet" href="css/ui.css">
 </head>
 <body>
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
-  <header class="site-header">
-    <a class="brand" href="index.html#inicio" aria-label="Shoefit, inicio">
-      <img src="img/optimized/logo-marca.svg" alt="" width="42" height="24">
-      <span>Shoefit</span>
-    </a>
-    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Abrir menú">
-      <span class="menu-lines" aria-hidden="true"></span>
-    </button>
-    <nav class="primary-nav" id="primary-nav" aria-label="Navegación principal">
-      <details class="nav-disclosure">
-        <summary>Men <span aria-hidden="true">⌄</span></summary>
-        <div class="nav-dropdown">
-          <a href="sorprendeme.html?producto=flexible-sneakers-gray">Flexible Sneakers</a>
-          <a href="sorprendeme.html?producto=martin-dingman-brown">Martin Dingman</a>
-          <a href="coleccion.html">Ver colección</a>
-        </div>
-      </details>
-      <details class="nav-disclosure">
-        <summary>Women <span aria-hidden="true">⌄</span></summary>
-        <div class="nav-dropdown">
-          <p class="nav-note">Colección de mujer pendiente de incorporar.</p>
-          <a href="coleccion.html">Ver catálogo general</a>
-        </div>
-      </details>
-      <details class="nav-disclosure">
-        <summary>Collection <span aria-hidden="true">⌄</span></summary>
-        <div class="nav-dropdown">
-          <a href="coleccion.html" aria-current="page">Colección Martin Dingman</a>
-          <a href="index.html#flash-products">Ofertas</a>
-          <a href="index.html#best-rated">Mejor valorados</a>
-          <a href="sorprendeme.html">Surprise me</a>
-        </div>
-      </details>
-    </nav>
-    <div class="header-actions" aria-label="Acciones">
-      <button type="button" aria-label="Buscar" aria-haspopup="dialog" class="action-icon">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.4"/><path d="m16 16 4.2 4.2"/></svg>
-      </button>
-      <a href="carrito.html" aria-label="Carrito" class="action-icon">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 5h2l2 11.2h10.8l2-8.1H6.2"/><circle cx="9.2" cy="19.2" r="1.1"/><circle cx="17.2" cy="19.2" r="1.1"/></svg>
-      </a>
-      <details class="account-disclosure nav-disclosure">
-        <summary class="action-icon" aria-label="Cuenta">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.1"/><path d="M5.5 19c.6-3.1 2.8-4.7 6.5-4.7s5.9 1.6 6.5 4.7"/></svg>
-      </summary>
-        <div class="nav-dropdown account-dropdown">
-          <p class="nav-note">Mi cuenta</p>
-          <a href="cuenta.html">Vista previa del perfil</a>
-          <a href="login.html">Iniciar sesión</a>
-          <a href="registro.html">Crear cuenta</a>
-          <button type="button" data-open-favorites>Mis favoritos</button>
-          <a href="carrito.html">Mi carrito</a>
-        </div>
-      </details>
-    </div>
-  </header>
+  <!-- SHARED_HEADER -->
 
   <main id="contenido">
     <section class="collection catalog-page" aria-labelledby="collection-title">

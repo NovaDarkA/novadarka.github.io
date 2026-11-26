@@ -1,13 +1,14 @@
 # Shoefit
-Aplicación académica Full Stack de zapatería. Desarrollo en develop/shoefit-fullstack; el diseño original permanece en los archivos HTML, CSS, JavaScript e imágenes.
+Aplicación académica Full Stack de zapatería. Desarrollo en develop/shoefit-fullstack; el código del frontend se organiza en frontend/ y las rutas públicas se generan en dist/.
 
 ## Desarrollo
 Requisitos: Node.js 22 y npm.
 - npm ci
 - npm run check: comprobación TypeScript, pruebas unitarias, preparación del frontend y validación de archivos, enlaces y fragmentos.
-- npm run test:browser: pruebas Chrome en 1366 y 390 px después del build; requiere Google Chrome (CHROME_BIN puede indicar otro ejecutable Chromium). Usa fuentes de respaldo sin depender de Google Fonts; no sustituye revisión visual manual.
+- npm run test:browser: pruebas Chrome en 1366, 1024, 820, 650, 390 y 320 px después del build; requiere Google Chrome (CHROME_BIN puede indicar otro ejecutable Chromium). Usa fuentes de respaldo sin depender de Google Fonts; no sustituye revisión visual manual.
 - node scripts/public-preview-smoke.mjs: prueba HTTP anónima de la vista previa pública existente; no envía credenciales ni sigue redirecciones.
-- npm run build: copia los archivos públicos existentes a dist.
+- npm run build: genera dist/ con las mismas rutas HTML públicas y los recursos permitidos.
+- npm run dev: compila y abre un servidor local en http://127.0.0.1:4173. No abras las plantillas directamente: el encabezado compartido se inserta durante el build.
 - Vercel: importar repositorio y desplegar una vista previa de la rama de desarrollo; usar vercel.json. No fusionar a main sin autorización.
 - GET /api/health: comprobación del backend inicial (no de la base de datos).
 
@@ -48,3 +49,26 @@ Dashboard administrativo con identidad Shoefit, iconos, accesos rápidos, navega
 
 ## FE.07 — Información y ayuda
 Centro de información con siete secciones enlazadas desde el pie de página, FAQ desplegables, guía de compra, contacto pendiente de confirmación y página 404 personalizada con enlaces de recuperación absolutos. No se inventan datos institucionales ni se habilitan contactos de ejemplo. Se conserva el diseño de las páginas anteriores.
+
+## FE.08 — Estructura y consistencia
+```
+frontend/
+  pages/
+    tienda/           # inicio, colección y detalle
+    compra/           # carrito y pedido
+    cuenta/           # login, registro, perfil y recuperación
+    administracion/   # panel administrativo
+    ayuda/            # información y error 404
+    compatibilidad/   # redirecciones antiguas
+  components/         # encabezado compartido
+  assets/
+    css/
+    js/
+    img/
+api/                  # funciones Vercel
+src/                  # configuración y servicios backend
+scripts/              # build, servidor local y pruebas de navegador
+tests/                # pruebas unitarias y de salida
+docs/                 # documentación
+```
+Las rutas públicas no cambian: el manifiesto explícito genera los HTML en dist/ y copia CSS/JS/imágenes. Se unifican estados de foco, controles deshabilitados, elementos ocultos y movimiento reducido. Las plantillas no se sirven directamente ni se publican los archivos internos.

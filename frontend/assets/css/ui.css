@@ -1,0 +1,8 @@
+/* FE.08: shared interaction states; preserve approved geometry. */
+:where(a,button,input,select,textarea,summary,[tabindex]):focus-visible{outline:2px solid #963333;outline-offset:3px}
+:where(input,select,textarea)[aria-invalid="true"]{outline:1px solid #a53030;outline-offset:1px}
+:where(button,input,select,textarea):disabled{cursor:not-allowed}
+[hidden]{display:none!important}
+a[aria-disabled="true"]{cursor:not-allowed}
+.skip-link{z-index:100;max-width:calc(100% - 24px);font-size:14px}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}

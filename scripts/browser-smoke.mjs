@@ -4,6 +4,7 @@ import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve, extname, relative } from "node:path";
 import assert from "node:assert/strict";
+import {regularPages} from "./frontend-manifest.mjs";
 const root=resolve("dist");
 const mime={".html":"text/html",".css":"text/css",".js":"text/javascript",".svg":"image/svg+xml",".webp":"image/webp"};
 const server=createServer(async(req,res)=>{
@@ -41,9 +42,9 @@ try {
   await call("Page.enable");await call("Network.enable");
   // External fonts are intentionally excluded; check the local application without network dependencies.
   await call("Network.setBlockedURLs",{urls:["*fonts.googleapis.com/*","*fonts.gstatic.com/*"]});
-  const pages=["index.html","coleccion.html","sorprendeme.html","login.html","registro.html","administracion.html","carrito.html","pedido.html","cuenta.html","recuperar.html","informacion.html"];
-  for(const width of [1366,820,390]){
-    await call("Emulation.setDeviceMetricsOverride",{width,height:844,deviceScaleFactor:1,mobile:width===390});
+  const pages=regularPages;
+  for(const width of [1366,1024,820,650,390,320]){
+    await call("Emulation.setDeviceMetricsOverride",{width,height:844,deviceScaleFactor:1,mobile:width<=650});
     for(const page of pages){
       const url=origin+"/"+page;
       await call("Page.navigate",{url});
@@ -56,10 +57,11 @@ try {
       assert.equal(state.styles,true,page+" local CSS");
       assert.deepEqual(state.broken,[],page+" images");
       assert.ok(state.scroll<=width+2,page+" horizontal overflow: "+state.scroll);
-      if(width===390) {
+      if(width<=650) {
         const menu=await evaluate("(()=>{const b=document.querySelector('.menu-toggle'),n=document.querySelector('#primary-nav');if(!b||!n)return false;b.click();const open=b.getAttribute('aria-expanded')==='true'&&n.classList.contains('is-open');b.click();return open&&b.getAttribute('aria-expanded')==='false'&&!n.classList.contains('is-open')})()");
         assert.equal(menu,true,page+" mobile menu");
       }
+      assert.equal(await evaluate("(()=>{const a=document.querySelector('.skip-link');a.focus();return document.activeElement===a&&a.getBoundingClientRect().top>=0&&!!document.querySelector(a.getAttribute('href'))})()"),true,page+" keyboard skip link");
       const headerWorks=await evaluate("(async()=>{const mobile=innerWidth<=650,b=document.querySelector('.menu-toggle');if(mobile)b.click();const menus=[...document.querySelectorAll('.primary-nav details')];menus[0].querySelector('summary').click();await new Promise(r=>setTimeout(r,40));const first=menus[0].open;menus[1].querySelector('summary').click();await new Promise(r=>setTimeout(r,40));const exclusive=menus[1].open&&!menus[0].open;const bounds=menus[1].querySelector('.nav-dropdown').getBoundingClientRect();document.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape'}));const closed=!menus[1].open;const account=document.querySelector('.account-disclosure');account.querySelector('summary').click();await new Promise(r=>setTimeout(r,40));const accountOpen=account.open;const ab=account.querySelector('.nav-dropdown').getBoundingClientRect();account.querySelector('[data-open-favorites]').click();const favorites=document.querySelector('.catalog-dialog').open&&document.querySelector('.catalog-search-tools input').checked;document.querySelector('.catalog-close').click();if(b.getAttribute('aria-expanded')==='true')b.click();return first&&exclusive&&closed&&accountOpen&&favorites&&bounds.left>=-1&&bounds.right<=innerWidth+1&&ab.left>=-1&&ab.right<=innerWidth+1})()");
       assert.equal(headerWorks,true,page+" header disclosures");
       if(page==="login.html"||page==="registro.html"){
