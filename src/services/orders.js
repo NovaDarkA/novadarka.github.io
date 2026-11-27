@@ -1,5 +1,5 @@
 import {createSupabaseTransport} from "./supabase-transport.js";
-import {sessionToken,readSession,requireSameOrigin} from "./session.js";
+import {sessionToken,readSession,requireSameOrigin,canAccessPanel} from "./session.js";
 import {HttpError,json} from "../lib/http.js";
 /** @param {Request} req @param {ReturnType<typeof createSupabaseTransport>} [request] */
 export async function myOrders(req,request=createSupabaseTransport()){
@@ -61,7 +61,7 @@ export async function changeOrder(req,request=createSupabaseTransport()){
  const body=await readBody(req);
  if(Object.keys(body).length!==2||!validId(body.id)||!["cancelado","entregado"].includes(body.estado))throw new HttpError(400,"invalid_state");
  const profile=await readSession(token,request);
- if(profile.rolez!=="administrador"&&(profile.rolez!=="cliente"||body.estado!=="cancelado"))throw new HttpError(403,"forbidden");
+ if(!await canAccessPanel(profile,token,request)&&(profile.rolez!=="cliente"||body.estado!=="cancelado"))throw new HttpError(403,"forbidden");
  const response=await request("/rest/v1/rpc/shoefit_cambiar_estado_pedido",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({p_id:body.id,p_estado:body.estado})},token);
  return json({data:await rpcResult(response)});
 }

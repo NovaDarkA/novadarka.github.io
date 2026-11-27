@@ -2,6 +2,9 @@ import {localizeCatalogRecord,catalogLabel} from "./catalog-labels.js";
 import {modules,mutationBody} from "./admin-client.js";
  const links=[...document.querySelectorAll("[data-module]")],panels=[...document.querySelectorAll("[data-module-panel]")];
  const dialog=document.getElementById("admin-dialog"),content=document.getElementById("admin-dialog-content"),commit=document.getElementById("admin-commit"),message=document.getElementById("admin-dialog-message"),heading=document.querySelector(".management-status strong"),notice=document.querySelector(".management-status p");
+ const employeeMode=document.documentElement.dataset.panelRole==="empleado";
+ const isReadOnly=key=>modules[key].readOnly===true||(employeeMode&&key==="empleados");
+ const readOnlyNote=document.getElementById("employee-readonly-note");
  const buttons=[...document.querySelectorAll("[data-admin-action]")],orderActions=document.getElementById("admin-order-actions");
  const layout=document.querySelector(".management-layout"),sidebar=document.getElementById("admin-sidebar"),sidebarToggle=document.getElementById("admin-sidebar-toggle"),toggleLabel=document.getElementById("admin-sidebar-toggle-label");
  sidebarToggle.addEventListener("click",()=>{
@@ -24,7 +27,7 @@ import {modules,mutationBody} from "./admin-client.js";
   return r.json();
  }
  function controls(){
-  const m=modules[selected];for(const b of buttons)b.disabled=!ready||busy||m.readOnly===true||(b.dataset.adminAction!=="add"&&!records.length);
+  const restricted=employeeMode&&selected==="empleados";if(readOnlyNote)readOnlyNote.hidden=!restricted;for(const b of buttons){b.hidden=restricted;b.disabled=!ready||busy||isReadOnly(selected)||(b.dataset.adminAction!=="add"&&!records.length);}
   orderActions.hidden=selected!=="pedidos";for(const b of orderActions.querySelectorAll("button"))b.disabled=!ready||busy||chosen?.estado!=="pendiente";
  }
  const displayValue=(row,key)=>key==="id_producto"?(catalogLabel(row.producto?.nom_prod)||"Producto no disponible"):row[key];
@@ -45,7 +48,7 @@ import {modules,mutationBody} from "./admin-client.js";
  }
  async function load(){
   const seq=++version,key=selected;ready=false;chosen=null;records=[];render();heading.textContent="Consultando base de datos";notice.textContent="Cargando "+modules[key].title.toLowerCase()+"…";
-  try{const r=await request(path(key,null,page));if(seq!==version)return;if(!Array.isArray(r.data))throw Error("Respuesta inválida.");records=r.data.map(localizeCatalogRecord);hasMore=r.hasMore===true;ready=true;heading.textContent="Base de datos conectada";notice.textContent="Operaciones reales protegidas por la cuenta administrativa.";}
+  try{const r=await request(path(key,null,page));if(seq!==version)return;if(!Array.isArray(r.data))throw Error("Respuesta inválida.");records=r.data.map(localizeCatalogRecord);hasMore=r.hasMore===true;ready=true;heading.textContent="Base de datos conectada";notice.textContent=employeeMode?"Sesión de empleado. Permisos limitados en Empleados.":"Operaciones reales protegidas por la cuenta administrativa.";}
   catch(e){if(seq!==version)return;heading.textContent="Sin acceso a los datos";notice.textContent=e.message;}
   if(seq===version){const panel=document.getElementById(key);for(const e of panel.querySelectorAll(".admin-filters input,.admin-filters select,.admin-filters button"))e.disabled=!ready;render();}
  }
@@ -60,7 +63,7 @@ import {modules,mutationBody} from "./admin-client.js";
  }
  function labelRow(key,r){return "#"+r[modules[key].id]+" · "+(r.nom_prod||catalogLabel(r.producto?.nom_prod)||r.nombre||r.usuario?.nombre||r.marca||r.puesto||r.calle||"Registro")+(r.mail||r.usuario?.mail?" · "+(r.mail||r.usuario.mail):"");}
  async function openOperation(action,button){
-  if(!ready||busy)return;const key=selected,m=modules[key];opener=button;operation={key,action,row:chosen||records[0]||null,inputs:{}};
+  if(!ready||busy||isReadOnly(selected))return;const key=selected,m=modules[key];opener=button;operation={key,action,row:chosen||records[0]||null,inputs:{}};
   const op=operation;content.replaceChildren();message.textContent="Preparando operación…";commit.disabled=true;
   document.getElementById("admin-dialog-title").textContent=({add:"Agregar",edit:"Modificar",delete:"Eliminar"})[action]+" — "+m.title;
   commit.textContent=action==="delete"?"Confirmar eliminación":"Guardar cambios";commit.classList.toggle("admin-danger",action==="delete");dialog.showModal();
@@ -86,7 +89,7 @@ import {modules,mutationBody} from "./admin-client.js";
  }
  for(const b of buttons)b.addEventListener("click",()=>openOperation(b.dataset.adminAction,b));
  commit.addEventListener("click",async()=>{
-  const op=operation;if(!op||busy||commit.disabled)return;const m=modules[op.key];busy=true;commit.disabled=true;controls();
+  const op=operation;if(!op||busy||commit.disabled||isReadOnly(op.key))return;const m=modules[op.key];busy=true;commit.disabled=true;controls();
   try{
    const method={add:"POST",edit:"PATCH",delete:"DELETE"}[op.action];
    const values=Object.fromEntries(Object.entries(op.inputs).map(([k,i])=>[k,i.type==="checkbox"?i.checked:i.value]));

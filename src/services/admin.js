@@ -1,5 +1,5 @@
 import {createSupabaseTransport} from "./supabase-transport.js";
-import {readSession,sessionToken,requireSameOrigin} from "./session.js";
+import {readSession,sessionToken,requireSameOrigin,canAccessPanel} from "./session.js";
 import {HttpError,json} from "../lib/http.js";
 
 /** @typedef {{type:"text"|"id"|"int"|"money"|"size"|"bool",max?:number,required?:boolean,pattern?:RegExp}} Field */
@@ -57,10 +57,11 @@ async function rows(response){
 export async function manage(req,request=createSupabaseTransport()){
  const token=sessionToken(req);if(!token)throw new HttpError(401,"unauthenticated");
  if(req.method!=="GET")requireSameOrigin(req);
- const profile=await readSession(token,request);if(profile.rolez!=="administrador")throw new HttpError(403,"forbidden");
+ const profile=await readSession(token,request);if(!await canAccessPanel(profile,token,request))throw new HttpError(403,"forbidden");
  const params=new URL(req.url).searchParams;
  const key=params.get("module")||"";const module=Object.hasOwn(modules,key)?modules[key]:undefined;
  if(!module)throw new HttpError(400,"invalid_module");
+ if(profile.rolez==="empleado"&&key==="empleados"&&req.method!=="GET")throw new HttpError(403,"forbidden");
  const identifier=params.get("id");
  if(identifier!==null&&(!/^\d+$/.test(identifier)||!id(Number(identifier))))throw new HttpError(400,"invalid_id");
  const query=new URLSearchParams({select:[module.id,...Object.keys(module.fields)].join(",")});

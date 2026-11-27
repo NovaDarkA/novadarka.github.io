@@ -1,5 +1,11 @@
 // UI translations. Spanish is the canonical source; English is the initial preference.
 const english=Object.fromEntries(`Idioma|Language
+Panel de empleados|Employee dashboard
+Acceso de empleado|Employee access
+PERSONAL|STAFF
+Personal|Staff
+Sesión de empleado. Permisos limitados en Empleados.|Employee session. Employee records are read-only.
+Solo el administrador puede agregar, modificar o eliminar empleados.|Only the administrator can add, edit or delete employees.
 Próximamente|Coming soon
 Colección de hombre|Men's collection
 Colección de mujer|Women's collection

@@ -49,6 +49,15 @@ async function readProfile(userId,token,request){
  if(!profile||!["cliente","administrador","empleado"].includes(profile.rolez))throw new HttpError(403,"profile_unavailable");
  return profile;
 }
+/** @param {{rolez:string,id_user:number}} profile @param {string} token @param {ReturnType<typeof createSupabaseTransport>} [request] */
+export async function canAccessPanel(profile,token,request=createSupabaseTransport()){
+ if(profile.rolez==="administrador")return true;
+ if(profile.rolez!=="empleado")return false;
+ const r=await request("/rest/v1/empleado?"+new URLSearchParams({select:"id_empleado",id_doe:"eq."+profile.id_user,limit:"1"}),{},token);
+ if(!r.ok)throw new HttpError(503,"profile_unavailable");
+ const rows=await r.json();
+ return Array.isArray(rows)&&rows.length===1;
+}
 /** @param {Request} req @param {ReturnType<typeof createSupabaseTransport>} [request] @param {typeof notifyLogin} [notify] */
 export async function login(req,request=createSupabaseTransport(),notify=notifyLogin){
  const body=await credentials(req);
@@ -63,9 +72,10 @@ export async function login(req,request=createSupabaseTransport(),notify=notifyL
  const userId=result.user?.id;
  if(typeof userId!=="string"||!/^[0-9a-f-]{36}$/i.test(userId))throw new HttpError(503,"auth_unavailable");
  const profile=await readProfile(userId,result.access_token,request);
+ if(profile.rolez==="empleado"&&!await canAccessPanel(profile,result.access_token,request))throw new HttpError(403,"forbidden");
  const age=Number.isFinite(result.expires_in)?result.expires_in:3600;
  try{if(await notify(result.user?.email)==="failed")console.warn("shoefit_login_notification_failed");}catch{console.warn("shoefit_login_notification_failed");}
- return json({role:profile.rolez,redirect:profile.rolez==="administrador"?"/administracion":"/cuenta"},200,{"Set-Cookie":sessionCookie(result.access_token,age)});
+ return json({role:profile.rolez,redirect:profile.rolez==="administrador"?"/administracion":profile.rolez==="empleado"?"/panel-empleado":"/cuenta"},200,{"Set-Cookie":sessionCookie(result.access_token,age)});
 }
 /** @param {Request} req @param {ReturnType<typeof createSupabaseTransport>} [request] */
 export async function register(req,request=createSupabaseTransport()){

@@ -9,6 +9,10 @@
   },
   "rewrites": [
     {
+      "source": "/panel-empleado",
+      "destination": "/api/admin-page"
+    },
+    {
       "source": "/administracion",
       "destination": "/api/admin-page"
     },

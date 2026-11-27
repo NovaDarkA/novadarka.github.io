@@ -9,13 +9,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Pacifico&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=20261126-11">
-  <link rel="stylesheet" href="css/media_query.css?v=20261126-11">
-  <link rel="stylesheet" href="css/management.css?v=20261126-11">
-  <script type="module" src="js/administracion.js?v=20261126-11"></script>
-  <script src="js/session.js?v=20261126-11" defer></script>
-  <link rel="stylesheet" href="css/ui.css?v=20261126-11">
-<script type="module" src="/js/language.js?v=20261126-11"></script>
+  <link rel="stylesheet" href="css/styles.css?v=20261126-12">
+  <link rel="stylesheet" href="css/media_query.css?v=20261126-12">
+  <link rel="stylesheet" href="css/management.css?v=20261126-12">
+  <script type="module" src="js/administracion.js?v=20261126-12"></script>
+  <script src="/js/session.js?v=20261126-12" defer></script>
+  <link rel="stylesheet" href="css/ui.css?v=20261126-12">
+<script type="module" src="/js/language.js?v=20261126-12"></script>
 </head>
 <body>
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
@@ -53,7 +53,7 @@
             <button type="button" data-admin-action="add" disabled><svg class="admin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"/></svg><span>Agregar</span></button>
             <button type="button" data-admin-action="edit" disabled><svg class="admin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m15 5 4 4M4 20l4-1 12-12a2.8 2.8 0 0 0-4-4L4 15l-1 6Z"/></svg><span>Modificar</span></button>
             <button type="button" data-admin-action="delete" disabled><svg class="admin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v5M14 11v5"/></svg><span>Eliminar</span></button>
-          </div><div id="admin-order-actions" hidden><button class="admin-secondary" type="button" data-order-state="entregado" disabled>Marcar entregado</button> <button class="admin-secondary" type="button" data-order-state="cancelado" disabled>Cancelar pedido</button></div>
+          </div><p id="employee-readonly-note" class="admin-secondary" hidden>Solo el administrador puede agregar, modificar o eliminar empleados.</p><div id="admin-order-actions" hidden><button class="admin-secondary" type="button" data-order-state="entregado" disabled>Marcar entregado</button> <button class="admin-secondary" type="button" data-order-state="cancelado" disabled>Cancelar pedido</button></div>
         </div>
 <section id="productos" data-module-panel aria-labelledby="productos-title">
 <div class="admin-panel-heading"><div><h2 id="productos-title">Productos</h2><p>Gestiona el catálogo de calzado, tallas, marcas y proveedores.</p></div><span class="admin-count">Sin conexión</span></div>
