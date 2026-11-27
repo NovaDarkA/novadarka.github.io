@@ -31,7 +31,7 @@ import {modules,mutationBody} from "./admin-client.js";
   return r.json();
  }
  function controls(){
-  const restricted=employeeMode&&selected==="empleados";actionGroup.hidden=selected==="clientes"||restricted;document.documentElement.dataset.activeAdminModule=selected;if(readOnlyNote)readOnlyNote.hidden=!restricted;for(const b of buttons){b.hidden=actionGroup.hidden;b.disabled=!ready||busy||isReadOnly(selected)||(b.dataset.adminAction!=="add"&&!records.length);}
+  const restricted=employeeMode&&selected==="empleados";actionGroup.hidden=selected==="clientes"||selected==="pedidos"||restricted;document.documentElement.dataset.activeAdminModule=selected;if(readOnlyNote)readOnlyNote.hidden=!restricted;for(const b of buttons){b.hidden=actionGroup.hidden;b.disabled=!ready||busy||isReadOnly(selected)||(b.dataset.adminAction!=="add"&&!records.length);}
   orderActions.hidden=selected!=="pedidos";for(const b of orderActions.querySelectorAll("button"))b.disabled=!ready||busy||chosen?.estado!=="pendiente";
  }
  const displayValue=(row,key)=>key==="id_producto"?(catalogLabel(row.producto?.nom_prod)||"Producto no disponible"):row[key];

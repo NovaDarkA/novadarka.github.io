@@ -106,3 +106,6 @@
 .management-status[hidden]{display:none!important}
 .management-status[role="alert"]{background:#ffe5e5;border-color:#b42318;color:#8b1919}
 .management-status[role="alert"] p{color:#8b1919}
+
+/* Orders retain their dedicated state actions, not the generic CRUD toolbar. */
+html[data-active-admin-module="pedidos"] .management-layout .management-actions,.management-panel:has(#pedidos:not([hidden])) .management-actions{display:none!important}
