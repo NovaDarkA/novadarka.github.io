@@ -44,4 +44,5 @@ export function searchProducts(query,favorites=null){
   return words.every(w=>normalize([p.name,p.color,p.category,p.brand,p.searchTerms,aliases].join(" ")).includes(w));
  });
 }
-export function setImage(img,p){img.removeAttribute("srcset");if(p.image){img.src=p.image;img.hidden=false;}else{img.removeAttribute("src");img.hidden=true;}img.alt=p.name;}
+const alphaPhotos=new Set(["img/optimized/black-leather-women.webp","img/optimized/black-lili-50-women.webp","img/optimized/dr-martens-1461-black.webp","img/optimized/brown-soft-heels-women.webp","img/optimized/flexi-confort-4831-black.webp","img/optimized/spray-lifestyle-black-women.webp"]);
+export function setImage(img,p){img.removeAttribute("srcset");if(p.image){img.src=p.image+(alphaPhotos.has(p.image)?"?v=alpha-1":"");img.hidden=false;}else{img.removeAttribute("src");img.hidden=true;}img.alt=p.name;}

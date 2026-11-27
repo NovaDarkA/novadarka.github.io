@@ -47,3 +47,6 @@ a[aria-disabled="true"]{cursor:not-allowed}
 .coming-soon{display:inline-flex;align-items:center;width:max-content;max-width:100%;border:1px solid #d69d52;border-radius:6px;background:#fff3ce;color:#754715;font:500 clamp(11px,1.1cqw,16px)/1.4 var(--mono),monospace;padding:5px 10px;margin:12px 0 2px}
 
 .catalog-audiences{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px}.catalog-audiences a{border:1px solid #bfa56d;background:#fff3ce;color:var(--ink);border-radius:6px;padding:8px 14px;text-decoration:none;font-size:clamp(12px,1.1cqw,16px)}.catalog-audiences a[aria-current="page"]{background:#ffde9f;font-weight:500}
+
+/* New studio photographs have a real alpha channel. Do not tint their foreground. */
+img:is([src*="/black-leather-women.webp"],[src*="/black-lili-50-women.webp"],[src*="/dr-martens-1461-black.webp"],[src*="/brown-soft-heels-women.webp"],[src*="/flexi-confort-4831-black.webp"],[src*="/spray-lifestyle-black-women.webp"]){mix-blend-mode:normal!important;background:transparent!important}
