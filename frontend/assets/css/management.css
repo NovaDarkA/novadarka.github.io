@@ -102,3 +102,7 @@
 
 /* Clients is a consultation-only workspace. Hide the entire toolbar, not just its buttons. */
 .management-layout .management-actions[hidden],.management-layout .management-actions button[hidden],html[data-active-admin-module="clientes"] .management-layout .management-actions,.management-panel:has(#clientes:not([hidden])) .management-actions{display:none!important}
+
+.management-status[hidden]{display:none!important}
+.management-status[role="alert"]{background:#ffe5e5;border-color:#b42318;color:#8b1919}
+.management-status[role="alert"] p{color:#8b1919}

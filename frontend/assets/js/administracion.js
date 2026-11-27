@@ -2,6 +2,9 @@ import {localizeCatalogRecord,catalogLabel} from "./catalog-labels.js";
 import {modules,mutationBody} from "./admin-client.js";
  const links=[...document.querySelectorAll("[data-module]")],panels=[...document.querySelectorAll("[data-module-panel]")];
  const dialog=document.getElementById("admin-dialog"),content=document.getElementById("admin-dialog-content"),commit=document.getElementById("admin-commit"),message=document.getElementById("admin-dialog-message"),heading=document.querySelector(".management-status strong"),notice=document.querySelector(".management-status p");
+ const errorBanner=document.querySelector(".management-status");
+ const clearError=()=>{errorBanner.hidden=true;notice.textContent="";};
+ const showError=(title,detail)=>{heading.textContent=title;notice.textContent=detail;errorBanner.hidden=false;};
  const employeeMode=document.documentElement.dataset.panelRole==="empleado";
  const isReadOnly=key=>key==="clientes"||modules[key].readOnly===true||(employeeMode&&key==="empleados");
  const readOnlyNote=document.getElementById("employee-readonly-note");
@@ -48,9 +51,9 @@ import {modules,mutationBody} from "./admin-client.js";
   controls();
  }
  async function load(){
-  const seq=++version,key=selected;ready=false;chosen=null;records=[];render();heading.textContent="Consultando base de datos";notice.textContent="Cargando "+modules[key].title.toLowerCase()+"…";
-  try{const r=await request(path(key,null,page));if(seq!==version)return;if(!Array.isArray(r.data))throw Error("Respuesta inválida.");records=r.data.map(localizeCatalogRecord);hasMore=r.hasMore===true;ready=true;heading.textContent="Base de datos conectada";notice.textContent=employeeMode?"Sesión de empleado. Permisos limitados en Empleados.":"Operaciones reales protegidas por la cuenta administrativa.";}
-  catch(e){if(seq!==version)return;heading.textContent="Sin acceso a los datos";notice.textContent=e.message;}
+  const seq=++version,key=selected;ready=false;chosen=null;records=[];render();clearError();
+  try{const r=await request(path(key,null,page));if(seq!==version)return;if(!Array.isArray(r.data))throw Error("Respuesta inválida.");records=r.data.map(localizeCatalogRecord);hasMore=r.hasMore===true;ready=true;clearError();}
+  catch(e){if(seq!==version)return;showError("Sin acceso a los datos",e.message);}
   if(seq===version){const panel=document.getElementById(key);for(const e of panel.querySelectorAll(".admin-filters input,.admin-filters select,.admin-filters button"))e.disabled=!ready;render();}
  }
  function activate(){const requested=location.hash.slice(1);selected=Object.hasOwn(modules,requested)?requested:"productos";controls();if(dialog.open&&!busy)dialog.close();page=1;document.getElementById("admin-current-module").textContent=modules[selected].title;document.getElementById("admin-workspace-title").textContent=modules[selected].title;for(const panel of panels)panel.hidden=panel.id!==selected;for(const link of links){if(link.dataset.module===selected)link.setAttribute("aria-current","true");else link.removeAttribute("aria-current");}load();}
@@ -97,8 +100,8 @@ import {modules,mutationBody} from "./admin-client.js";
    const body=method==="DELETE"?undefined:mutationBody(op.key,values,method==="PATCH"?op.row:null);
    if(body&&!Object.keys(body).length){message.textContent="No hay cambios pendientes.";return;}
    await request(path(op.key,method==="POST"?null:op.row[m.id]),{method,headers:{"Content-Type":"application/json"},body:body===undefined?undefined:JSON.stringify(body)});
-   dialog.close();if(selected===op.key){await load();notice.textContent="Operación guardada correctamente.";}
+   dialog.close();if(selected===op.key){await load();}
   }catch(e){message.textContent=e.message;}finally{busy=false;commit.disabled=false;controls();}
  });
- for(const b of orderActions.querySelectorAll("button"))b.addEventListener("click",async()=>{if(!chosen||busy||chosen.estado!=="pendiente"||!window.confirm((window.shoefitT||String)("¿Cambiar el estado del pedido #"+chosen.id_pedido+"?")))return;busy=true;controls();try{await request("/api/orders",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:chosen.id_pedido,estado:b.dataset.orderState})});await load();notice.textContent="Estado del pedido actualizado.";}catch(e){notice.textContent=e.message;}finally{busy=false;controls();}});
+ for(const b of orderActions.querySelectorAll("button"))b.addEventListener("click",async()=>{if(!chosen||busy||chosen.estado!=="pendiente"||!window.confirm((window.shoefitT||String)("¿Cambiar el estado del pedido #"+chosen.id_pedido+"?")))return;busy=true;controls();try{await request("/api/orders",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:chosen.id_pedido,estado:b.dataset.orderState})});await load();}catch(e){showError("No se pudo completar la operación.",e.message);}finally{busy=false;controls();}});
  document.querySelector(".admin-close").addEventListener("click",()=>{if(!busy)dialog.close();});document.getElementById("admin-cancel").addEventListener("click",()=>{if(!busy)dialog.close();});dialog.addEventListener("cancel",e=>{if(busy)e.preventDefault();});dialog.addEventListener("close",()=>{operation=null;opener?.focus();});window.addEventListener("hashchange",activate);activate();
