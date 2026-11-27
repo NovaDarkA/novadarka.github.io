@@ -76,3 +76,5 @@
 .checkout-dialog p{font-size:14px;line-height:1.5;margin:0 0 16px}
 .checkout-dialog-mark{display:grid;place-items:center;width:56px;height:56px;margin:auto;border-radius:50%;background:var(--sand);border:1px solid #c9ab72;font-size:28px}
 @media(max-width:650px){.order-steps{font-size:11px;gap:10px;margin-bottom:18px}.order-steps>a>span,.order-steps>span>span{width:23px;height:23px}.checkout-fields{grid-template-columns:minmax(0,1fr)}.checkout-panel h2{font-size:17px}}
+
+.cart-product-status.cart-product-error{display:block;background:#ffe5e5;border:1px solid #b42318;border-radius:8px;color:#8b1919;padding:12px 15px;font-weight:500;overflow-wrap:anywhere}

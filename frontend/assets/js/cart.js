@@ -34,7 +34,8 @@ function boot(){
   const save=next=>{try{localStorage.setItem(CART_KEY,JSON.stringify(next));items=next;return true;}catch{return false;}};
   const status=document.getElementById("cart-status");
   const productStatus=document.getElementById("cart-product-status");
-  const cartLink=document.querySelector('a[aria-label="Carrito"]');
+  const setProductStatus=(message,error=false)=>{if(!productStatus)return;productStatus.classList.toggle("cart-product-error",error);productStatus.textContent=message;};
+  const cartLink=document.querySelector('a.action-icon[href="/carrito"]');
   let badge;
   if(cartLink){badge=document.createElement("span");badge.className="cart-badge";badge.setAttribute("aria-hidden","true");cartLink.append(badge);}
   const refreshBadge=()=>{if(badge){const count=totals(items).count;badge.textContent=String(count);badge.hidden=count===0;}};
@@ -106,19 +107,22 @@ function boot(){
         size.disabled=variants.size===0;add.disabled=variants.size===0||selected.priceCents===null;
         document.getElementById("detail-availability").textContent=variants.size?"Disponible":data.variantes.length?"Agotado":"Por confirmar";
         productStatus.textContent=variants.size?"Selecciona una talla disponible.":"No hay existencias confirmadas para este modelo.";
-       }catch{productStatus.textContent="No se pudo confirmar el inventario. Intenta nuevamente.";}
+       }catch{setProductStatus("No se pudo confirmar el inventario. Intenta nuevamente.",true);}
       })();
     }
   }
+  function clearProductError(){if(productStatus?.classList.contains("cart-product-error")&&variants.size)setProductStatus("Selecciona una talla disponible.");}
+  for(const id of ["cart-size","detail-quantity"]){document.getElementById(id)?.addEventListener("input",clearProductError);document.getElementById(id)?.addEventListener("change",clearProductError);}
+  for(const id of ["detail-minus","detail-plus"])document.getElementById(id)?.addEventListener("click",clearProductError);
   add?.addEventListener("click",()=>{
     if(!selected||selected.priceCents===null||add.disabled)return;
     const size=document.getElementById("cart-size");
-    if(!validSize(size.value)){productStatus.textContent="Selecciona una talla antes de añadir el producto.";size.focus();return;}
+    if(!validSize(size.value)){setProductStatus("Selecciona una talla antes de añadir el producto.",true);size.focus();return;}
     const quantity=Number(document.getElementById("detail-quantity").value);
-    if(!Number.isInteger(quantity)||quantity<1||quantity>99){productStatus.textContent="Elige una cantidad entre 1 y 99.";document.getElementById("detail-quantity").focus();return;}
+    if(!Number.isInteger(quantity)||quantity<1||quantity>99){setProductStatus("Elige una cantidad entre 1 y 99.",true);document.getElementById("detail-quantity").focus();return;}
     const variant=variants.get(size.value);const requested=(items.find(i=>i.id===selected.id&&i.size===size.value)?.quantity||0)+quantity;
-    if(!variant||requested>Math.min(99,variant.existencias)){productStatus.textContent="La cantidad supera las existencias disponibles.";return;}
-    if(!save(changeCart(items,size.value,quantity,selected.id))){productStatus.textContent="No fue posible guardar el carrito en este navegador.";return;}
+    if(!variant||requested>Math.min(99,variant.existencias)){setProductStatus("La cantidad supera las existencias disponibles.",true);return;}
+    if(!save(changeCart(items,size.value,quantity,selected.id))){setProductStatus("No fue posible guardar el carrito en este navegador.",true);return;}
     location.href="/carrito";
   });
   window.addEventListener("storage",e=>{if(e.key===CART_KEY||e.key===null){items=read();render();}});

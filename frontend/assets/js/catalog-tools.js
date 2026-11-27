@@ -16,7 +16,7 @@ dialog.append(heading,body);document.body.append(dialog);
 let opener;
 dialog.addEventListener("close",()=>opener?.focus());
 function open(label,source){if(dialog.open)dialog.close();opener=source;title.textContent=label;body.replaceChildren();dialog.showModal();}
-const searchButton=document.querySelector('button[aria-label="Buscar"]');
+const searchButton=document.querySelector('button.action-icon[aria-haspopup="dialog"]');
 function openSearch(source,onlyFavorites=false){
  open(onlyFavorites?"Mis favoritos":"Buscar productos",source);
  const label=el("label",null,"Nombre, tipo o color");label.htmlFor="catalog-query";

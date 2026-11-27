@@ -3,7 +3,7 @@ import {modules,mutationBody} from "./admin-client.js";
  const links=[...document.querySelectorAll("[data-module]")],panels=[...document.querySelectorAll("[data-module-panel]")];
  const dialog=document.getElementById("admin-dialog"),content=document.getElementById("admin-dialog-content"),commit=document.getElementById("admin-commit"),message=document.getElementById("admin-dialog-message"),heading=document.querySelector(".management-status strong"),notice=document.querySelector(".management-status p");
  const employeeMode=document.documentElement.dataset.panelRole==="empleado";
- const isReadOnly=key=>modules[key].readOnly===true||(employeeMode&&key==="empleados");
+ const isReadOnly=key=>key==="clientes"||modules[key].readOnly===true||(employeeMode&&key==="empleados");
  const readOnlyNote=document.getElementById("employee-readonly-note");
  const buttons=[...document.querySelectorAll("[data-admin-action]")],orderActions=document.getElementById("admin-order-actions");
  const layout=document.querySelector(".management-layout"),sidebar=document.getElementById("admin-sidebar"),sidebarToggle=document.getElementById("admin-sidebar-toggle"),toggleLabel=document.getElementById("admin-sidebar-toggle-label");
@@ -27,7 +27,7 @@ import {modules,mutationBody} from "./admin-client.js";
   return r.json();
  }
  function controls(){
-  const restricted=employeeMode&&selected==="empleados";if(readOnlyNote)readOnlyNote.hidden=!restricted;for(const b of buttons){b.hidden=restricted;b.disabled=!ready||busy||isReadOnly(selected)||(b.dataset.adminAction!=="add"&&!records.length);}
+  const restricted=employeeMode&&selected==="empleados";if(readOnlyNote)readOnlyNote.hidden=!restricted;for(const b of buttons){b.hidden=restricted||selected==="clientes";b.disabled=!ready||busy||isReadOnly(selected)||(b.dataset.adminAction!=="add"&&!records.length);}
   orderActions.hidden=selected!=="pedidos";for(const b of orderActions.querySelectorAll("button"))b.disabled=!ready||busy||chosen?.estado!=="pendiente";
  }
  const displayValue=(row,key)=>key==="id_producto"?(catalogLabel(row.producto?.nom_prod)||"Producto no disponible"):row[key];

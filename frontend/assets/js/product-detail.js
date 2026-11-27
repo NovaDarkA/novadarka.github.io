@@ -9,7 +9,7 @@ const money=n=>new Intl.NumberFormat("es-MX",{style:"currency",currency:"MXN"}).
 const id=new URLSearchParams(location.search).get("producto");
 const product=id===null?PRODUCT:getProduct(id);
 const image=document.getElementById("detail-image"),thumbs=document.getElementById("detail-thumbnails"),note=document.getElementById("detail-gallery-note");
-const qty=document.getElementById("detail-quantity"),minus=document.getElementById("detail-minus"),plus=document.getElementById("detail-plus"),subtotal=document.getElementById("detail-subtotal");
+const qty=document.getElementById("detail-quantity"),minus=document.getElementById("detail-minus"),plus=document.getElementById("detail-plus");
 const canDraft=!!product&&product.priceCents!==null;
 if(product){
  const [type,description]=details[product.id]||[product.category,product.name];
@@ -26,7 +26,7 @@ for(const b of thumbs.querySelectorAll("button")){
 function refresh(){
  const n=Number(qty.value),valid=Number.isInteger(n)&&n>=1&&n<=99;
  minus.disabled=!canDraft||!valid||n<=1;plus.disabled=!canDraft||!valid||n>=99;
- subtotal.textContent=!canDraft?"Por confirmar":valid?money(product.priceCents*n):"—";
+
 }
 qty.disabled=!canDraft;
 minus.addEventListener("click",()=>{qty.value=String(Math.max(1,Number(qty.value)-1));refresh();});

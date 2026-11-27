@@ -74,7 +74,7 @@ test("all ten storefront screens share the same header disclosures",async()=>{
 
 test("catalog has complete visual controls and no fabricated inventory",async()=>{const html=await read("coleccion.html");for(const id of ["collection-query","collection-brand","collection-type","collection-size","collection-price","collection-sort","collection-prev","collection-next","collection-empty"])assert.ok(html.includes('id="'+id+'"'));assert.match(html,/id="collection-size" disabled/);assert.doesNotMatch(html,/98 Products/);});
 
-test("detail has four gallery controls, quantity and related products slots",async()=>{const html=await read("sorprendeme.html");assert.equal([...html.matchAll(/class="detail-thumb"/g)].length,4);for(const id of ["detail-image","detail-quantity","detail-minus","detail-plus","detail-subtotal","detail-related-grid","detail-availability"])assert.ok(html.includes('id="'+id+'"'));});
+test("detail has four gallery controls, quantity and related products slots",async()=>{const html=await read("sorprendeme.html");assert.equal([...html.matchAll(/class="detail-thumb"/g)].length,4);for(const id of ["detail-image","detail-quantity","detail-minus","detail-plus","detail-related-grid","detail-availability"])assert.ok(html.includes('id="'+id+'"'));});
 
 test("checkout requires verified client session before enabling confirmation",async()=>{const cart=await read("carrito.html"),html=await read("pedido.html");assert.match(cart,/id="cart-checkout" href="\/pedido"/);assert.match(html,/class="cart-primary checkout-confirm" id="checkout-confirm" disabled/);assert.match(html,/id="checkout-dialog"/);assert.doesNotMatch(html,/<form\b/);assert.ok([...html.matchAll(/<(?:input|textarea)\b[^>]*>/g)].every(m=>m[0].includes("disabled")));});
 
@@ -117,7 +117,7 @@ test("storefront home links use the canonical root and all catalog products are 
 test("home canonical fallback handles the legacy index path and cache-busted UI",async()=>{
  const html=await read("index.html"),css=await read("css/ui.css");
  assert.match(html,/'\/index\.html'/);
- assert.match(html,/href="css\/ui\.css\?v=20261126-12"/);
+ assert.match(html,/href="css\/ui\.css\?v=20261126-13"/);
  assert.match(css,/\.best-item\{display:grid;grid-template-rows:auto 1fr auto/);
  assert.match(css,/\.flash-card\{display:grid;grid-template-rows:auto 1fr auto auto/);
 });
@@ -132,10 +132,12 @@ test("storefront pages and navigation are Spanish",async()=>{
  assert.doesNotMatch(home,/>FLASH SALE<|>See more |Explore our products/);
 });
 
-test("all regular pages include bilingual language support",async()=>{for(const page of regularPages){const html=await read(page);assert.match(html,/data-language/);assert.match(html,/\/js\/language\.js\?v=20261126-12/);}});
+test("all regular pages include bilingual language support",async()=>{for(const page of regularPages){const html=await read(page);assert.match(html,/data-language/);assert.match(html,/\/js\/language\.js\?v=20261126-13/);}});
 
 test("employee and user tables omit roles but keep linked identity",async()=>{const html=await read("administracion.html");for(const name of ["empleados","usuarios"]){const section=html.split('<section id="'+name+'"')[1].split("</section>")[0];assert.doesNotMatch(section,/<th[^>]*>Rol<|<option[^>]*>Rol</);assert.match(section,/>Correo electrónico</);}const js=await read("js/administracion.js");assert.doesNotMatch(js,/u\?\.rolez/);});
 
 test("separate catalog navigation and coming soon label",async()=>{const h=await read("index.html"),d=await read("sorprendeme.html");assert.match(h,/href="\/hombre"/);assert.match(h,/href="\/mujer"/);assert.match(d,/id="detail-coming-soon" hidden>Próximamente/);});
 
 test("product photos share the store background instead of white rectangles",async()=>{const css=await read("css/ui.css");assert.match(css,/\.catalog-page \.product-card img[^{}]*\{background:transparent;mix-blend-mode:multiply\}/);assert.match(css,/\.detail-image-stage\{background:var\(--cream\)\}/);});
+
+test("client actions are hidden and detail stock errors use a red box without an estimated subtotal",async()=>{const html=await read("sorprendeme.html"),js=await read("js/cart.js"),css=await read("css/cart.css"),admin=await read("js/administracion.js");assert.doesNotMatch(html,/id="detail-subtotal"/);assert.match(js,/setProductStatus\("La cantidad supera las existencias disponibles\.",true\)/);assert.match(css,/\.cart-product-status\.cart-product-error\{[^}]*background:#ffe5e5/);assert.match(admin,/b\.hidden=restricted\|\|selected==="clientes"/);});
