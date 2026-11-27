@@ -117,7 +117,7 @@ test("storefront home links use the canonical root and all catalog products are 
 test("home canonical fallback handles the legacy index path and cache-busted UI",async()=>{
  const html=await read("index.html"),css=await read("css/ui.css");
  assert.match(html,/'\/index\.html'/);
- assert.match(html,/href="css\/ui\.css\?v=20261126-13"/);
+ assert.match(html,/href="css\/ui\.css\?v=20261126-14"/);
  assert.match(css,/\.best-item\{display:grid;grid-template-rows:auto 1fr auto/);
  assert.match(css,/\.flash-card\{display:grid;grid-template-rows:auto 1fr auto auto/);
 });
@@ -132,7 +132,7 @@ test("storefront pages and navigation are Spanish",async()=>{
  assert.doesNotMatch(home,/>FLASH SALE<|>See more |Explore our products/);
 });
 
-test("all regular pages include bilingual language support",async()=>{for(const page of regularPages){const html=await read(page);assert.match(html,/data-language/);assert.match(html,/\/js\/language\.js\?v=20261126-13/);}});
+test("all regular pages include bilingual language support",async()=>{for(const page of regularPages){const html=await read(page);assert.match(html,/data-language/);assert.match(html,/\/js\/language\.js\?v=20261126-14/);}});
 
 test("employee and user tables omit roles but keep linked identity",async()=>{const html=await read("administracion.html");for(const name of ["empleados","usuarios"]){const section=html.split('<section id="'+name+'"')[1].split("</section>")[0];assert.doesNotMatch(section,/<th[^>]*>Rol<|<option[^>]*>Rol</);assert.match(section,/>Correo electrónico</);}const js=await read("js/administracion.js");assert.doesNotMatch(js,/u\?\.rolez/);});
 
@@ -140,4 +140,6 @@ test("separate catalog navigation and coming soon label",async()=>{const h=await
 
 test("product photos share the store background instead of white rectangles",async()=>{const css=await read("css/ui.css");assert.match(css,/\.catalog-page \.product-card img[^{}]*\{background:transparent;mix-blend-mode:multiply\}/);assert.match(css,/\.detail-image-stage\{background:var\(--cream\)\}/);});
 
-test("client actions are hidden and detail stock errors use a red box without an estimated subtotal",async()=>{const html=await read("sorprendeme.html"),js=await read("js/cart.js"),css=await read("css/cart.css"),admin=await read("js/administracion.js");assert.doesNotMatch(html,/id="detail-subtotal"/);assert.match(js,/setProductStatus\("La cantidad supera las existencias disponibles\.",true\)/);assert.match(css,/\.cart-product-status\.cart-product-error\{[^}]*background:#ffe5e5/);assert.match(admin,/b\.hidden=restricted\|\|selected==="clientes"/);});
+test("client actions are hidden and detail stock errors use a red box without an estimated subtotal",async()=>{const html=await read("sorprendeme.html"),js=await read("js/cart.js"),css=await read("css/cart.css"),admin=await read("js/administracion.js");assert.doesNotMatch(html,/id="detail-subtotal"/);assert.match(js,/setProductStatus\("La cantidad supera las existencias disponibles\.",true\)/);assert.match(css,/\.cart-product-status\.cart-product-error\{[^}]*background:#ffe5e5/);assert.match(admin,/actionGroup\.hidden=selected==="clientes"\|\|restricted/);});
+
+test("client toolbar has an explicit layout-level hide rule",async()=>{const html=await read("administracion.html"),css=await read("css/management.css");assert.match(html,/class="management-actions"[^>]* hidden>/);assert.match(css,/html\[data-active-admin-module="clientes"\][^{}]+\{display:none!important\}/);});

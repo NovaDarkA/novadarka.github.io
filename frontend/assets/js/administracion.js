@@ -5,6 +5,7 @@ import {modules,mutationBody} from "./admin-client.js";
  const employeeMode=document.documentElement.dataset.panelRole==="empleado";
  const isReadOnly=key=>key==="clientes"||modules[key].readOnly===true||(employeeMode&&key==="empleados");
  const readOnlyNote=document.getElementById("employee-readonly-note");
+ const actionGroup=document.querySelector(".management-actions");
  const buttons=[...document.querySelectorAll("[data-admin-action]")],orderActions=document.getElementById("admin-order-actions");
  const layout=document.querySelector(".management-layout"),sidebar=document.getElementById("admin-sidebar"),sidebarToggle=document.getElementById("admin-sidebar-toggle"),toggleLabel=document.getElementById("admin-sidebar-toggle-label");
  sidebarToggle.addEventListener("click",()=>{
@@ -27,7 +28,7 @@ import {modules,mutationBody} from "./admin-client.js";
   return r.json();
  }
  function controls(){
-  const restricted=employeeMode&&selected==="empleados";if(readOnlyNote)readOnlyNote.hidden=!restricted;for(const b of buttons){b.hidden=restricted||selected==="clientes";b.disabled=!ready||busy||isReadOnly(selected)||(b.dataset.adminAction!=="add"&&!records.length);}
+  const restricted=employeeMode&&selected==="empleados";actionGroup.hidden=selected==="clientes"||restricted;document.documentElement.dataset.activeAdminModule=selected;if(readOnlyNote)readOnlyNote.hidden=!restricted;for(const b of buttons){b.hidden=actionGroup.hidden;b.disabled=!ready||busy||isReadOnly(selected)||(b.dataset.adminAction!=="add"&&!records.length);}
   orderActions.hidden=selected!=="pedidos";for(const b of orderActions.querySelectorAll("button"))b.disabled=!ready||busy||chosen?.estado!=="pendiente";
  }
  const displayValue=(row,key)=>key==="id_producto"?(catalogLabel(row.producto?.nom_prod)||"Producto no disponible"):row[key];
@@ -52,7 +53,7 @@ import {modules,mutationBody} from "./admin-client.js";
   catch(e){if(seq!==version)return;heading.textContent="Sin acceso a los datos";notice.textContent=e.message;}
   if(seq===version){const panel=document.getElementById(key);for(const e of panel.querySelectorAll(".admin-filters input,.admin-filters select,.admin-filters button"))e.disabled=!ready;render();}
  }
- function activate(){const requested=location.hash.slice(1);selected=Object.hasOwn(modules,requested)?requested:"productos";if(dialog.open&&!busy)dialog.close();page=1;document.getElementById("admin-current-module").textContent=modules[selected].title;document.getElementById("admin-workspace-title").textContent=modules[selected].title;for(const panel of panels)panel.hidden=panel.id!==selected;for(const link of links){if(link.dataset.module===selected)link.setAttribute("aria-current","true");else link.removeAttribute("aria-current");}load();}
+ function activate(){const requested=location.hash.slice(1);selected=Object.hasOwn(modules,requested)?requested:"productos";controls();if(dialog.open&&!busy)dialog.close();page=1;document.getElementById("admin-current-module").textContent=modules[selected].title;document.getElementById("admin-workspace-title").textContent=modules[selected].title;for(const panel of panels)panel.hidden=panel.id!==selected;for(const link of links){if(link.dataset.module===selected)link.setAttribute("aria-current","true");else link.removeAttribute("aria-current");}load();}
  for(const panel of panels){
   const m=modules[panel.id],sort=panel.querySelector(".admin-filters select");sort.replaceChildren(new Option("Identificador",m.id),...m.fields.map(f=>new Option(f[1],f[0])));
   panel.querySelector('input[type="search"]').addEventListener("input",render);sort.addEventListener("change",render);panel.querySelector(".admin-filters button").addEventListener("click",()=>{panel.querySelector('input[type="search"]').value="";sort.value=m.id;render();});

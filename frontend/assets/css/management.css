@@ -99,3 +99,6 @@
 @media(max-width:760px){.admin-toolbar{gap:10px;margin-bottom:16px}.admin-toolbar .admin-breadcrumb{flex-basis:100%}}
 
 .management-actions button:disabled{opacity:.5;cursor:not-allowed}.admin-table tbody tr+tr{border-top:1px solid var(--admin-line)}.admin-field input[type=checkbox]{width:22px;min-height:22px}.admin-table td{max-width:260px;overflow:hidden;text-overflow:ellipsis}
+
+/* Clients is a consultation-only workspace. Hide the entire toolbar, not just its buttons. */
+.management-layout .management-actions[hidden],.management-layout .management-actions button[hidden],html[data-active-admin-module="clientes"] .management-layout .management-actions,.management-panel:has(#clientes:not([hidden])) .management-actions{display:none!important}
