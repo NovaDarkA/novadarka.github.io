@@ -54,7 +54,7 @@ test("cart links are navigable and admin preview does not enable mutations", asy
   }
   assert.equal([...admin.matchAll(/data-admin-action="/g)].length,3);
   assert.match(admin,/id="admin-commit" disabled/);
-  assert.equal([...admin.matchAll(/class="admin-table"/g)].length,8);
+  assert.equal([...admin.matchAll(/class="admin-table"/g)].length,7);
   assert.doesNotMatch(admin,/<form\b/);
 });
 
@@ -80,7 +80,7 @@ test("checkout requires verified client session before enabling confirmation",as
 
 test("account preview never submits personal information",async()=>{for(const page of ["cuenta.html"]){const html=await read(page);assert.match(html,/id="account-delete-form"[^>]*hidden/);assert.ok([...html.matchAll(/<input\b[^>]*>/g)].every(m=>m[0].includes("disabled")));}const profile=await read("cuenta.html");for(const id of ["perfil","pedidos","favoritos","seguridad"])assert.ok(profile.includes('id="'+id+'"'));assert.match(await read("login.html"),/href="\/recuperar"/);});
 
-test("admin has eight sidebar modules without duplicate overview cards",async()=>{const html=await read("administracion.html");assert.equal([...html.matchAll(/data-module="/g)].length,8);assert.doesNotMatch(html,/admin-overview|data-admin-shortcut/);assert.match(html,/id="admin-current-module"/);assert.match(html,/id="admin-workspace-title"/);assert.match(html,/Consultando base de datos/);});
+test("admin has seven sidebar modules without duplicate overview cards",async()=>{const html=await read("administracion.html");assert.equal([...html.matchAll(/data-module="/g)].length,7);assert.doesNotMatch(html,/admin-overview|data-admin-shortcut/);assert.match(html,/id="admin-current-module"/);assert.match(html,/id="admin-workspace-title"/);assert.match(html,/class="management-status" role="alert" hidden/);});
 
 test("information and error pages expose safe, complete navigation",async()=>{const info=await read("informacion.html"),home=await read("index.html"),error=await read("404.html");for(const id of ["history","technology","jobs","values","contact","faq","guide"]){assert.ok(info.includes('id="'+id+'"'));assert.ok(home.includes('/informacion#'+id));}assert.doesNotMatch(home,/href="(?:tel:123456789|mailto:shoefit@mail.com)"/);assert.match(error,/href="\/"/);assert.match(error,/href="\/coleccion"/);assert.match(error,/content="noindex"/);});
 
@@ -117,7 +117,7 @@ test("storefront home links use the canonical root and all catalog products are 
 test("home canonical fallback handles the legacy index path and cache-busted UI",async()=>{
  const html=await read("index.html"),css=await read("css/ui.css");
  assert.match(html,/'\/index\.html'/);
- assert.match(html,/href="css\/ui\.css\?v=20261126-15"/);
+ assert.match(html,/href="css\/ui\.css\?v=20261126-16"/);
  assert.match(css,/\.best-item\{display:grid;grid-template-rows:auto 1fr auto/);
  assert.match(css,/\.flash-card\{display:grid;grid-template-rows:auto 1fr auto auto/);
 });
@@ -132,9 +132,9 @@ test("storefront pages and navigation are Spanish",async()=>{
  assert.doesNotMatch(home,/>FLASH SALE<|>See more |Explore our products/);
 });
 
-test("all regular pages include bilingual language support",async()=>{for(const page of regularPages){const html=await read(page);assert.match(html,/data-language/);assert.match(html,/\/js\/language\.js\?v=20261126-15/);}});
+test("all regular pages include bilingual language support",async()=>{for(const page of regularPages){const html=await read(page);assert.match(html,/data-language/);assert.match(html,/\/js\/language\.js\?v=20261126-16/);}});
 
-test("employee and user tables omit roles but keep linked identity",async()=>{const html=await read("administracion.html");for(const name of ["empleados","usuarios"]){const section=html.split('<section id="'+name+'"')[1].split("</section>")[0];assert.doesNotMatch(section,/<th[^>]*>Rol<|<option[^>]*>Rol</);assert.match(section,/>Correo electrónico</);}const js=await read("js/administracion.js");assert.doesNotMatch(js,/u\?\.rolez/);});
+test("employee table omits roles but keep linked identity",async()=>{const html=await read("administracion.html");for(const name of ["empleados"]){const section=html.split('<section id="'+name+'"')[1].split("</section>")[0];assert.doesNotMatch(section,/<th[^>]*>Rol<|<option[^>]*>Rol</);assert.match(section,/>Correo electrónico</);}const js=await read("js/administracion.js");assert.doesNotMatch(js,/u\?\.rolez/);});
 
 test("separate catalog navigation and coming soon label",async()=>{const h=await read("index.html"),d=await read("sorprendeme.html");assert.match(h,/href="\/hombre"/);assert.match(h,/href="\/mujer"/);assert.match(d,/id="detail-coming-soon" hidden>Próximamente/);});
 
@@ -145,3 +145,5 @@ test("client actions are hidden and detail stock errors use a red box without an
 test("client toolbar has an explicit layout-level hide rule",async()=>{const html=await read("administracion.html"),css=await read("css/management.css");assert.match(html,/class="management-actions"[^>]* hidden>/);assert.match(css,/html\[data-active-admin-module="clientes"\][^{}]+\{display:none!important\}/);});
 
 test("admin and employee workspaces show only real errors, not connection notices",async()=>{const html=await read("administracion.html"),js=await read("js/administracion.js"),css=await read("css/management.css");assert.match(html,/class="management-status" role="alert" hidden/);assert.doesNotMatch(js,/Base de datos conectada|Operaciones reales protegidas por la cuenta administrativa/);assert.match(js,/showError\("Sin acceso a los datos",e.message\)/);assert.match(css,/\.management-status\[hidden\]\{display:none!important\}/);});
+
+test("user management is removed from the web interface but internal references remain",async()=>{const html=await read("administracion.html"),js=await read("js/administracion.js"),client=await read("js/admin-client.js");assert.doesNotMatch(html,/data-module="usuarios"|id="usuarios"|href="#usuarios"/);assert.match(js,/panels\.some\(panel=>panel\.id===requested\)/);assert.match(client,/"usuarios"/);});
