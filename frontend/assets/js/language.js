@@ -312,6 +312,8 @@ Activa JavaScript para gestionar tu carrito.|Enable JavaScript to manage your ca
 Resumen del pedido|Order summary
 Subtotal general|Subtotal
 Envío|Shipping
+Llegada estimada|Estimated arrival
+Confirma el pedido con tu cuenta.|Confirm the order with your account.
 Por calcular|To be calculated
 Total de productos|Product total
 Los precios, tallas, disponibilidad y envío se confirmarán con el servidor antes de registrar un pedido.|Prices, sizes, stock and shipping will be confirmed by the server before placing an order.
@@ -597,10 +599,19 @@ export function translate(value,language="en"){
  if(out===undefined)return value;
  return value.replace(/\S[\s\S]*\S|\S/,out);
 }
+// Provisional school-store delivery estimate, not a carrier commitment.
+export function deliveryEstimate(now=new Date(),language="es"){
+ const parts=new Intl.DateTimeFormat("en-US",{timeZone:"America/Chihuahua",year:"numeric",month:"numeric",day:"numeric"}).formatToParts(now);
+ const get=type=>Number(parts.find(part=>part.type===type).value);
+ const date=new Date(Date.UTC(get("year"),get("month")-1,get("day")+5));
+ return {iso:date.toISOString().slice(0,10),label:new Intl.DateTimeFormat(language==="en"?"en-US":"es-MX",{day:"numeric",month:"long",year:"numeric",timeZone:"UTC"}).format(date)};
+}
 export function startLanguage(){
  let language="en";try{if(localStorage.getItem("shoefit.language")==="es")language="es";}catch{}
  document.documentElement.lang=language==="en"?"en":"es-MX";
  window.shoefitT=value=>translate(value,language);
+ function refreshDelivery(){const nodes=document.querySelectorAll("[data-delivery-estimate]");if(!nodes.length)return;const estimate=deliveryEstimate(new Date(),language);for(const node of nodes){node.dateTime=estimate.iso;node.textContent=estimate.label;}}
+ refreshDelivery();window.addEventListener("pageshow",refreshDelivery);
  const attrs=["aria-label","title","placeholder","alt","aria-valuetext"];
  function textNode(n){
   const p=n.parentElement;if(!p||p.closest("script,style,textarea,code,pre,[data-no-translate]"))return;

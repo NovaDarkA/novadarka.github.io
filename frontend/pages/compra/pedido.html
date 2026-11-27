@@ -49,11 +49,10 @@
             <label>Código postal<input id="checkout-postal" type="text" placeholder="Código postal" autocomplete="off" disabled></label>
             
           </div>
-          <p class="cart-note">Modalidad y costo de envío pendientes de definir.</p>
         </section>
         <section class="checkout-panel" aria-labelledby="checkout-confirm-title">
           <h2 id="checkout-confirm-title">3. Confirmación</h2>
-          <p class="cart-note">Confirma el pedido con una cuenta de cliente. El envío y el pago se definirán por separado.</p>
+          <p class="cart-note">Confirma el pedido con tu cuenta.</p>
           <button type="button" class="cart-primary checkout-confirm" id="checkout-confirm" disabled>Confirmar pedido</button>
           <button type="button" class="checkout-preview" id="checkout-preview" disabled>Revisar resumen</button>
           <button type="button" class="checkout-preview" id="checkout-retry" hidden>Reintentar pedido pendiente</button>
@@ -67,10 +66,9 @@
         <div class="checkout-empty" id="checkout-empty"><p>Tu carrito está vacío.</p><a href="/coleccion">Ver colección</a></div>
         <dl>
           <div><dt>Subtotal</dt><dd id="checkout-subtotal">$0.00 MXN</dd></div>
-          <div><dt>Envío</dt><dd>Por calcular</dd></div>
+          <div><dt>Envío</dt><dd><span class="delivery-caption">Llegada estimada</span><time data-delivery-estimate>—</time></dd></div>
           <div class="cart-total"><dt>Total de productos</dt><dd id="checkout-total">$0.00 MXN</dd></div>
         </dl>
-        <p class="cart-note">Total estimado de productos. El servidor confirma el importe al registrar el pedido.</p>
         <a class="cart-back" href="/carrito">Modificar carrito</a>
       </aside>
     </div>
