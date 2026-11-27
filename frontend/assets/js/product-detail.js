@@ -33,7 +33,7 @@ minus.addEventListener("click",()=>{qty.value=String(Math.max(1,Number(qty.value
 plus.addEventListener("click",()=>{qty.value=String(Math.min(99,Number(qty.value)+1));refresh();});
 qty.addEventListener("input",refresh);qty.addEventListener("blur",()=>{if(!qty.checkValidity()||!qty.value)qty.value="1";refresh();});refresh();
 const grid=document.getElementById("detail-related-grid");
-for(const p of Object.values(PRODUCTS).filter(p=>p.id!==product?.id).slice(0,3)){
+for(const p of Object.values(PRODUCTS).filter(p=>p.id!==product?.id&&(!product?.audience||p.audience===product.audience||p.audience==="unisex"||product.audience==="unisex")).slice(0,3)){
  const card=document.createElement("article");card.className="detail-related-card";
  const img=document.createElement("img");setImage(img,p);img.loading="lazy";
  const name=document.createElement("h3");name.textContent=p.name;

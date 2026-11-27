@@ -1,5 +1,15 @@
 // UI translations. Spanish is the canonical source; English is the initial preference.
 const english=Object.fromEntries(`Idioma|Language
+Zapatos negros de piel para mujer|Black Leather Shoes for women
+Tacones medianos negros Lili 50 para mujer|Black Lili 50 medium heels for women
+Zapatos negros Dr. Martens 1461|Black Shoes Dr Martens 1461
+Tacones café Soft para mujer|Brown Soft Heels for women
+Zapato negro Flexi Confort 4831|Flexi Black Shoe Confort 4831
+Zapatos negros Spray Lifestyle para mujer|Spray Lifestyle Black for women
+Negro|Black
+Tacones|Heels
+Zapatos de piel|Leather Shoes
+Mocasines|Loafers
 Panel de empleados|Employee dashboard
 Acceso de empleado|Employee access
 PERSONAL|STAFF
