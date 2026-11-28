@@ -9,6 +9,7 @@
 .nav-dropdown{position:absolute;top:100%;left:50%;transform:translateX(-50%);min-width:205px;width:max-content;max-width:280px;padding:8px;background:var(--cream);border:1px solid #c9ab72;border-radius:9px;box-shadow:0 5px 12px #17130e22;z-index:20}
 .nav-dropdown a,.nav-dropdown button{display:block;width:100%;padding:11px 12px;border:0;border-radius:5px;background:none;text-decoration:none;text-align:left;white-space:normal;font:500 13px/1.4 var(--mono);color:var(--ink);cursor:pointer}
 .nav-dropdown a:hover,.nav-dropdown button:hover,.nav-dropdown [aria-current="page"]{background:var(--sand);text-decoration:none}
+.nav-dropdown [hidden]{display:none!important}
 .nav-note{padding:8px 12px;font:400 12px/1.5 var(--mono);color:#51442c}
 .account-dropdown{left:auto;right:0;transform:none;top:calc(100% + 9px)}
 .account-disclosure[open]>summary,.action-icon[aria-current="page"]{background:#fff;border-color:#8d764c}
