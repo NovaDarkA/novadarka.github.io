@@ -20,9 +20,20 @@
   if(!profile)return;
   const dropdown=document.querySelector(".account-dropdown");
   if(dropdown){
-   const link=document.createElement("a");link.href=profile.rolez==="administrador"?"/administracion":profile.rolez==="empleado"?"/panel-empleado":"/cuenta";
-   link.textContent=profile.rolez==="administrador"?"Panel administrativo":profile.rolez==="empleado"?"Panel de empleados":"Mi cuenta";
-   const prior=dropdown.querySelector('a[href="/cuenta"]');if(prior)prior.replaceWith(link);else dropdown.append(link);
+   const note=dropdown.querySelector(".nav-note");
+   const profileLink=dropdown.querySelector('a[href="/cuenta"]');
+   const favorites=dropdown.querySelector("[data-open-favorites]");
+   const cartLink=dropdown.querySelector('a[href="/carrito"]');
+   if(note)note.hidden=false;
+   if(profileLink){
+    profileLink.href=profile.rolez==="administrador"?"/administracion":profile.rolez==="empleado"?"/panel-empleado":"/cuenta";
+    profileLink.textContent=profile.rolez==="administrador"?"Panel administrativo":profile.rolez==="empleado"?"Panel de empleados":"Mi perfil";
+    profileLink.hidden=false;
+   }
+   if(profile.rolez==="cliente"){
+    if(favorites)favorites.hidden=false;
+    if(cartLink)cartLink.hidden=false;
+   }
    dropdown.querySelectorAll('a[href="/login"],a[href="/registro"]').forEach(a=>a.remove());
    const out=document.createElement("button");out.type="button";out.textContent="Cerrar sesión";out.addEventListener("click",signOut);dropdown.append(out);
   }
