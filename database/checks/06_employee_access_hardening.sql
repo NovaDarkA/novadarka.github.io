@@ -72,7 +72,7 @@ begin
   get diagnostics n=row_count;
   if n<>1 then raise exception 'FAIL administrator employee salary update'; end if;
   select count(*) into n from public.shoefit_admin_empleados() where salario=1500;
-  if n<>2 then raise exception 'FAIL administrator employee RPC result'; end if;
+  if n<>1 then raise exception 'FAIL administrator employee salary RPC result'; end if;
   if exists(select 1 from public.shoefit_admin_empleados() where usuario->>'mail' is null) then raise exception 'FAIL admin employee mail projection'; end if;
   execute 'reset role';
 
