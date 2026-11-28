@@ -7,6 +7,16 @@ import {modules,mutationBody} from "./admin-client.js";
  const showError=(title,detail)=>{heading.textContent=title;notice.textContent=detail;errorBanner.hidden=false;};
  const employeeMode=document.documentElement.dataset.panelRole==="empleado";
  const isReadOnly=key=>key==="clientes"||modules[key].readOnly===true||(employeeMode&&key==="empleados");
+ const visibleFields=key=>employeeMode&&key==="empleados"?modules[key].fields.filter(([field])=>field!=="salario"):modules[key].fields;
+ const moduleTitle=key=>employeeMode&&key==="empleados"?"Mi ficha":modules[key].title;
+ if(employeeMode){
+  const employeeLink=document.querySelector('[data-module="empleados"] span');
+  if(employeeLink)employeeLink.textContent="Mi ficha";
+  const employeePanel=document.getElementById("empleados");
+  employeePanel.querySelector("h2").textContent="Mi ficha";
+  employeePanel.querySelector(".admin-panel-heading p").textContent="Consulta tu propia información de empleado.";
+  for(const th of employeePanel.querySelectorAll("thead th"))if(["Correo electrónico","Salario (MXN)"].includes(th.textContent.trim()))th.remove();
+ }
  const readOnlyNote=document.getElementById("employee-readonly-note");
  const actionGroup=document.querySelector(".management-actions");
  const buttons=[...document.querySelectorAll("[data-admin-action]")],orderActions=document.getElementById("admin-order-actions");
@@ -40,10 +50,16 @@ import {modules,mutationBody} from "./admin-client.js";
   const filtered=records.filter(r=>[...Object.values(r),...Object.values(r.usuario||{}),r.producto?.nom_prod, catalogLabel(r.producto?.nom_prod)].some(v=>String(v??"").toLowerCase().includes(query)));
   if(sort)filtered.sort((a,b)=>typeof displayValue(a,sort)==="number"&&typeof displayValue(b,sort)==="number"?displayValue(a,sort)-displayValue(b,sort):String(displayValue(a,sort)??"").localeCompare(String(displayValue(b,sort)??""),"es",{numeric:true}));
   body.replaceChildren();
-  if(!filtered.length){const tr=node("tr"),td=node("td","admin-empty",ready?"Sin registros disponibles.":"Consultando registros…");td.colSpan=m.fields.length+2+(selected==="empleados"?2:0);tr.append(td);body.append(tr);}
+  if(!filtered.length){const tr=node("tr"),td=node("td","admin-empty",ready?"Sin registros disponibles.":"Consultando registros…");td.colSpan=visibleFields(selected).length+2+(selected==="empleados"?(employeeMode?1:2):0);tr.append(td);body.append(tr);}
   for(const row of filtered){
    const tr=node("tr"),td=node("td"),radio=node("input");radio.type="radio";radio.name="selected-"+selected;radio.checked=chosen?.[m.id]===row[m.id];radio.setAttribute("aria-label","Seleccionar registro "+row[m.id]);radio.addEventListener("change",()=>{chosen=row;controls();});td.append(radio);tr.append(td,node("td",null,String(row[m.id])));
-   for(const [key,,type] of m.fields){const val=displayValue(row,key);tr.append(node("td",null,val==null?"—":type==="bool"?val?"Sí":"No":String(val)));if(selected==="empleados"&&key==="id_doe"){const u=row.usuario;tr.append(node("td",null,u?[u.nombre,u.ap,u.am].filter(Boolean).join(" ")||"—":"—"),node("td",null,u?.mail||"—"));}}
+   for(const [key,,type] of visibleFields(selected)){
+    const val=displayValue(row,key);tr.append(node("td",null,val==null?"—":type==="bool"?val?"Sí":"No":String(val)));
+    if(selected==="empleados"&&key==="id_doe"){
+     const u=row.usuario;tr.append(node("td",null,u?[u.nombre,u.ap,u.am].filter(Boolean).join(" ")||"—":"—"));
+     if(!employeeMode)tr.append(node("td",null,u?.mail||"—"));
+    }
+   }
    body.append(tr);
   }
   panel.querySelector(".admin-count").textContent=ready?filtered.length+" registro(s) en esta página":"Sin conexión";
@@ -56,9 +72,9 @@ import {modules,mutationBody} from "./admin-client.js";
   catch(e){if(seq!==version)return;showError("Sin acceso a los datos",e.message);}
   if(seq===version){const panel=document.getElementById(key);for(const e of panel.querySelectorAll(".admin-filters input,.admin-filters select,.admin-filters button"))e.disabled=!ready;render();}
  }
- function activate(){const requested=location.hash.slice(1);selected=panels.some(panel=>panel.id===requested)&&Object.hasOwn(modules,requested)?requested:"productos";if(requested==="usuarios")history.replaceState(history.state,"",location.pathname+location.search+"#productos");controls();if(dialog.open&&!busy)dialog.close();page=1;document.getElementById("admin-current-module").textContent=modules[selected].title;document.getElementById("admin-workspace-title").textContent=modules[selected].title;for(const panel of panels)panel.hidden=panel.id!==selected;for(const link of links){if(link.dataset.module===selected)link.setAttribute("aria-current","true");else link.removeAttribute("aria-current");}load();}
+ function activate(){const requested=location.hash.slice(1);selected=panels.some(panel=>panel.id===requested)&&Object.hasOwn(modules,requested)?requested:"productos";if(requested==="usuarios")history.replaceState(history.state,"",location.pathname+location.search+"#productos");controls();if(dialog.open&&!busy)dialog.close();page=1;document.getElementById("admin-current-module").textContent=moduleTitle(selected);document.getElementById("admin-workspace-title").textContent=moduleTitle(selected);for(const panel of panels)panel.hidden=panel.id!==selected;for(const link of links){if(link.dataset.module===selected)link.setAttribute("aria-current","true");else link.removeAttribute("aria-current");}load();}
  for(const panel of panels){
-  const m=modules[panel.id],sort=panel.querySelector(".admin-filters select");sort.replaceChildren(new Option("Identificador",m.id),...m.fields.map(f=>new Option(f[1],f[0])));
+  const m=modules[panel.id],sort=panel.querySelector(".admin-filters select");sort.replaceChildren(new Option("Identificador",m.id),...visibleFields(panel.id).map(f=>new Option(f[1],f[0])));
   panel.querySelector('input[type="search"]').addEventListener("input",render);sort.addEventListener("change",render);panel.querySelector(".admin-filters button").addEventListener("click",()=>{panel.querySelector('input[type="search"]').value="";sort.value=m.id;render();});
   const [prev,next]=panel.querySelectorAll(".admin-pagination button");prev.addEventListener("click",()=>{if(ready&&page>1){page--;load();}});next.addEventListener("click",()=>{if(ready&&hasMore){page++;load();}});
  }
