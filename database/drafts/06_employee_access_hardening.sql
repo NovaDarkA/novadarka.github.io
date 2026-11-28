@@ -4,9 +4,25 @@
 
 -- Employees may read customer records for sales, but may not mutate customers.
 drop policy if exists personal_operacion on public.cliente;
+alter policy cliente_propio_select on public.cliente using (
+  (select shoefit_private.es_administrador())
+  or exists (
+    select 1 from public.usuario u
+    where u.id_user=cliente.id_doe
+      and u.auth_id=(select auth.uid())
+      and u.rolez='cliente'
+  )
+);
+
 create policy cliente_empleado_select
   on public.cliente for select to authenticated
-  using ((select shoefit_private.es_empleado()));
+  using (
+    (select shoefit_private.es_empleado())
+    and exists (
+      select 1 from public.usuario u
+      where u.id_user=cliente.id_doe and u.rolez='cliente'
+    )
+  );
 
 -- Employees may see customer names for operational references and their own user row,
 -- but not other employee or administrator user records.
