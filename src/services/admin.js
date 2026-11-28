@@ -62,15 +62,31 @@ export async function manage(req,request=createSupabaseTransport()){
  const key=params.get("module")||"";const module=Object.hasOwn(modules,key)?modules[key]:undefined;
  if(!module)throw new HttpError(400,"invalid_module");
  if(profile.rolez==="empleado"&&key==="empleados"&&req.method!=="GET")throw new HttpError(403,"forbidden");
+ if(profile.rolez==="empleado"&&key==="clientes"&&req.method!=="GET")throw new HttpError(403,"forbidden");
  const identifier=params.get("id");
  if(identifier!==null&&(!/^\d+$/.test(identifier)||!id(Number(identifier))))throw new HttpError(400,"invalid_id");
- const query=new URLSearchParams({select:[module.id,...Object.keys(module.fields)].join(",")});
- if(identifier!==null)query.set(module.id,"eq."+Number(identifier));
+ const page=params.get("page")||"1";
+ if(!/^\d+$/.test(page)||Number(page)<1||Number(page)>10000)throw new HttpError(400,"invalid_page");
+ if(req.method==="GET"&&key==="empleados"&&profile.rolez==="administrador"){
+  const result=await rows(await request("/rest/v1/rpc/shoefit_admin_empleados",{
+   method:"POST",headers:{"Content-Type":"application/json"},
+   body:JSON.stringify({p_id:identifier===null?null:Number(identifier),p_offset:identifier===null?(Number(page)-1)*50:0,p_limit:identifier===null?51:1})
+  },token));
+  return json({data:result.slice(0,50),page:Number(page),hasMore:result.length>50});
+ }
+ let query;
+ if(key==="empleados"&&profile.rolez==="empleado"){
+  query=new URLSearchParams({select:"id_empleado,id_doe,genero,puesto,usuario!empleado_id_doe_fkey(nombre,ap,am)",id_doe:"eq."+profile.id_user});
+  if(identifier!==null)query.set("id_empleado","eq."+Number(identifier));
+ }else{
+  const selected=key==="empleados"&&profile.rolez==="administrador"?module.id:[module.id,...Object.keys(module.fields)].join(",");
+  query=new URLSearchParams({select:selected});
+  if(identifier!==null)query.set(module.id,"eq."+Number(identifier));
+ }
  if(req.method==="GET"){
-  if(key==="empleados")query.set("select",query.get("select")+",usuario!empleado_id_doe_fkey(nombre,ap,am,mail)");
+  if(key==="empleados"&&profile.rolez==="administrador")query.set("select",query.get("select")+",usuario!empleado_id_doe_fkey(nombre,ap,am,mail)");
   if(key==="ventas"||key==="variantes"){const fk=key==="ventas"?"venta_id_producto_fkey":"producto_variante_id_producto_fkey";query.set("select",query.get("select")+",producto!"+fk+"(nom_prod)");}
-  if(key==="usuarios")query.set("select",query.get("select")+",mail");
-  const page=params.get("page")||"1";if(!/^\d+$/.test(page)||Number(page)<1||Number(page)>10000)throw new HttpError(400,"invalid_page");
+  if(key==="usuarios"&&profile.rolez==="administrador")query.set("select",query.get("select")+",mail");
   query.set("order",module.id+".asc");query.set("limit",identifier===null?"51":"1");query.set("offset",identifier===null?String((Number(page)-1)*50):"0");
   const result=await rows(await request("/rest/v1/"+module.table+"?"+query,{},token));
   return json({data:result.slice(0,50),page:Number(page),hasMore:result.length>50});
@@ -79,7 +95,14 @@ export async function manage(req,request=createSupabaseTransport()){
  if(req.method==="POST"&&identifier!==null||req.method!=="POST"&&identifier===null)throw new HttpError(400,"invalid_id");
  const body=req.method==="DELETE"?undefined:await payload(req,module);
  if(req.method==="PATCH"&&body&&Object.hasOwn(body,"id_doe"))throw new HttpError(400,"immutable_user_link");
- const result=await rows(await request("/rest/v1/"+module.table+"?"+query,{method:req.method,headers:{"Content-Type":"application/json",Prefer:"return=representation"},body:body===undefined?undefined:JSON.stringify(body)},token));
+ const adminEmployeeMutation=key==="empleados"&&profile.rolez==="administrador";
+ if(adminEmployeeMutation)query.set("select",module.id);
+ const response=await request("/rest/v1/"+module.table+"?"+query,{
+  method:req.method,headers:{"Content-Type":"application/json",Prefer:adminEmployeeMutation?"return=minimal":"return=representation"},
+  body:body===undefined?undefined:JSON.stringify(body)
+ },token);
+ if(adminEmployeeMutation){if(!response.ok)await rows(response);return json({data:null},req.method==="POST"?201:200);}
+ const result=await rows(response);
  if(result.length!==1)throw new HttpError(404,"record_not_found");
  return json({data:result[0]},req.method==="POST"?201:200);
 }
