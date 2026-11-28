@@ -135,7 +135,7 @@ test("storefront pages and navigation are Spanish",async()=>{
 
 test("all regular pages include bilingual language support",async()=>{for(const page of regularPages){const html=await read(page);assert.match(html,/data-language/);assert.match(html,/\/js\/language\.js\?v=20261126-20/);}});
 
-test("employee table omits roles but keep linked identity",async()=>{const html=await read("administracion.html");for(const name of ["empleados"]){const section=html.split('<section id="'+name+'"')[1].split("</section>")[0];assert.doesNotMatch(section,/<th[^>]*>Rol<|<option[^>]*>Rol</);assert.match(section,/>Correo electrónico</);}const js=await read("js/administracion.js");assert.doesNotMatch(js,/u\?\.rolez/);});
+test("employee table omits roles but keeps linked identity",async()=>{const html=await read("administracion.html");for(const name of ["empleados"]){const section=html.split('<section id="'+name+'"')[1].split("</section>")[0];assert.doesNotMatch(section,/<th[^>]*>Rol<|<option[^>]*>Rol</);assert.match(section,/>Correo electrónico</);}const js=await read("js/administracion.js");assert.doesNotMatch(js,/u\?\.rolez/);assert.match(js,/visibleFields=key=>employeeMode&&key==="empleados"/);assert.match(js,/field!=="salario"/);assert.match(js,/if\(!employeeMode\)tr\.append\(node\("td",null,u\?\.mail\|\|"—"\)\)/);assert.match(js,/Correo electrónico","Salario \(MXN\)/);});
 
 test("separate catalog navigation and coming soon label",async()=>{const h=await read("index.html"),d=await read("sorprendeme.html");assert.match(h,/href="\/hombre"/);assert.match(h,/href="\/mujer"/);assert.match(d,/id="detail-coming-soon" hidden>Próximamente/);});
 
