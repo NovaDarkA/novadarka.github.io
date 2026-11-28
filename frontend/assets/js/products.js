@@ -45,4 +45,4 @@ export function searchProducts(query,favorites=null){
  });
 }
 const alphaPhotos=new Set(["img/optimized/black-leather-women.webp","img/optimized/black-lili-50-women.webp","img/optimized/dr-martens-1461-black.webp","img/optimized/brown-soft-heels-women.webp","img/optimized/flexi-confort-4831-black.webp","img/optimized/spray-lifestyle-black-women.webp","img/optimized/producto-oxford-cafe-604.webp"]);
-export function setImage(img,p){img.removeAttribute("srcset");if(p.image){img.src=p.image+(p.image==="img/optimized/producto-oxford-cafe-604.webp"?"?v=alpha-2":alphaPhotos.has(p.image)?"?v=alpha-1":"");img.hidden=false;}else{img.removeAttribute("src");img.hidden=true;}img.alt=p.name;}
+export function setImage(img,p){img.removeAttribute("srcset");const transparent=p.image==="img/optimized/producto-oxford-cafe-604.webp";img.classList.toggle("transparent-product-image",transparent);if(p.image){img.src=p.image+(transparent?"?v=alpha-3":alphaPhotos.has(p.image)?"?v=alpha-1":"");img.hidden=false;}else{img.removeAttribute("src");img.hidden=true;}img.alt=p.name;}

@@ -68,6 +68,7 @@ test("all visible product cards have a selection link with a known product", asy
   }
 });
 
+test("guest account menu exposes only login and registration before session verification",async()=>{const html=await read("index.html"),css=await read("css/header.css"),js=await read("js/session.js");const menu=html.match(/<div class="nav-dropdown account-dropdown">([\s\S]*?)<\/div>/)?.[1]||"";assert.match(menu,/<a href="\/login" data-account-guest>Iniciar sesión<\/a>/);assert.match(menu,/<a href="\/registro" data-account-guest>Crear cuenta<\/a>/);assert.match(menu,/<p class="nav-note" hidden>Mi cuenta<\/p>/);assert.match(menu,/<a href="\/cuenta" data-account-private hidden>Mi perfil<\/a>/);assert.match(menu,/data-open-favorites data-account-private hidden/);assert.match(menu,/href="\/carrito" data-account-private hidden/);assert.match(css,/\.account-dropdown \[hidden\]\{display:none!important\}/);assert.match(js,/function showGuest\(\)/);assert.match(js,/function showAuthenticated\(profile\)/);assert.match(js,/showGuest\(\);/);});
 test("all ten storefront screens share the same header disclosures",async()=>{
  for(const page of headerPages){const html=await read(page);assert.equal([...html.matchAll(/class="nav-disclosure"/g)].length,3,page);assert.match(html,/class="account-disclosure nav-disclosure"/);assert.match(html,/data-open-favorites/);assert.match(html,/href="css\/header\.css(?:\?[^"]+)?"/);}
 });
@@ -138,7 +139,7 @@ test("employee table omits roles but keep linked identity",async()=>{const html=
 
 test("separate catalog navigation and coming soon label",async()=>{const h=await read("index.html"),d=await read("sorprendeme.html");assert.match(h,/href="\/hombre"/);assert.match(h,/href="\/mujer"/);assert.match(d,/id="detail-coming-soon" hidden>Próximamente/);});
 
-test("product photos share the store background instead of white rectangles",async()=>{const css=await read("css/ui.css");assert.match(css,/\.catalog-page \.product-card img[^{}]*\{background:transparent;mix-blend-mode:multiply\}/);assert.match(css,/\.detail-image-stage\{background:var\(--cream\)\}/);});
+test("transparent Martin Dingman product photo preserves white shoe details",async()=>{const css=await read("css/ui.css"),products=await read("js/products.js"),collection=await read("coleccion.html");assert.match(css,/\.transparent-product-image\{mix-blend-mode:normal!important\}/);assert.match(products,/classList\.toggle\("transparent-product-image",transparent\)/);assert.match(products,/\?v=alpha-3/);assert.match(collection,/class="transparent-product-image" src="img\/optimized\/producto-oxford-cafe-604\.webp\?v=alpha-3"/);assert.match(css,/\.detail-image-stage\{background:var\(--cream\)\}/);});
 
 test("client actions are hidden and detail stock errors use a red box without an estimated subtotal",async()=>{const html=await read("sorprendeme.html"),js=await read("js/cart.js"),css=await read("css/cart.css"),admin=await read("js/administracion.js");assert.doesNotMatch(html,/id="detail-subtotal"/);assert.match(js,/setProductStatus\("La cantidad supera las existencias disponibles\.",true\)/);assert.match(css,/\.cart-product-status\.cart-product-error\{[^}]*background:#ffe5e5/);assert.match(admin,/actionGroup\.hidden=selected==="clientes"\|\|selected==="pedidos"\|\|restricted/);});
 

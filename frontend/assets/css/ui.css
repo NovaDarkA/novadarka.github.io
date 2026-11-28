@@ -40,6 +40,7 @@ a[aria-disabled="true"]{cursor:not-allowed}
    backgrounds into the existing warm palette without changing photo dimensions. */
 .flash-card,.best-item,.product-card,.detail-related-card,.account-favorite-card,.cart-item,.checkout-item,.catalog-result,.detail-image-stage,.detail-thumb{isolation:isolate}
 .flash-card img,.best-item img,.catalog-page .product-card img,.detail-related-card img,.account-favorite-card img,.cart-item img,.checkout-item img,.catalog-result img,.product-detail .detail-image-stage img,.product-detail .detail-thumb img{background:transparent;mix-blend-mode:multiply}
+.transparent-product-image{mix-blend-mode:normal!important}
 .catalog-page .product-card img{border-color:transparent}
 .detail-image-stage{background:var(--cream)}
 .detail-thumb:not([aria-pressed=true]){background:var(--cream)}

@@ -44,12 +44,12 @@
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.1"/><path d="M5.5 19c.6-3.1 2.8-4.7 6.5-4.7s5.9 1.6 6.5 4.7"/></svg>
         </summary>
         <div class="nav-dropdown account-dropdown">
-          <a href="/login">Iniciar sesión</a>
-          <a href="/registro">Crear cuenta</a>
+          <a href="/login" data-account-guest>Iniciar sesión</a>
+          <a href="/registro" data-account-guest>Crear cuenta</a>
           <p class="nav-note" hidden>Mi cuenta</p>
-          <a href="/cuenta" hidden>Mi perfil</a>
-          <button type="button" data-open-favorites hidden>Mis favoritos</button>
-          <a href="/carrito" hidden>Mi carrito</a>
+          <a href="/cuenta" data-account-private hidden>Mi perfil</a>
+          <button type="button" data-open-favorites data-account-private hidden>Mis favoritos</button>
+          <a href="/carrito" data-account-private hidden>Mi carrito</a>
         </div>
       </details>
     </div>
