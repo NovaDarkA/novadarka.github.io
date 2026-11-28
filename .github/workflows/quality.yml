@@ -1,7 +1,7 @@
 name: Shoefit quality
 on:
   push:
-    branches: [main, develop/shoefit-fullstack]
+    branches: [main, develop/shoefit-fullstack, fix/employee-data-access]
   pull_request:
     branches: [main]
 permissions:
