@@ -1,8 +1,8 @@
 name: Shoefit applied database quality
 on:
   push:
-    branches: [main, develop/shoefit-fullstack]
-    paths: ['supabase/migrations/**','database/checks/**','database/tests/applied-*','.github/workflows/applied-database-quality.yml']
+    branches: [main, develop/shoefit-fullstack, fix/employee-data-access]
+    paths: ['supabase/migrations/**','database/drafts/06_employee_access_hardening.sql','database/checks/**','database/tests/applied-*','.github/workflows/applied-database-quality.yml']
   pull_request:
     branches: [main]
     paths: ['supabase/migrations/**','database/checks/**','database/tests/applied-*','.github/workflows/applied-database-quality.yml']
@@ -30,7 +30,7 @@ jobs:
           CONTAINER: ${{ job.services.postgres.id }}
         run: |
           set -euo pipefail
-          for file in database/tests/applied-auth-fixture.sql supabase/migrations/*.sql database/checks/02_integrity_rls.sql database/checks/03_admin_inventory.sql database/checks/04_atomic_checkout.sql database/checks/05_customer_profile.sql; do
+          for file in database/tests/applied-auth-fixture.sql supabase/migrations/*.sql database/checks/02_integrity_rls.sql database/checks/03_admin_inventory.sql database/checks/04_atomic_checkout.sql database/checks/05_customer_profile.sql database/drafts/06_employee_access_hardening.sql database/checks/06_employee_access_hardening.sql; do
             echo "Running $file"
             docker exec -i "$CONTAINER" psql -X -U postgres -d shoefit_test -v ON_ERROR_STOP=1 < "$file"
           done
