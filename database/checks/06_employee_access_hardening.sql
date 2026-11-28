@@ -44,7 +44,8 @@ begin
   if n<>2 then raise exception 'FAIL customer references unavailable to employee'; end if;
   if exists(select 1 from public.usuario where auth_id=adm) then raise exception 'FAIL admin user row visible to employee'; end if;
   select count(*) into n from public.cliente;
-  if n<>2 then raise exception 'FAIL employee cannot read customer references'; end if;
+  if n<>2 then raise exception 'FAIL employee cannot read only customer references: %',n; end if;
+  if exists(select 1 from public.cliente where id_doe in (u_emp_a,u_emp_b)) then raise exception 'FAIL employee-linked client profiles visible'; end if;
   update public.cliente set calle='No autorizado' where id_cliente=c_cli_a;
   get diagnostics n=row_count;
   if n<>0 then raise exception 'FAIL employee modified client'; end if;
