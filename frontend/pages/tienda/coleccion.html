@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Explora la colección de calzado Shoefit.">
+  <title>Shoefit | Colección</title>
+  <link rel="icon" href="img/optimized/logo-marca.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Pacifico&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/media_query.css">
+  <link rel="stylesheet" href="css/cart.css">
+  <script src="js/main.js" defer></script>
+  <script type="module" src="js/cart.js"></script>
+  <link rel="stylesheet" href="css/catalog-tools.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/collection.css">
+  <script type="module" src="js/collection.js"></script>
+  <script type="module" src="js/catalog-tools.js"></script>
+  <link rel="stylesheet" href="css/ui.css">
+<script>if(location.pathname==="/mujer")document.documentElement.dataset.catalogAudience="mujer";</script><style>html[data-catalog-audience="mujer"] #collection-grid:not([data-scoped]){display:none}html[data-catalog-audience="mujer"] #collection-count:not([data-scoped]){visibility:hidden}</style>
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <!-- SHARED_HEADER -->
+
+  <main id="contenido">
+    <section class="collection catalog-page" aria-labelledby="collection-title">
+      <div class="collection-inner">
+        <nav class="catalog-crumb" aria-label="Ruta de navegación"><a href="/">Inicio</a><span aria-hidden="true">/</span><span aria-current="page">Colección</span></nav>
+        <div class="catalog-heading"><div><p class="catalog-eyebrow">COLECCIÓN SHOEFIT</p><h1 id="collection-title">Colección de calzado</h1><p>Encuentra tu próximo par.</p></div></div>
+        <nav class="catalog-audiences" aria-label="Colección"><a href="/coleccion">Ver todos los productos</a><a href="/hombre">Hombres</a><a href="/mujer">Mujeres</a></nav>
+        <div class="catalog-layout">
+          <aside class="catalog-filter-panel" aria-label="Filtros del catálogo">
+            <details class="catalog-filter-details" open>
+              <summary>Filtros <span aria-hidden="true">⌄</span></summary>
+              <form id="collection-filters">
+                <label for="collection-query">Buscar producto</label>
+                <input type="search" id="collection-query" placeholder="Nombre o color">
+                <label for="collection-brand">Marca</label>
+                <select id="collection-brand"><option value="">Todas las marcas</option><option value="martin-dingman">Martin Dingman</option><option value="martin-oneil">Martin O'Neil</option><option value="unknown">Sin marca confirmada</option></select>
+                <label for="collection-type">Tipo</label>
+                <select id="collection-type"><option value="">Todos los tipos</option><option value="sneakers">Tenis</option><option value="casual">Zapatos casuales</option><option value="boots">Botas</option></select>
+                <label for="collection-size">Talla (MX)</label>
+                <select id="collection-size" disabled aria-describedby="size-note"><option value="">Todas las tallas</option></select>
+                <p class="filter-note" id="size-note">Consultando disponibilidad de tallas.</p>
+                <label for="collection-price">Precio</label>
+                <select id="collection-price"><option value="">Todos los precios</option><option value="low">Hasta $3,000 MXN</option><option value="mid">$3,001–$4,000 MXN</option><option value="high">Más de $4,000 MXN</option><option value="unknown">Por confirmar</option></select>
+                <button type="reset" class="catalog-reset">Limpiar filtros</button>
+              </form>
+            </details>
+          </aside>
+          <div class="catalog-content">
+            <div class="catalog-toolbar">
+              <p id="collection-count" role="status">4 modelos</p>
+              <label for="collection-sort">Ordenar por <select id="collection-sort"><option value="default">Destacados</option><option value="asc">Menor precio</option><option value="desc">Mayor precio</option><option value="name">Nombre A–Z</option></select></label>
+            </div>
+            <div class="product-grid catalog-grid" id="collection-grid">
+              <article class="product-card" data-product="flexible-sneakers-gray">
+                <img src="img/optimized/tenis-gris-lateral-619.webp" width="302" height="200" loading="lazy" alt="Tenis flexibles para hombre">
+                <p class="catalog-card-meta">Gris · Tenis</p>
+                <h2>Tenis flexibles para hombre</h2>
+                <p class="product-price">$2,490 MXN</p>
+                <a class="product-select" href="/sorprendeme?producto=flexible-sneakers-gray">Ver producto</a>
+              </article>
+              <article class="product-card" data-product="sport-orange-white">
+                <img src="img/optimized/producto-tenis-naranja-360.webp" width="302" height="200" loading="lazy" alt="Tenis deportivos blancos y naranjas de marca especial">
+                <p class="catalog-card-meta">Naranja / blanco · Tenis deportivos</p>
+                <h2>Tenis deportivos blancos y naranjas de marca especial</h2>
+                <p class="product-price">$3,450 MXN</p>
+                <a class="product-select" href="/sorprendeme?producto=sport-orange-white">Ver producto</a>
+              </article>
+              <article class="product-card" data-product="martin-dingman-brown">
+                <img class="transparent-product-image" src="img/optimized/producto-oxford-cafe-604.webp?v=alpha-3" width="302" height="200" loading="lazy" alt="Zapatos café Martin Dingman para hombre 123456">
+                <p class="catalog-card-meta">Café · Martin Dingman</p>
+                <h2>Zapatos café Martin Dingman para hombre 123456</h2>
+                <p class="product-price">$4,000 MXN</p>
+                <a class="product-select" href="/sorprendeme?producto=martin-dingman-brown">Ver producto</a>
+              </article>
+              <article class="product-card" data-product="casual-boots-brown">
+                <img src="img/optimized/botas-cafe-casual-268.webp" width="302" height="200" loading="lazy" alt="Botas casuales café Martin O'Neil">
+                <p class="catalog-card-meta">Café · Botas casuales</p>
+                <h2>Botas casuales café Martin O'Neil</h2>
+                <p class="product-price">Precio por confirmar</p>
+                <a class="product-select" href="/sorprendeme?producto=casual-boots-brown">Ver producto</a>
+              </article>
+            </div>
+            <div id="collection-empty" class="catalog-empty" hidden><h2>No encontramos productos</h2><p>Prueba con otros filtros o vuelve a consultar todos los modelos.</p><button type="button" id="collection-clear" class="catalog-reset">Ver todos los productos</button></div>
+            <nav class="catalog-pagination" aria-label="Paginación"><button type="button" id="collection-prev" disabled aria-label="Página anterior">←</button><span id="collection-page" aria-live="polite">Página 1 de 1</span><button type="button" id="collection-next" disabled aria-label="Página siguiente">→</button></nav>
+            <p class="catalog-preview-note">Catálogo provisional. Los precios y existencias se confirmarán al conectar la base de datos.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script>document.documentElement.classList.add('js');</script>
+</body>
+</html>

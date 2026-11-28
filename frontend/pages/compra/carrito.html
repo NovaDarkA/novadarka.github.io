@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Carrito de compras de Shoefit.">
+  <title>Shoefit | Carrito</title>
+  <link rel="icon" href="img/optimized/logo-marca.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Pacifico&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/media_query.css">
+  <link rel="stylesheet" href="css/cart.css">
+  <script src="js/main.js" defer></script>
+  <script type="module" src="js/cart.js"></script>
+  <link rel="stylesheet" href="css/catalog-tools.css">
+  <link rel="stylesheet" href="css/header.css">
+  <script type="module" src="js/catalog-tools.js"></script>
+  <link rel="stylesheet" href="css/ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <!-- SHARED_HEADER -->
+
+  <main id="contenido" class="shopping-cart">
+    <nav class="order-steps" aria-label="Etapas del pedido"><a href="/carrito" aria-current="step"><span>1</span> Carrito</a><span><span>2</span> Revisar pedido</span><span><span>3</span> Confirmación</span></nav>
+    <div class="cart-heading">
+      <div><h1>Carrito</h1><p>Revisa los productos de tu pedido.</p></div>
+      <p id="cart-count" aria-live="polite">0 artículos</p>
+    </div>
+    <div class="cart-columns">
+      <section aria-label="Productos del carrito">
+        <div id="cart-items" class="cart-items"></div>
+        <div id="cart-empty" class="cart-empty">
+          <h2>Tu carrito está vacío</h2>
+          <p>Explora nuestra colección y añade el calzado que más te guste.</p>
+          <a class="cart-primary" href="/coleccion">Ver colección</a>
+        </div>
+        <noscript><p>Activa JavaScript para gestionar tu carrito.</p></noscript>
+      </section>
+      <aside class="cart-summary" aria-labelledby="summary-title">
+        <h2 id="summary-title">Resumen del pedido</h2>
+        <dl>
+          <div><dt>Subtotal general</dt><dd id="cart-subtotal">$0.00 MXN</dd></div>
+          <div><dt>Envío</dt><dd><span class="delivery-caption">Llegada estimada</span><time data-delivery-estimate>—</time></dd></div>
+          <div class="cart-total"><dt>Total de productos</dt><dd id="cart-total">$0.00 MXN</dd></div>
+        </dl>
+        <a class="cart-primary" id="cart-checkout" href="/pedido" aria-disabled="true" tabindex="-1">Continuar con el pedido</a>
+        <p class="cart-note">Puedes revisar y confirmar el pedido con una cuenta de cliente.</p>
+        <a class="cart-back" href="/coleccion">Seguir comprando</a>
+        <p id="cart-status" role="status"></p>
+      </aside>
+    </div>
+  </main>
+  <script>document.documentElement.classList.add("js");</script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+import test from "node:test";import assert from "node:assert/strict";import {mutationBody,fieldValue,modules} from "../frontend/assets/js/admin-client.js";
+test("admin product maps nullable fields, price, published flag and slug",()=>{const p=mutationBody("productos",{nom_prod:"Zapato",slug:"zapato",precio:"99.50",activo:true});assert.equal(p.precio,99.5);assert.equal(p.activo,true);assert.equal(p.id_proveedor,null);});
+test("admin edits only changed fields and cannot reassign user",()=>{const old={id_doe:1,calle:"A",numero:null,colonia:null,cp:null,talla:null};assert.deepEqual(mutationBody("clientes",{...old,id_doe:99,calle:"B"},old),{calle:"B"});});
+test("inventory validates zero stock and positive variant ID",()=>{assert.equal(fieldValue(modules.variantes.fields[2],"0"),0);assert.throws(()=>fieldValue(modules.variantes.fields[0],"0"));});

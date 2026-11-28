@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Recuperación de contraseña de Shoefit.">
+  <title>Shoefit | Recuperar contraseña</title>
+  <link rel="icon" href="img/optimized/logo-marca.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Pacifico&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/media_query.css">
+  <link rel="stylesheet" href="css/cart.css">
+  <script src="js/main.js" defer></script>
+  <script type="module" src="js/cart.js"></script>
+  <link rel="stylesheet" href="css/catalog-tools.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/account.css">
+  <script type="module" src="js/catalog-tools.js"></script>
+  <link rel="stylesheet" href="css/ui.css">
+  <script type="module" src="js/recovery.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <!-- SHARED_HEADER -->
+
+  <main id="contenido" class="account-recovery">
+    <section class="account-recovery-card" aria-labelledby="recovery-title">
+      <a class="account-crumb" href="/login">← Volver a iniciar sesión</a>
+      <h1 id="recovery-title">Recuperar contraseña</h1>
+      <p>Introduce el correo asociado a tu cuenta para recibir un código de recuperación.</p>
+      <form id="recovery-form" method="post">
+        <div class="account-fields"><label class="account-wide">Correo electrónico<input name="email" type="email" autocomplete="email" maxlength="254" required placeholder="correo@ejemplo.com"></label></div>
+        <div id="recovery-step" hidden>
+          <div class="account-fields">
+            <label class="account-wide">Código de seis dígitos<input name="code" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" disabled></label>
+            <label class="account-wide">Nueva contraseña<input name="password" type="password" autocomplete="new-password" minlength="8" maxlength="128" disabled></label>
+            <label class="account-wide">Confirmar contraseña<input name="confirmation" type="password" autocomplete="new-password" minlength="8" maxlength="128" disabled></label>
+          </div>
+          <button id="recovery-resend" class="account-secondary" type="button">Solicitar otro código</button>
+        </div>
+        <p id="recovery-status" role="status" aria-live="polite"></p>
+        <button type="submit" class="account-primary" disabled>Enviar código de recuperación</button>
+      </form>
+      <a href="/login" class="account-secondary">Regresar a iniciar sesión</a>
+    </section>
+  </main>
+  <script>document.documentElement.classList.add("js");</script>
+</body>
+</html>

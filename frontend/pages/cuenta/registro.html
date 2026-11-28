@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Crea tu cuenta de Shoefit con tu correo electrónico.">
+  <title>Shoefit | Crear cuenta</title>
+  <link rel="icon" href="img/optimized/logo-marca.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Pacifico&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/media_query.css">
+  <link rel="stylesheet" href="css/cart.css">
+  <script src="js/main.js" defer></script>
+  <script type="module" src="js/cart.js"></script>
+  <link rel="stylesheet" href="css/catalog-tools.css">
+  <link rel="stylesheet" href="css/header.css">
+  <script type="module" src="js/catalog-tools.js"></script>
+  <script src="js/auth.js" defer></script>
+  <link rel="stylesheet" href="css/ui.css">
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <!-- SHARED_HEADER -->
+
+  <main id="contenido">
+    <section class="auth" lang="es-MX" aria-labelledby="auth-title">
+      <div class="auth-card">
+        <h1 id="auth-title">Crear cuenta</h1>
+        <p class="auth-note" id="reg-note">Todos los campos son obligatorios.</p>
+        <noscript><p class="auth-error auth-noscript">Activa JavaScript para crear tu cuenta.</p></noscript>
+        <form class="auth-form" id="register-form" method="post" novalidate data-auth-form="register" aria-describedby="reg-note">
+          <div class="auth-field">
+            <label for="reg-email">Correo electrónico</label>
+            <input id="reg-email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="254" required aria-required="true" aria-describedby="reg-email-error" data-rule="email">
+            <p class="auth-error" id="reg-email-error"></p>
+          </div>
+          <div class="auth-field">
+            <label for="reg-password">Contraseña</label>
+            <input id="reg-password" name="password" type="password" autocomplete="new-password" minlength="8" maxlength="128" required aria-required="true" aria-describedby="reg-password-hint reg-password-error" data-rule="new-password">
+            <p class="auth-hint" id="reg-password-hint">Al menos 8 caracteres.</p>
+            <p class="auth-error" id="reg-password-error"></p>
+          </div>
+          <div class="auth-field">
+            <label for="reg-confirm">Confirmar contraseña</label>
+            <input id="reg-confirm" name="confirm" type="password" autocomplete="new-password" maxlength="128" required aria-required="true" aria-describedby="reg-confirm-error" data-rule="confirm" data-match="reg-password">
+            <p class="auth-error" id="reg-confirm-error"></p>
+          </div>
+          <div class="auth-submit">
+            <button class="auth-btn" type="submit">Crear cuenta</button>
+          </div>
+          <p class="auth-status" id="register-status" role="status"></p>
+          <div class="auth-row auth-row-single">
+            <span>¿Ya tienes una cuenta?</span>
+            <a class="auth-link" href="/login">Iniciar sesión</a>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+  <script>document.documentElement.classList.add('js');</script>
+</body>
+</html>

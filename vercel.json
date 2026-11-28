@@ -1,0 +1,52 @@
+{
+  "framework": null,
+  "buildCommand": "node scripts/build-static.mjs --protected",
+  "outputDirectory": "dist",
+  "functions": {
+    "api/admin-page.ts": {
+      "includeFiles": "frontend/pages/administracion/administracion.html"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/panel-empleado",
+      "destination": "/api/admin-page"
+    },
+    {
+      "source": "/administracion",
+      "destination": "/api/admin-page"
+    },
+    {
+      "source": "/hombre",
+      "destination": "/coleccion"
+    },
+    {
+      "source": "/mujer",
+      "destination": "/coleccion"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/index",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/page_collection",
+      "destination": "/coleccion",
+      "permanent": true
+    },
+    {
+      "source": "/page_login",
+      "destination": "/login",
+      "permanent": true
+    },
+    {
+      "source": "/page_surprise",
+      "destination": "/sorprendeme",
+      "permanent": true
+    }
+  ],
+  "cleanUrls": true,
+  "trailingSlash": false
+}

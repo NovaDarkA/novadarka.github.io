@@ -1,0 +1,21 @@
+.catalog-dialog{position:fixed;inset:0;margin:auto;width:min(620px,calc(100% - 24px));max-height:85dvh;overflow:auto;border:1px solid #a99466;border-radius:14px;background:var(--cream);color:var(--ink);padding:clamp(16px,3vw,28px);font-family:var(--mono)}
+.catalog-dialog::backdrop{background:#17130e88}
+.catalog-dialog-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.catalog-dialog h2{font-size:clamp(18px,3vw,26px);font-weight:500}
+.catalog-close{width:40px;height:40px;border:1px solid #a99466;border-radius:7px;background:var(--sand);font:24px var(--mono);cursor:pointer}
+.catalog-dialog-body{display:grid;gap:12px}
+.catalog-dialog-body label,.catalog-count,.catalog-info{font-size:14px;line-height:1.5}
+.catalog-query{width:100%;min-width:0;padding:12px;border:1px solid #a99466;border-radius:7px;background:white;color:var(--ink);font:14px var(--mono)}
+.catalog-search-tools label{display:flex;align-items:center;gap:8px}
+.catalog-results{list-style:none;display:grid;gap:8px}
+.catalog-result{display:grid;grid-template-columns:70px minmax(0,1fr);align-items:center;gap:12px;background:var(--sand);border-radius:7px;padding:10px;text-decoration:none;font-size:13px}
+.catalog-result:hover{background:#fdffb7}
+.catalog-result img{width:70px;height:55px;object-fit:contain;background:var(--cream);border-radius:5px}
+.catalog-result strong,.catalog-result small{display:block;line-height:1.5;overflow-wrap:anywhere}
+.catalog-result small{margin-top:4px}
+.catalog-no-results{padding:12px;font-size:14px}
+.catalog-button{background:#fdffb7;color:var(--ink);border:1px solid #a99466;border-radius:6px;padding:12px;font:14px var(--mono);cursor:pointer}
+.special-fav[aria-pressed="true"] svg{fill:#ff4444;stroke:#9d1d1d}
+.footer-links .footer-info{display:inline-block;border:0;background:none;color:inherit;text-align:left;font:500 clamp(11px,1.41cqw,28px)/1.72 var(--mono);cursor:pointer}
+.footer-info:hover{text-decoration:underline;text-underline-offset:3px}
+@media(max-width:650px){.footer-links .footer-info{font-size:12px}}

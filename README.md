@@ -1,0 +1,82 @@
+# Shoefit
+Aplicación académica Full Stack de zapatería. Desarrollo en develop/shoefit-fullstack; el código del frontend se organiza en frontend/ y las rutas públicas se generan en dist/.
+
+## Desarrollo
+Requisitos: Node.js 22 y npm.
+- npm ci
+- npm run check: comprobación TypeScript, pruebas unitarias, preparación del frontend y validación de archivos, enlaces y fragmentos.
+- npm run test:browser: pruebas Chrome en 1366, 1024, 820, 650, 390 y 320 px después del build; requiere Google Chrome (CHROME_BIN puede indicar otro ejecutable Chromium). Usa fuentes de respaldo sin depender de Google Fonts; no sustituye revisión visual manual.
+- node scripts/public-preview-smoke.mjs: prueba HTTP anónima de la vista previa pública existente; no envía credenciales ni sigue redirecciones.
+- npm run build: genera dist/ con las mismas rutas HTML públicas y los recursos permitidos.
+- npm run dev: compila y abre un servidor local en http://127.0.0.1:4173. No abras las plantillas directamente: el encabezado compartido se inserta durante el build.
+- Vercel: importar repositorio y desplegar una vista previa de la rama de desarrollo; usar vercel.json. No fusionar a main sin autorización.
+- GET /api/health: comprobación del backend inicial (no de la base de datos).
+
+## Configuración
+Copiar .env.example a .env para ejecución local con las variables cargadas en el entorno del proceso; configurar variables en Vercel para despliegues. Usar un proyecto Supabase exclusivo de Shoefit y su URL y clave publishable. Nunca usar una clave secreta en el cliente.
+La conexión real, esquema SQL, autenticación, CRUD y correo están pendientes. Las pruebas de transporte usan respuestas simuladas, no una base de datos real.
+
+Ver docs/architecture.md para alcance y criterios de evaluación.
+
+## Nuevas pantallas de Figma
+- administracion.html: vista previa del panel con Productos, Clientes, Ventas y Empleados; no contiene datos privados ni permite operaciones. F4–F6 implementarán CRUD y autorización real.
+- carrito.html: diseño de dos columnas inspirado en Erick's Caps y paleta Shoefit. Borrador local funcional desde el detalle de tenis grises; cantidad, eliminación y subtotales. Tallas ilustrativas y precio del catálogo estático. Sin pedidos, stock ni pagos reales; F3–F5 sustituirán datos y persistencia local por API/BD.
+
+El catálogo provisional incluye botones Ver producto en inicio y colección. El detalle y carrito usan referencias a productos estáticos existentes; las botas no tienen precio publicado y su compra está deshabilitada. El SQL original del equipo se revisará y adaptará en F3, conservando las ocho entidades.
+
+Búsqueda local por nombre/tipo/color, filtro de favoritos, favoritos persistentes en el navegador, enlaces de compartir limpios y diálogos informativos de pie de página. No representan cuentas ni registros reales de la base de datos. Información institucional pendiente se indica explícitamente.
+
+## FE.01 — Encabezado y navegación
+Menús desplegables Men, Women y Collection, y menú de cuenta uniforme en las siete pantallas. Men muestra únicamente referencias conocidas; Women indica que la colección está pendiente, sin inventar registros. Favoritos utiliza la búsqueda existente. Cuenta real y perfil se implementarán después. Pruebas de enlaces, apertura/cierre, teclado y adaptación.
+
+## FE.02 — Diseño del catálogo
+Filtros, ordenamiento, paginación, estado vacío, tarjetas y diseño adaptable. Se muestran cuatro modelos únicos existentes en lugar de ocho tarjetas duplicadas y el contador ficticio 98. Clasificación provisional derivada de sus nombres; tallas deshabilitadas hasta confirmar stock. Sin datos de BD. Pruebas ampliadas a 1366, 820 y 390 px.
+
+## FE.03 — Detalle de producto
+Galería seleccionable de cuatro vistas para tenis grises, una foto para los demás modelos; descripción basada en imágenes, tipo y disponibilidad por confirmar, talla ilustrativa y cantidad, subtotal local, productos relacionados, favoritos y compartir. No se inventan reseñas, inventario ni precio faltante. Agregar al carrito utiliza la cantidad elegida.
+
+## FE.04 — Carrito y revisión del pedido
+Conserva carrito inspirado en Erick's Caps; nueva ruta pedido.html con etapas visuales, campos de contacto y entrega deshabilitados, resumen real del borrador local y diálogo de confirmación de diseño. Sin enviar datos, cobrar o registrar pedidos. El enlace desde carrito se habilita al contener productos. El costo de envío no se inventa.
+
+## FE.05 — Cuenta y perfil
+cuenta.html incorpora diseño de perfil, información personal, pedidos, favoritos locales, seguridad y cierre de sesión; recuperar.html incluye recuperación visual. Campos personales y acciones de cuenta deshabilitados hasta conectar autenticación; sin datos personales ni envíos. Acceso de vista previa en el menú de cuenta y enlace de recuperación en login.
+
+## FE.06 — Administración
+Cuatro módulos (PRODUCTO, CLIENTE, VENTA, EMPLEADO) con campos del SQL original, tablas vacías, búsqueda, ordenamiento, paginación y vistas previas de agregar/modificar/eliminar. Todos los campos de edición y confirmaciones de escritura deshabilitados. Sin datos ni autenticación real. No se modifica SQL.
+
+### FE.06 — Refinamiento visual autorizado
+Dashboard administrativo con identidad Shoefit, iconos, navegación lateral, tabla en panel crema, estados vacíos y formularios refinados. Estado de vista previa sin métricas inventadas. Se conserva la interfaz y los campos de los cuatro módulos, sin operaciones reales.
+
+## FE.07 — Información y ayuda
+Centro de información con siete secciones enlazadas desde el pie de página, FAQ desplegables, guía de compra, contacto pendiente de confirmación y página 404 personalizada con enlaces de recuperación absolutos. No se inventan datos institucionales ni se habilitan contactos de ejemplo. Se conserva el diseño de las páginas anteriores.
+
+## FE.08 — Estructura y consistencia
+```
+frontend/
+  pages/
+    tienda/           # inicio, colección y detalle
+    compra/           # carrito y pedido
+    cuenta/           # login, registro, perfil y recuperación
+    administracion/   # panel administrativo
+    ayuda/            # información y error 404
+    compatibilidad/   # redirecciones antiguas
+  components/         # encabezado compartido
+  assets/
+    css/
+    js/
+    img/
+api/                  # funciones Vercel
+src/                  # configuración y servicios backend
+scripts/              # build, servidor local y pruebas de navegador
+tests/                # pruebas unitarias y de salida
+docs/                 # documentación
+```
+Las rutas públicas no cambian: el manifiesto explícito genera los HTML en dist/ y copia CSS/JS/imágenes. Se unifican estados de foco, controles deshabilitados, elementos ocultos y movimiento reducido. Las plantillas no se sirven directamente ni se publican los archivos internos.
+
+## FE.09 — Validación técnica
+Ver [informe de validación del frontend](docs/frontend-validation.md): evidencia CI y rutas, límites y aprobación visual pendiente.
+
+### Ajuste final de administración
+El panel administrativo no utiliza el encabezado de la tienda. Conserva su menú lateral y un botón accesible para ocultarlo/restaurarlo; el contenido aprovecha el espacio libre. Los diez documentos de tienda mantienen el encabezado común.
+
+Las cuatro tarjetas duplicadas se eliminaron por solicitud del usuario. La navegación entre módulos se realiza exclusivamente desde la barra lateral.
